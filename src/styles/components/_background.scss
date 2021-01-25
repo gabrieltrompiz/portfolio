@@ -1,19 +1,24 @@
-#webgl > canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  outline: none;
-  background: #191919;
+#webgl {
+  position: absolute !important;
   z-index: -1;
+
+  & > canvas {
+    top: 0;
+    left: 0;
+    outline: none;
+    background: #191919;
+    z-index: -1;
+  }
+ 
 }
 
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 
 html, body {
-    overflow: hidden;
+  overflow: hidden;
 }
 

@@ -1,8 +1,11 @@
 // import abstracts
+@import './abstracts/mixins';
 
 // import vendors
+@import '~rfs/scss';
 
 // import base
+@import './base/typography';
 
 // import layout
 
@@ -10,6 +13,7 @@
 @import './components/background';
 
 // import pages
+@import './pages/home';
 
 // import themes
 
@@ -18,6 +22,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100vh;
+  background-color: #191919;
 }
 
 #__next {

@@ -1,0 +1,24 @@
+#home {
+  @include size(100%, 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  
+  &#name {
+    @include font-size(50px);
+    font-family: 'Fraunces', serif;
+  }
+  
+  &#role {
+    @include font-size(16px);
+    font-weight: lighter;
+    letter-spacing: 1px;
+  }
+  
+}
