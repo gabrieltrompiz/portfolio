@@ -11,20 +11,23 @@
 
 // import components
 @import './components/background';
+@import './components/arrow-down';
 
 // import pages
 @import './pages/home';
 
 // import themes
 
-body {
+body, #wrapper {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100vh;
-  background-color: #191919;
 }
 
+body {
+  background-color: #191919;
+}
 #__next {
   width: 100%;
   height: 100%;

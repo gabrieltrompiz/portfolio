@@ -1,36 +1,16 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
-
-const title: Variants = {
-  hidden: { 
-    opacity: 0,
-    y: -10
-  },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { delay: 0.5, duration: 0.5 } 
-  }
-};
-
-const role: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: { delay: 1 }
-  }
-}
+import { motion } from 'framer-motion';
+import variants from './variants';
+import ArrowDown from '@components/ArrowDown';
 
 const Introduction: React.FC = () => {
   return (
-    <>
+    <div id='introduction'>
       <motion.p 
         id='name'
         initial='hidden'
         animate='visible'
-        variants={title}
+        variants={variants.title}
       >
         Gabriel Trompiz
       </motion.p>
@@ -38,11 +18,12 @@ const Introduction: React.FC = () => {
         id='role'
         initial='hidden'
         animate='visible'
-        variants={role}
+        variants={variants.role}
       >
         Full-Stack Developer / Software Engineer
       </motion.p>
-    </>
+      <ArrowDown />
+    </div>
   )
 };
 

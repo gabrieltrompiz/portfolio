@@ -43,7 +43,7 @@ const Water: React.FC<MeshProps> = (props) => {
   useFrame(() => {
     solidRef.current.uniforms.uTime.value = clock.elapsedTime;
     wireframeRef.current.uniforms.uTime.value = clock.elapsedTime;
-    solidRef.current.uniforms.uOpacity.value = Math.cos(clock.elapsedTime * 0.5);
+    solidRef.current.uniforms.uOpacity.value = Math.sin(clock.elapsedTime * 0.5);
     wireframeRef.current.uniforms.uOpacity.value = 1;
   });
 
