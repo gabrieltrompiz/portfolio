@@ -12,7 +12,9 @@
     "next": "10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "sass": "^1.32.5"
+    "react-three-fiber": "^5.3.17",
+    "sass": "^1.32.5",
+    "three": "^0.124.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.22",
