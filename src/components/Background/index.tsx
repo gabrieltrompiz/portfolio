@@ -1,11 +1,11 @@
-import Overlay from '@components/Overlay';
-import { animate, useMotionValue } from 'framer-motion';
-import React, { useEffect, useState, MouseEvent } from 'react';
+import React, { useEffect, useState } from 'react';
+import { animate } from 'framer-motion';
 import { Canvas } from 'react-three-fiber';
 import { Vector3 } from 'three';
+import Overlay from '@components/Overlay';
 import Water from '../Water';
 
-const Background: React.FC = () => {
+const Background: React.FC<BackgroundProps> = ({ wireframe = true }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
@@ -35,6 +35,7 @@ const Background: React.FC = () => {
       <Water 
         position={[0, 1.3, -0.1]}
         rotation={[- Math.PI * 0.24, 0.25, 0]}
+        wireframe={wireframe}
       />
       {/* <Overlay /> */}
     </Canvas>
@@ -42,3 +43,7 @@ const Background: React.FC = () => {
 };
 
 export default Background;
+
+interface BackgroundProps {
+  wireframe: boolean
+}

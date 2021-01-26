@@ -5,6 +5,7 @@ import { Color, Mesh, ShaderMaterial, Vector2, Vector3 } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';
 import { cloneDeep } from 'lodash';
+import { animate } from 'framer-motion';
 
 const solidUniforms = {
   uBigWavesElevation: { value: 0 },
@@ -24,7 +25,9 @@ const solidUniforms = {
 
 const wireframeUniforms = cloneDeep(solidUniforms);
 
-const Water: React.FC<MeshProps> = (props) => {
+const Water: React.FC<MeshProps & WaterProps> = ({ wireframe, ...props }) => {
+  const [solidOpacity, setSolidOpacity] = useState(1);
+
   const solidMesh = useRef<Mesh>(null);
   const wireframeMesh = useRef<Mesh>(null);
   const solidRef = useRef<ShaderMaterial>(null);
@@ -40,10 +43,24 @@ const Water: React.FC<MeshProps> = (props) => {
     camera.lookAt(new Vector3(-0.55, -0.3, 0));
   }, []);
 
+  useEffect(() => {
+    if(wireframe) {
+      animate(1, 0, {
+        onUpdate: setSolidOpacity,
+        duration: 2
+      });
+    } else {
+      animate(0, 1, {
+        onUpdate: setSolidOpacity,
+        duration: 2
+      })
+    }
+  }, [wireframe]);
+
   useFrame(() => {
     solidRef.current.uniforms.uTime.value = clock.elapsedTime;
     wireframeRef.current.uniforms.uTime.value = clock.elapsedTime;
-    solidRef.current.uniforms.uOpacity.value = Math.sin(clock.elapsedTime * 0.5);
+    solidRef.current.uniforms.uOpacity.value = solidOpacity;
     wireframeRef.current.uniforms.uOpacity.value = 1;
   });
 
@@ -81,3 +98,7 @@ const Water: React.FC<MeshProps> = (props) => {
 };
 
 export default Water;
+
+interface WaterProps {
+  wireframe: boolean
+}

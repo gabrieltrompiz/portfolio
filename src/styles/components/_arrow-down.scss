@@ -1,0 +1,19 @@
+#scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+
+  & > p {
+    opacity: 0.6;
+    @include font-size(12px)
+  }
+}
+
+#arrow-down {
+  margin-bottom: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
