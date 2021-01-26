@@ -1,31 +1,17 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { MeshProps, useFrame, useThree } from 'react-three-fiber';
-import { Color, Mesh, ShaderMaterial, Vector2, Vector3 } from 'three';
+import { Mesh, ShaderMaterial, Vector3 } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';
 import { cloneDeep } from 'lodash';
 import { animate } from 'framer-motion';
+import { uniforms } from './shaders/uniforms';
 
-const solidUniforms = {
-  uBigWavesElevation: { value: 0 },
-  uBigWavesFrequency: { value: new Vector2(0, 0) },
-  uTime: { value: 0 },
-  uBigWavesSpeed: { value: 0.06 },
-  uDepthColor: { value: new Color(0xFFFFFF) },
-  uSurfaceColor: { value: new Color(0x000000) },
-  uColorOffset: { value: 0.17 },
-  uColorMultiplier: { value: 5 },
-  uSmallWavesElevation: { value: 0.1 },
-  uSmallWavesFrequency: { value: 4 },
-  uSmallWavesSpeed: { value: 0.1 },
-  uSmallIterations: { value: 4 },
-  uOpacity: { value: 1 }
-};
+const solidUniforms = cloneDeep(uniforms);
+const wireframeUniforms = cloneDeep(uniforms);
 
-const wireframeUniforms = cloneDeep(solidUniforms);
-
-const Water: React.FC<MeshProps & WaterProps> = ({ wireframe, ...props }) => {
+const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }) => {
   const [solidOpacity, setSolidOpacity] = useState(1);
 
   const solidMesh = useRef<Mesh>(null);
@@ -97,8 +83,8 @@ const Water: React.FC<MeshProps & WaterProps> = ({ wireframe, ...props }) => {
   );
 };
 
-export default Water;
+export default NoiseWave;
 
-interface WaterProps {
+interface NoiseWaveProps {
   wireframe: boolean
 }

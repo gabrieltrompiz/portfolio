@@ -3,9 +3,9 @@ import { animate } from 'framer-motion';
 import { Canvas } from 'react-three-fiber';
 import { Vector3 } from 'three';
 import Overlay from '@components/Overlay';
-import Water from '../Water';
+import NoiseWave from '../NoiseWave';
 
-const Background: React.FC<BackgroundProps> = ({ wireframe = true }) => {
+const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
@@ -32,7 +32,7 @@ const Background: React.FC<BackgroundProps> = ({ wireframe = true }) => {
 
   return (
     <Canvas id='webgl' camera={{ position: new Vector3(0, -0.2, 1.8), fov: 75, aspect, near: 0.1, far: 100 }} pixelRatio={pixelRatio} style={{ opacity }}>
-      <Water 
+      <NoiseWave 
         position={[0, 1.3, -0.1]}
         rotation={[- Math.PI * 0.24, 0.25, 0]}
         wireframe={wireframe}
@@ -42,8 +42,8 @@ const Background: React.FC<BackgroundProps> = ({ wireframe = true }) => {
   );
 };
 
-export default Background;
+export default CanvasWebGL;
 
-interface BackgroundProps {
+interface CanvasWebGLProps {
   wireframe: boolean
 }

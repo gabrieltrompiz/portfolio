@@ -1,9 +1,9 @@
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
-import Background from '@components/Background';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import SideLink from '@components/SideLink';
 import Head from 'next/head';
+import CanvasWebGL from '@components/CanvasWebGL';
 
 const variants: Variants = {
   initial: { opacity: 0 },
@@ -30,7 +30,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Background wireframe={router.route !== '/'} />
+      <CanvasWebGL wireframe={router.route !== '/'} />
       <AnimatePresence>
         <motion.div key={`overlay-${router.route}`} id='overlay' exit='exit' initial='initial' animate='enter' variants={variants}>
           <SideLink href='mailto:hello@gabrieltrompiz.com?subject=Hello Gabriel'>
