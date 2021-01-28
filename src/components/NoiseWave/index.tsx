@@ -7,6 +7,7 @@ import fragmentShader from './shaders/fragment';
 import { cloneDeep } from 'lodash';
 import { animate } from 'framer-motion';
 import { uniforms } from './shaders/uniforms';
+import { useRouter } from 'next/router';
 
 const solidUniforms = cloneDeep(uniforms);
 const wireframeUniforms = cloneDeep(uniforms);
@@ -18,6 +19,7 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
   const wireframeMesh = useRef<Mesh>(null);
   const solidRef = useRef<ShaderMaterial>(null);
   const wireframeRef = useRef<ShaderMaterial>(null);
+
   const { clock, camera } = useThree();
 
   useEffect(() => {
