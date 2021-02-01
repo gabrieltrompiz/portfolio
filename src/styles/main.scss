@@ -32,6 +32,11 @@ body, #wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  pointer-events: none;
+
+  & > div {
+    pointer-events: all;
+  }
 }
 
 body {

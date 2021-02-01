@@ -1,28 +1,44 @@
+import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import SideLink from '@components/SideLink';
 import Head from 'next/head';
 import CanvasWebGL from '@components/CanvasWebGL';
-
-const variants: Variants = {
-  initial: { opacity: 0 },
-  enter: { 
-    opacity: 1, 
-    transition: { 
-      duration: 1, 
-    } 
-  },
-  exit: {
-    opacity: 0,
-    transition: { 
-      duration: 0.5, 
-    }
-  }
-}
+import { pages, sideLinkContainer } from '@utils/variants';
+import { useGesture } from 'react-use-gesture';
+import { handleScroll } from '@utils/events';
 
 const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const isAbout = router.route === '/about';
+
+  const controls = useAnimation();
+  const bind = useGesture({
+    onWheel: (e) => handleScroll(e, router),
+    onDrag: (e) => handleScroll(e, router)
+  });
+
+  const handleRouteChange = (url: string) => {
+    controls.start('enter');
+    switch(url) {
+      case '/projects': 
+        // controls.start('goToProjects');
+        break;
+      default:
+        break;
+    }
+  }
+
+  useEffect(() => {
+    controls.start('enter');
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    }
+  }, []);
+
+  console.log(router.route)
 
   return (
     <>
@@ -32,16 +48,16 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       </Head>
       <CanvasWebGL wireframe={router.route !== '/'} />
       <AnimatePresence>
-        <motion.div key={`overlay-${router.route}`} id='overlay' exit='exit' initial='initial' animate='enter' variants={variants}>
+        <motion.div key={`overlay-${isAbout}`} id='overlay' exit='exit' initial='initial' animate={controls} variants={sideLinkContainer}>
           <SideLink href='mailto:hello@gabrieltrompiz.com?subject=Hello Gabriel'>
             hello@gabrieltrompiz.com
           </SideLink>
           <SideLink onClick={() => router.push(isAbout ? '/' : '/about')}>
-            {isAbout ? 'Home' : 'About me'}
+            {isAbout ? 'Back' : 'About me'}
           </SideLink>
         </motion.div>
-        <motion.div key={router.route} id='wrapper' exit='exit' initial='initial' animate='enter' variants={variants}>
-          <Component {...pageProps} key={router.route}/>
+        <motion.div key={router.route} id='wrapper' exit='exit' initial='initial' animate={controls} variants={pages} {...bind()}>
+          <Component {...pageProps} key={router.route} />
         </motion.div>
       </AnimatePresence>
     </>

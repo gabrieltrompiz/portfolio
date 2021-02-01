@@ -1,6 +1,6 @@
 import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
-import variants from './variants';
+import { sideLink as variants } from '@utils/variants';
 
 const SideLink: React.FC<HTMLMotionProps<'a'>> = ({ children, ...props }) => {
   return (
