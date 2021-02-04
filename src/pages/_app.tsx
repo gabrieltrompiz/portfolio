@@ -22,7 +22,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     controls.start('enter');
     switch(url) {
       case '/projects': 
-        // controls.start('goToProjects');
+        controls.start('goToProjects');
         break;
       default:
         break;
@@ -56,7 +56,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
             {isAbout ? 'Back' : 'About me'}
           </SideLink>
         </motion.div>
-        <motion.div key={router.route} id='wrapper' exit='exit' initial='initial' animate={controls} variants={pages} {...bind()}>
+        <motion.div key={router.route} custom={router.route} id='wrapper' exit='exit' initial='initial' animate={controls} variants={pages} {...bind()}>
           <Component {...pageProps} key={router.route} />
         </motion.div>
       </AnimatePresence>

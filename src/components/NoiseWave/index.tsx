@@ -13,6 +13,7 @@ const wireframeUniforms = cloneDeep(uniforms);
 
 const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }) => {
   const [solidOpacity, setSolidOpacity] = useState(1);
+  const [position, setPosition] = useState(new Vector3(0, -0.2, 1.85));
 
   const solidMesh = useRef<Mesh>(null);
   const wireframeMesh = useRef<Mesh>(null);
@@ -23,8 +24,9 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
 
   useEffect(() => {
     window.addEventListener('mousemove', (event) => {
-      camera.position.x = (event.clientX / window.innerWidth * 0.015);
-      camera.position.y = (event.clientY / window.innerHeight * 0.015) - 0.2;
+      const x = (event.clientX / window.innerWidth * 0.05);
+      const y = - 0.2 + (event.clientY / window.innerWidth * 0.05);
+      setPosition(new Vector3(x, y, 1.85));
     });
 
     camera.lookAt(new Vector3(-0.55, -0.3, 0));
@@ -44,12 +46,13 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
     }
   }, [wireframe]);
 
-  // useFrame(() => {
-  //   solidRef.current.uniforms.uTime.value = clock.elapsedTime;
-  //   wireframeRef.current.uniforms.uTime.value = clock.elapsedTime;
-  //   solidRef.current.uniforms.uOpacity.value = solidOpacity;
-  //   wireframeRef.current.uniforms.uOpacity.value = 1;
-  // });
+  useFrame(() => {
+    solidRef.current.uniforms.uTime.value = clock.elapsedTime;
+    wireframeRef.current.uniforms.uTime.value = clock.elapsedTime;
+    solidRef.current.uniforms.uOpacity.value = solidOpacity;
+    wireframeRef.current.uniforms.uOpacity.value = 1;
+    camera.position.copy(camera.position.clone().lerp(position, 0.1));
+  });
 
   return (
     <>

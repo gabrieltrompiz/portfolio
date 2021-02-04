@@ -4,7 +4,7 @@ import Introduction from '@components/Introduction';
 const Home: React.FC = () => {
 
   return (
-    <div id='home'>
+    <div className='flex-full'>
       <Introduction />
     </div>
   );

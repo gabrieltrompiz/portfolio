@@ -49,18 +49,22 @@ export const pages: Variants = {
     opacity: 1, 
     transition: { 
       duration: 1, 
+      delay: 0.5
     } 
   },
-  exit: {
+  exit: route => ({
     opacity: 0,
+    y: route === '/projects' ? 100 : -100,
     transition: { 
+      ease: 'easeInOut',
       duration: 0.5, 
     }
-  },
+  }),
   goToProjects: {
+    opacity: 1,
     transition: {
-      duration: 1,
-      ease: 'easeInOut'
+      duration: 0.5,
+      delay: 1
     }
   }
 }
