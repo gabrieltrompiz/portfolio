@@ -2,6 +2,21 @@ import { Spring, Tween } from 'framer-motion';
 
 declare namespace portfolio {
 
+  interface State {
+    ps: States.Projects
+    ss: States.SlideShow
+  }
+
+  namespace States {
+    interface Projects {
+      projects: Project[]
+    }
+
+    interface SlideShow {
+      slideshow?: Project['name']
+    }
+  }
+
   type Coordinates = {
     x: number;
     y: number;
@@ -20,11 +35,18 @@ declare namespace portfolio {
     onComplete?: () => void;
     onRepeat?: () => void;
     onStop?: () => void;
-}
+  }
 
   type AnimationOptions<V> = (Tween | Spring) & PlaybackLifecycles<V> & {
     delay?: number;
     type?: "tween" | "spring";
+  }
+
+  interface Project {
+    name: readonly string
+    rawUrls: readonly string[]
+    description: string
+    optimizedUrls?: string[]
   }
   
 }

@@ -24,8 +24,8 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
 
   useEffect(() => {
     window.addEventListener('mousemove', (event) => {
-      const x = (event.clientX / window.innerWidth * 0.05);
-      const y = - 0.2 + (event.clientY / window.innerWidth * 0.05);
+      const x = (event.clientX / window.innerWidth * 0.04);
+      const y = - 0.2 + (event.clientY / window.innerWidth * 0.04);
       setPosition(new Vector3(x, y, 1.85));
     });
 
