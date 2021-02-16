@@ -5,15 +5,12 @@ import { Vector3 } from 'three';
 import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';
 import ProjectPlane from './ProjectPlane';
-import { useSelector } from 'react-redux';
-import { State } from 'portfolio';
+import { NextRouter, useRouter } from 'next/router';
 
-const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true }) => {
+const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
-
-  const activeSlide = useSelector((state: State) => state.ss.slideshow);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -55,9 +52,9 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true }) => {
           rotation={[- Math.PI * 0.24, 0.25, 0]}
           wireframe={wireframe}
         />
-        <Suspense fallback={null}>
-          <ProjectPlane slide={activeSlide} />
-        </Suspense>
+        {/* <Suspense fallback={null}> */}
+          <ProjectPlane router={router} />
+        {/* </Suspense> */}
         {/* <Overlay /> */}
       </Canvas>
     </>
@@ -68,4 +65,5 @@ export default CanvasWebGL;
 
 interface CanvasWebGLProps {
   wireframe: boolean
+  router: NextRouter
 }

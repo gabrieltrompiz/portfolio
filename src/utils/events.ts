@@ -22,7 +22,7 @@ const getNextLocation = (direction: Directions): string => {
 
 export const handleScroll: ScrollHandler = (e, router) => {
   const isScrolling = e.event.type === 'wheel';
-  const threshold = isScrolling ? 3 : 0.5;
+  const threshold = isScrolling ? 2 : 0.5;
   const direction = !isScrolling ? e.direction[1] : - e.direction[1];
   const nextRoute = getNextLocation(direction);
   const isGoingElsewhere = router.route !== nextRoute;

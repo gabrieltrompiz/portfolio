@@ -8,12 +8,8 @@ import CanvasWebGL from '@components/CanvasWebGL';
 import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
-import { useStore } from 'src/redux/store';
-import { Provider } from 'react-redux';
 
 const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
-  const store = useStore();
-
   const isAbout = router.route === '/about';
 
   const controls = useAnimation();
@@ -43,12 +39,12 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   }, []);
 
   return (
-    <Provider store={store}>
+    <>
       <Head>
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <CanvasWebGL wireframe={router.route !== '/'} />
+      <CanvasWebGL wireframe={router.route !== '/'} router={router} />
       <AnimatePresence>
         <motion.div key={`overlay-${isAbout}`} id='overlay' exit='exit' initial='initial' animate={controls} variants={sideLinkContainer}>
           <SideLink href='mailto:hello@gabrieltrompiz.com?subject=Hello Gabriel'>
@@ -62,7 +58,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
           <Component {...pageProps} key={router.route} />
         </motion.div>
       </AnimatePresence>
-    </Provider>
+    </>
   )
 }
 
