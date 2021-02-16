@@ -5,12 +5,16 @@ import { Vector3 } from 'three';
 import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';
 import ProjectPlane from './ProjectPlane';
-import { NextRouter, useRouter } from 'next/router';
+import { NextRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { State } from 'portfolio';
 
 const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
+
+  const textures = useSelector((state: State) => state.textures);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -52,9 +56,9 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) =
           rotation={[- Math.PI * 0.24, 0.25, 0]}
           wireframe={wireframe}
         />
-        {/* <Suspense fallback={null}> */}
-          <ProjectPlane router={router} />
-        {/* </Suspense> */}
+        <Suspense fallback={null}>
+          <ProjectPlane router={router} texture={textures[0]} />
+        </Suspense>
         {/* <Overlay /> */}
       </Canvas>
     </>

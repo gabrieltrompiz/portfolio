@@ -1,22 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MeshProps, useFrame, useLoader, useThree } from 'react-three-fiber';
-import { Mesh, Raycaster, ShaderMaterial, TextureLoader, Vector2, Vector3 } from 'three';
+import { MeshProps, useFrame, useThree } from 'react-three-fiber';
+import { Mesh, Raycaster, ShaderMaterial, Texture, Vector2, Vector3 } from 'three';
 import fragment from './shaders/fragment';
 import { getUniforms } from './shaders/uniforms';
 import vertex from './shaders/vertex';
-import { NextRouter, useRouter, withRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 
-const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router }) => {
+const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture}) => {
   const [position, setPosition] = useState(new Vector3(-0.1, -0.8, 1.5));
   const [show, setShow] = useState(false);
 
-  const params = new URLSearchParams();
-  params.set('url', '/images/electra/login.png');
-  params.set('w', '1080');
-  params.set('q', '75');
-  // const texture = useLoader(TextureLoader, `/_next/image?${params}`);
-
-  const uniforms = getUniforms();
+  const uniforms = getUniforms(texture);
   const mouse = new Vector2();
 
   const meshRef = useRef<Mesh>(null);
@@ -67,7 +61,8 @@ const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router }) => {
 
   useEffect(() => {
     router.events.on('routeChangeComplete', handleRouteChange);
-
+    if(router.pathname === '/projects') setShow(true);
+    
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     }
@@ -106,4 +101,5 @@ export default ProjectPlane;
 
 interface ProjectPlaneProps {
   router: NextRouter
+  texture: Texture
 }

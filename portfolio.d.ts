@@ -1,20 +1,10 @@
 import { Spring, Tween } from 'framer-motion';
+import { Texture } from 'three';
 
 declare namespace portfolio {
 
   interface State {
-    ps: States.Projects
-    ss: States.SlideShow
-  }
-
-  namespace States {
-    interface Projects {
-      projects: Project[]
-    }
-
-    interface SlideShow {
-      slideshow?: Project['name']
-    }
+    textures: Texture[]
   }
 
   type Coordinates = {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
 import { AnimatePresence, motion, useAnimation } from 'framer-motion';
@@ -8,10 +8,18 @@ import CanvasWebGL from '@components/CanvasWebGL';
 import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
+import { LoadingManager, TextureLoader } from 'three';
+import { assets } from 'src/assets';
+import { useStore } from '@redux/store';
+import {  Provider, useDispatch } from 'react-redux';
+import { addTexture } from '@redux/actions/textures';
 
-const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
+const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
+  const [loading, setLoading] = useState(true);
+
   const isAbout = router.route === '/about';
 
+  const dispatch = useDispatch();
   const controls = useAnimation();
   const bind = useGesture({
     onWheel: (e) => handleScroll(e, router),
@@ -29,16 +37,42 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     }
   }
 
+  const setUpManagers = (loader: LoadingManager) => {
+    loader.onProgress = (...args) => {
+      // do something
+    };
+    loader.onLoad = () => {
+      setLoading(false);
+    };
+  };
+
+  const startLoading = (loader: TextureLoader) => {
+    assets.forEach(async (asset) => {
+      const params = new URLSearchParams();
+      params.set('url', asset.url);
+      params.set('w', asset.w.toString());
+      params.set('q', asset.q.toString());
+      const texture = await loader.loadAsync(`/_next/image?${params}`);
+      dispatch(addTexture(texture));
+    })
+  };
+
   useEffect(() => {
     controls.start('enter');
     router.events.on('routeChangeComplete', handleRouteChange);
+
+    const loader = new LoadingManager();
+    const textureLoader = new TextureLoader(loader);
+
+    setUpManagers(loader);
+    startLoading(textureLoader);
 
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     }
   }, []);
 
-  return (
+  return !loading && (
     <>
       <Head>
         <title>Gabriel Trompiz - Developer</title>
@@ -60,6 +94,16 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       </AnimatePresence>
     </>
   )
-}
+};
 
-export default App;
+const StoreWrapper: React.FC<AppProps> = (props) => {
+  const store = useStore();
+
+  return (
+    <Provider store={store}>
+      <AppComponent {...props} />
+    </Provider>
+  );
+};
+
+export default StoreWrapper;
