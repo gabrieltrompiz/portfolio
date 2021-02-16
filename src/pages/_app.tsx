@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
 import { AnimatePresence, motion, useAnimation } from 'framer-motion';
@@ -9,10 +9,9 @@ import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
 import { FontLoader, LoadingManager, TextureLoader } from 'three';
-import { projects } from 'src/projects';
 import { useStore } from '@redux/store';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
-import { addTexture, setSelectedProject } from '@redux/actions/projects';
+import { addTexture } from '@redux/actions/projects';
 import { State } from 'portfolio';
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
@@ -68,7 +67,6 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
 
     const loader = new LoadingManager();
     const textureLoader = new TextureLoader(loader);
-    const fontLoader = new FontLoader(loader);
 
     setUpManagers(loader);
     startLoading(textureLoader);
