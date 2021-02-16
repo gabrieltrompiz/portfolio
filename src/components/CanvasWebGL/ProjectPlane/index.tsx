@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MeshProps, useFrame, useThree } from 'react-three-fiber';
-import { Mesh, Raycaster, ShaderMaterial, Texture, Vector2, Vector3 } from 'three';
+import { Font, Mesh, Raycaster, ShaderMaterial, Texture, Vector2, Vector3 } from 'three';
 import fragment from './shaders/fragment';
 import { getUniforms } from './shaders/uniforms';
 import vertex from './shaders/vertex';
 import { NextRouter } from 'next/router';
+import { Project } from 'portfolio';
+import { SetPlaneRefAction } from '@redux/actions/types';
+import { getArgs } from './shaders/textArgs';
 
-const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture}) => {
-  const [position, setPosition] = useState(new Vector3(-0.1, -0.8, 1.5));
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef }) => {
+  const [position, setPosition] = useState(new Vector3(-0.105, -0.8, 1.5));
   const [show, setShow] = useState(false);
 
-  const uniforms = getUniforms(texture);
+  const uniforms = getUniforms(textures[0]);
   const mouse = new Vector2();
 
-  const meshRef = useRef<Mesh>(null);
+  const planeRef = useRef<Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
   
@@ -28,13 +31,13 @@ const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     
-    const x = - 0.1 + (event.clientX / window.innerWidth * 0.020);
-    const y = - 0.22 + (event.clientY / window.innerWidth * 0.020);
+    const x = - 0.105 + (event.clientX / window.innerWidth * 0.04);
+    const y = - 0.22 + (event.clientY / window.innerWidth * 0.04);
     setPosition(new Vector3(x, y, 1.5));
     
     const raycaster = raycasterRef.current;
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(meshRef.current);
+    const intersects = raycaster.intersectObject(planeRef.current);
     if(intersects.length) {
       document.body.style.cursor = 'pointer';
       document.body.addEventListener('click', clickRef.current)
@@ -50,18 +53,19 @@ const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture
   useEffect(() => {
     if(show) {
       window.addEventListener('mousemove', moveRef.current);
-      setPosition(new Vector3(-0.1, -0.22, 1.5));
+      setPosition(new Vector3(-0.105, -0.22, 1.5));
     } else {
       window.removeEventListener('mousemove', moveRef.current);
       document.body.style.cursor = 'initial';
       document.body.removeEventListener('click', clickRef.current);
-      setPosition(new Vector3(-0.1, -0.8, 1.5))
+      setPosition(new Vector3(-0.105, -0.8, 1.5))
     }
   }, [show]);
 
   useEffect(() => {
     router.events.on('routeChangeComplete', handleRouteChange);
     if(router.pathname === '/projects') setShow(true);
+    setPlaneRef(planeRef.current, 'electra');
     
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
@@ -70,16 +74,16 @@ const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture
 
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
-    meshRef.current.position.copy(meshRef.current.position.clone().lerp(position, 0.05));
-    meshRef.current.lookAt(camera.position);
+    planeRef.current.position.copy(planeRef.current.position.clone().lerp(position, 0.05));
+    planeRef.current.lookAt(camera.position);
   });
 
   return (
-    <>
+    <group>
       <mesh
         rotation={[0, 0, 0]}
-        position={[-0.1, -0.8, 1.5]}
-        ref={meshRef}
+        position={[-0.105, -0.8, 1.5]}
+        ref={planeRef}
       > 
         <planeBufferGeometry args={[0.4, 0.25, 16, 16]} />
         <shaderMaterial 
@@ -93,13 +97,14 @@ const ProjectPlane: React.FC<MeshProps & ProjectPlaneProps> = ({ router, texture
           ref={raycasterRef}
         />
       </mesh>
-    </>
+
+    </group>
   );
 };
 
 export default ProjectPlane;
 
-interface ProjectPlaneProps {
+interface ProjectPlaneProps extends Project {
   router: NextRouter
-  texture: Texture
+  setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
 }

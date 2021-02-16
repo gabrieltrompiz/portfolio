@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { State } from 'portfolio';
+import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
+import { projectTitle } from '@utils/variants';
 
 const Projects: React.FC = () => {
-  const [page, setPage] = useState(1);
+  const selectedProject = useSelector((state: State) => state.selectedProject);
 
   return (
     <div className='flex-full'>
-      <div>
-
+      <div id='projects'>
+        <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate='enter' id='projectTitle'>
+          {selectedProject?.title}
+        </motion.p>
       </div>
     </div>
   );

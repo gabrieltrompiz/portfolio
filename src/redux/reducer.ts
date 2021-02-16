@@ -1,19 +1,47 @@
 import { State } from 'portfolio';
-import { ADD_TEXTURE, TextureAction } from './actions/types';
+import { AnyAction } from './actions/types';
 
 const initialState: State = {
-  textures: []
+  projects: [],
+  selectedProject: null
 };
 
-const reducer = (state = initialState, action: TextureAction) => {
+const reducer = (state = initialState, action: AnyAction): State => {
   switch(action.type) {
-    case ADD_TEXTURE: {
-      const texture = action.payload;
+    case 'ADD_TEXTURE': {
+      const { texture, id } = action.payload;
+      const pIndex = state.projects.findIndex(t => t.id === id);
+      const _projects = [...state.projects];
+      const _textures = _projects[pIndex].textures;
+      _projects[pIndex].textures = [..._textures, texture];
+
       return {
         ...state,
-        textures: [...state.textures, texture]
+        projects: _projects
       };
-    }
+    };
+    
+    case 'SET_PLANE_REF': {
+      const { ref, id } = action.payload;
+      const pIndex = state.projects.findIndex(t => t.id === id);
+      const _projects = [...state.projects];
+      _projects[pIndex].planeRef = ref;
+      
+      return {
+        ...state,
+        projects: _projects
+      };
+    };
+
+    case 'SET_SELECTED_PROJECT': {
+      const selectedProject = action.payload;
+
+      return {
+        ...state,
+        selectedProject
+      };
+    };
+
     default: return state;
   }
 };

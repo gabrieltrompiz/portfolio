@@ -1,12 +1,14 @@
 import { State } from 'portfolio';
 import { useMemo } from 'react';
 import { createStore, Store } from 'redux'
+import { projects } from 'src/projects';
 import reducer from './reducer';
 
 let store;
 
 const initialState: State = {
-  textures: []
+  projects,
+  selectedProject: projects[0]
 }
 
 const makeStore = (preloadedState: State) => createStore(

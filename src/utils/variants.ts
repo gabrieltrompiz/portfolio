@@ -89,3 +89,5 @@ export const sideLinkContainer: Variants = {
     }
   }
 }
+
+export const projectTitle = sideLinkContainer;

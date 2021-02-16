@@ -1,10 +1,11 @@
 import { Spring, Tween } from 'framer-motion';
-import { Texture } from 'three';
+import { Mesh, Texture, Vector3 } from 'three';
 
 declare namespace portfolio {
 
   interface State {
-    textures: Texture[]
+    projects: Project[]
+    selectedProject: Project
   }
 
   type Coordinates = {
@@ -33,10 +34,19 @@ declare namespace portfolio {
   }
 
   interface Project {
-    name: readonly string
-    rawUrls: readonly string[]
-    description: string
-    optimizedUrls?: string[]
+    title: readonly string
+    id: readonly string
+    point: readonly Vector3
+    description: readonly string
+    assets: readonly Asset[]
+    planeRef?: Mesh
+    textures: Texture[]
+  }
+
+  interface Asset {
+    url: readonly string
+    w: readonly number
+    q: readonly number
   }
   
 }

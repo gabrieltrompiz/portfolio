@@ -1,20 +1,23 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { animate } from 'framer-motion';
 import { Canvas, CanvasProps } from 'react-three-fiber';
-import { Vector3 } from 'three';
+import { Mesh, Vector3 } from 'three';
 import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';
 import ProjectPlane from './ProjectPlane';
 import { NextRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { State } from 'portfolio';
+import { setPlaneRef } from '@redux/actions/projects';
+import { SetPlaneRefAction } from '@redux/actions/types';
 
-const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) => {
+const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
 
-  const textures = useSelector((state: State) => state.textures);
+  const projects = useSelector((state: State) => state.projects);
+  const selectedProject = useSelector((state: State) => state.selectedProject);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -57,7 +60,9 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) =
           wireframe={wireframe}
         />
         <Suspense fallback={null}>
-          <ProjectPlane router={router} texture={textures[0]} />
+          {projects.map(project => 
+            <ProjectPlane {...project} setPlaneRef={setPlaneRef} router={router} />
+          )}
         </Suspense>
         {/* <Overlay /> */}
       </Canvas>
@@ -65,9 +70,10 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router }) =
   );
 };
 
-export default CanvasWebGL;
+export default connect(undefined, { setPlaneRef })(CanvasWebGL);
 
 interface CanvasWebGLProps {
   wireframe: boolean
   router: NextRouter
+  setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
 }

@@ -8,11 +8,12 @@ import CanvasWebGL from '@components/CanvasWebGL';
 import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
-import { LoadingManager, TextureLoader } from 'three';
-import { assets } from 'src/assets';
+import { FontLoader, LoadingManager, TextureLoader } from 'three';
+import { projects } from 'src/projects';
 import { useStore } from '@redux/store';
-import {  Provider, useDispatch } from 'react-redux';
-import { addTexture } from '@redux/actions/textures';
+import {  Provider, useDispatch, useSelector } from 'react-redux';
+import { addTexture, setSelectedProject } from '@redux/actions/projects';
+import { State } from 'portfolio';
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,8 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const isAbout = router.route === '/about';
 
   const dispatch = useDispatch();
+  const projects = useSelector((state: State) => state.projects);
+
   const controls = useAnimation();
   const bind = useGesture({
     onWheel: (e) => handleScroll(e, router),
@@ -43,26 +46,29 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     };
     loader.onLoad = () => {
       setLoading(false);
+      controls.start('enter');
     };
   };
 
-  const startLoading = (loader: TextureLoader) => {
-    assets.forEach(async (asset) => {
-      const params = new URLSearchParams();
-      params.set('url', asset.url);
-      params.set('w', asset.w.toString());
-      params.set('q', asset.q.toString());
-      const texture = await loader.loadAsync(`/_next/image?${params}`);
-      dispatch(addTexture(texture));
+  const startLoading = async (textureLoader: TextureLoader) => {
+    projects.forEach(project => {
+      project.assets.forEach(async (asset) => {
+        const params = new URLSearchParams();
+        params.set('url', asset.url);
+        params.set('w', asset.w.toString());
+        params.set('q', asset.q.toString());
+        const texture = await textureLoader.loadAsync(`/_next/image?${params}`);
+        dispatch(addTexture(texture, project.id));
+      })
     })
   };
 
   useEffect(() => {
-    controls.start('enter');
     router.events.on('routeChangeComplete', handleRouteChange);
 
     const loader = new LoadingManager();
     const textureLoader = new TextureLoader(loader);
+    const fontLoader = new FontLoader(loader);
 
     setUpManagers(loader);
     startLoading(textureLoader);
