@@ -61,7 +61,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
         />
         <Suspense fallback={null}>
           {projects.map(project => 
-            <ProjectPlane {...project} setPlaneRef={setPlaneRef} router={router} />
+            <ProjectPlane {...project} setPlaneRef={setPlaneRef} router={router} key={project.id} />
           )}
         </Suspense>
         {/* <Overlay /> */}

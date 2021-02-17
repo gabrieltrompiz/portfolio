@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MeshProps, useFrame, useThree } from 'react-three-fiber';
-import { Font, Mesh, Raycaster, ShaderMaterial, Texture, Vector2, Vector3 } from 'three';
+import { useFrame, useThree } from 'react-three-fiber';
+import { Mesh, Raycaster, ShaderMaterial, Vector2, Vector3 } from 'three';
 import fragment from './shaders/fragment';
 import { getUniforms } from './shaders/uniforms';
 import vertex from './shaders/vertex';
 import { NextRouter } from 'next/router';
 import { Project } from 'portfolio';
 import { SetPlaneRefAction } from '@redux/actions/types';
-import { getArgs } from './shaders/textArgs';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id }) => {
   const [position, setPosition] = useState(new Vector3(-0.105, -0.8, 1.5));
   const [show, setShow] = useState(false);
 
@@ -46,9 +45,13 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       document.body.removeEventListener('click', clickRef.current)
     }
   };
+
+  const onClick = () => {
+    router.push(`/projects/${id}`);
+  };
   
   const moveRef = useRef<typeof onMouseMove>(onMouseMove);
-  const clickRef = useRef<typeof console.log>(console.log);
+  const clickRef = useRef<typeof onClick>(onClick);
 
   useEffect(() => {
     if(show) {
