@@ -9,14 +9,12 @@ const getDirection = (y: number): Directions => {
   return y >= 0.75 ? UP : y <= - 0.75 ? DOWN : STATIC;
 };
 
-const getNextLocation = (direction: Directions): string => {
+const getNextLocation = (direction: Directions, current: string): string => {
   switch(getDirection(direction)) {
     case Directions.DOWN:
       return '/projects';
-    case Directions.UP: 
-      return '/';
     default:
-      return '/';
+      return current;
   }
 };
 
@@ -24,7 +22,7 @@ export const handleScroll: ScrollHandler = (e, router) => {
   const isScrolling = e.event.type === 'wheel';
   const threshold = isScrolling ? 2 : 0.5;
   const direction = !isScrolling ? e.direction[1] : - e.direction[1];
-  const nextRoute = getNextLocation(direction);
+  const nextRoute = getNextLocation(direction, router.route);
   const isGoingElsewhere = router.route !== nextRoute;
   if(e.velocity >= threshold && !isTransitioning && isGoingElsewhere) {
     isTransitioning = true;

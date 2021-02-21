@@ -76,13 +76,13 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     }
   }, []);
 
-  return !loading && (
+  return (
     <>
       <Head>
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <CanvasWebGL wireframe={router.route !== '/'} router={router} />
+      <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={loading} />
       <AnimatePresence>
         <motion.div key={`overlay-${isAbout}`} id='overlay' exit='exit' initial='initial' animate={controls} variants={sideLinkContainer}>
           <SideLink href='mailto:hello@gabrieltrompiz.com?subject=Hello Gabriel'>
@@ -93,7 +93,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
           </SideLink>
         </motion.div>
         <motion.div key={router.route} custom={router.route} id='wrapper' exit='exit' initial='initial' animate={controls} variants={pages} {...bind()}>
-          <Component {...pageProps} key={router.route} />
+          {!loading && <Component {...pageProps} key={router.route} />}
         </motion.div>
       </AnimatePresence>
     </>

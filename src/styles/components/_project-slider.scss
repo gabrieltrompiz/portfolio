@@ -9,11 +9,12 @@
 }
 
 #thumbnail {
-  position: relative;
-  height: 80px;
-  width: 80px;
-  margin-left: 40px;
+  height: 60px;
+  width: 50px;
   z-index: 2;
+  display: flex;
+  position: absolute;
+  top: 8px;
 
   &:hover {
     cursor: pointer;
@@ -47,17 +48,21 @@
   position: absolute;
 }
 
+#placeholder-slider {
+  height: 100px;
+  width: 1px;
+}
+
 .scroll-bar {
   width: 1px;
   opacity: 0.8;
   height: 100%;
   background-color: white;
   z-index: 1;
-  margin: 20px 0px;
-  margin-right: -5px;
+  margin-right: 6px;
 
   &#top {
     height: 0%;
-    margin: 0;
+    margin-right: 6px;
   }
 }

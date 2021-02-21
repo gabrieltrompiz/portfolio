@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { DragHandlers, HTMLMotionProps, motion, useAnimation, useMotionValue } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { slider as variants } from '@utils/variants';
@@ -7,28 +7,35 @@ import Chevron from './Chevron';
 import { useGesture } from 'react-use-gesture';
 
 const ProjectSlider: React.FC = () => {
+  const [offset, setOffset] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(0);
+
   const projects = useSelector((state: State) => state.projects);
   const selectedProjects = useSelector((state: State) => state.selectedProject);
   const currentIndex = projects.findIndex(p => p.id === selectedProjects.id) + 1;
 
   const controls = useAnimation();
-  
-  const onMouseOver = () => {
-    controls.start('hover');
-  };
 
-  const onMouseOut = () => {
-    controls.start('initial');
-  };
+  const scrollBar = useRef<HTMLDivElement>(null);
+  const currentOffset = useRef<number>(0);
+  
+  const onMouseOver = () => controls.start('hover');
+  const onMouseUp = () => controls.start('initial');
+  const onMouseOut = () => controls.start('initial');
 
   const onMouseDown = () => {
     controls.start('hover');
     controls.start('hold');
   }; 
 
-  const onMouseUp = () => {
-    controls.start('initial');
-  }; 
+  useEffect(() => {
+    currentOffset.current = offset;
+  }, [offset]);
+
+  const onDrag: DragHandlers['onDrag'] = (e) => {
+    const slider = (scrollBar.current?.children[2] as HTMLDivElement);
+    setProgress(+slider.style.transform.split(',')[1]?.trim()?.replace('px', '') || 0)
+  };
 
   const bind = useGesture({
     onMouseOver,
@@ -39,10 +46,19 @@ const ProjectSlider: React.FC = () => {
     onTouchEnd: onMouseUp
   });
 
+  const dragOptions: HTMLMotionProps<'div'> = {
+    drag: 'y',
+    dragConstraints: { top: 0, bottom: scrollBar.current?.clientHeight - 80 || 0 },
+    dragElastic: 0,
+    dragMomentum: false,
+    onDrag
+  };
+
   return (
-    <div id='project-slider'>
-      <div className='scroll-bar' id='top' />
-      <motion.div id='thumbnail' {...bind()} initial='initial' animate={controls} variants={variants.thumbnail}>
+    <div id='project-slider' ref={scrollBar}>
+      <motion.div className='scroll-bar' id='top' style={{ height: `calc(0% + ${progress}px)` }} />
+      <div id='placeholder-slider' />
+      <motion.div id='thumbnail' {...dragOptions} {...bind()} initial='initial' animate={controls} variants={variants.thumbnail}>
         <motion.div id='chevron' initial='initial' animate={controls} variants={variants.chevron} custom={true}>
           <Chevron />
         </motion.div>        
@@ -53,7 +69,7 @@ const ProjectSlider: React.FC = () => {
           <Chevron />
         </motion.div>
       </motion.div>
-      <div className='scroll-bar' id='bottom' />
+      <motion.div className='scroll-bar' id='bottom' style={{ height: `calc(100% - ${progress}px - 90px)` }} />
     </div>
   );
 };

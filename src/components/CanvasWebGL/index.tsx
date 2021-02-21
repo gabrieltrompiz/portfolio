@@ -11,7 +11,7 @@ import { State } from 'portfolio';
 import { setPlaneRef } from '@redux/actions/projects';
 import { SetPlaneRefAction } from '@redux/actions/types';
 
-const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef }) => {
+const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef, loading }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
@@ -59,11 +59,12 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
           rotation={[- Math.PI * 0.24, 0.25, 0]}
           wireframe={wireframe}
         />
+        {!loading && 
         <Suspense fallback={null}>
           {projects.map(project => 
             <ProjectPlane {...project} setPlaneRef={setPlaneRef} router={router} key={project.id} />
           )}
-        </Suspense>
+        </Suspense>}
         {/* <Overlay /> */}
       </Canvas>
     </>
@@ -76,4 +77,5 @@ interface CanvasWebGLProps {
   wireframe: boolean
   router: NextRouter
   setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
+  loading: boolean
 }

@@ -145,11 +145,9 @@ export const slider: { [title: string]: Variants } = {
   thumbnail: {
     initial: {
       scale: 1,
-      marginLeft: 40
     },
     hold: {
       scale: 0.75,
-      marginLeft: 32
     }
   }
 };
