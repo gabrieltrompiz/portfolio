@@ -7,8 +7,8 @@ import Chevron from './Chevron';
 import { useGesture } from 'react-use-gesture';
 
 const ProjectSlider: React.FC = () => {
-  const [offset, setOffset] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
+  const [dragLimit, setDragLimit] = useState<number>(0);
 
   const projects = useSelector((state: State) => state.projects);
   const selectedProjects = useSelector((state: State) => state.selectedProject);
@@ -17,7 +17,10 @@ const ProjectSlider: React.FC = () => {
   const controls = useAnimation();
 
   const scrollBar = useRef<HTMLDivElement>(null);
-  const currentOffset = useRef<number>(0);
+
+  useEffect(() => {
+    if(scrollBar.current) setDragLimit(scrollBar.current.clientHeight - 80);
+  }, [scrollBar.current]);
   
   const onMouseOver = () => controls.start('hover');
   const onMouseUp = () => controls.start('initial');
@@ -28,13 +31,10 @@ const ProjectSlider: React.FC = () => {
     controls.start('hold');
   }; 
 
-  useEffect(() => {
-    currentOffset.current = offset;
-  }, [offset]);
-
   const onDrag: DragHandlers['onDrag'] = (e) => {
     const slider = (scrollBar.current?.children[2] as HTMLDivElement);
-    setProgress(+slider.style.transform.split(',')[1]?.trim()?.replace('px', '') || 0)
+    const prog = slider.style.transform.split(',')[1]?.trim()?.replace('px', '');
+    setProgress(+prog || 0)
   };
 
   const bind = useGesture({
@@ -48,7 +48,7 @@ const ProjectSlider: React.FC = () => {
 
   const dragOptions: HTMLMotionProps<'div'> = {
     drag: 'y',
-    dragConstraints: { top: 0, bottom: scrollBar.current?.clientHeight - 80 || 0 },
+    dragConstraints: { top: 0, bottom: dragLimit || 0 },
     dragElastic: 0,
     dragMomentum: false,
     onDrag
