@@ -4,6 +4,8 @@ import { Mesh, Texture } from 'three';
 export const ADD_TEXTURE = 'ADD_TEXTURE';
 export const SET_PLANE_REF = 'SET_PLANE_REF';
 export const SET_SELECTED_PROJECT = 'SET_SELECTED_PROJECT';
+export const SET_PROGRESS = 'SET_PROGRESS';
+export const SET_MOVING_SCROLL_BAR = 'SET_MOVING_SCROLL_BAR';
 
 export interface AddTextureAction {
   type: typeof ADD_TEXTURE
@@ -26,4 +28,14 @@ export interface SetSelectedProjectAction {
   payload: Project
 }
 
-export type AnyAction = AddTextureAction | SetPlaneRefAction | SetSelectedProjectAction;
+export interface SetProgressAction {
+  type: typeof SET_PROGRESS
+  payload: number
+}
+
+export interface SetMovingSBAction {
+  type: typeof SET_MOVING_SCROLL_BAR
+  payload: boolean
+}
+
+export type AnyAction = AddTextureAction | SetPlaneRefAction | SetSelectedProjectAction | SetProgressAction | SetMovingSBAction;

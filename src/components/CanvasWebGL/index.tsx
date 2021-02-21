@@ -18,6 +18,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
 
   const projects = useSelector((state: State) => state.projects);
   const selectedProject = useSelector((state: State) => state.selectedProject);
+  const movingSB = useSelector((state: State) => state.movingScrollBar);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -62,7 +63,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
         {!loading && 
         <Suspense fallback={null}>
           {projects.map(project => 
-            <ProjectPlane {...project} setPlaneRef={setPlaneRef} router={router} key={project.id} />
+            <ProjectPlane {...project} moving={movingSB} setPlaneRef={setPlaneRef} router={router} key={project.id} />
           )}
         </Suspense>}
         {/* <Overlay /> */}

@@ -6,6 +6,8 @@ declare namespace portfolio {
   interface State {
     projects: Project[]
     selectedProject: Project
+    scrollBarProgress: number
+    movingScrollBar: boolean
   }
 
   type Coordinates = {

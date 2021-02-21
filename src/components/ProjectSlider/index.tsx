@@ -1,10 +1,11 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DragHandlers, HTMLMotionProps, motion, useAnimation, useMotionValue } from 'framer-motion';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { slider as variants } from '@utils/variants';
 import Chevron from './Chevron';
 import { useGesture } from 'react-use-gesture';
+import { setMovingScollBar, setProgress as setProgressSB } from '@redux/actions/scrollBar';
 
 const ProjectSlider: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
@@ -15,6 +16,7 @@ const ProjectSlider: React.FC = () => {
   const currentIndex = projects.findIndex(p => p.id === selectedProjects.id) + 1;
 
   const controls = useAnimation();
+  const dispatch = useDispatch();
 
   const scrollBar = useRef<HTMLDivElement>(null);
 
@@ -23,18 +25,24 @@ const ProjectSlider: React.FC = () => {
   }, [scrollBar.current]);
   
   const onMouseOver = () => controls.start('hover');
-  const onMouseUp = () => controls.start('initial');
   const onMouseOut = () => controls.start('initial');
 
+  const onMouseUp = () => {
+    controls.start('initial');
+    dispatch(setMovingScollBar(false));
+  };
+  
   const onMouseDown = () => {
     controls.start('hover');
     controls.start('hold');
+    dispatch(setMovingScollBar(true));
   }; 
 
-  const onDrag: DragHandlers['onDrag'] = (e) => {
+  const onDrag: DragHandlers['onDrag'] = () => {
     const slider = (scrollBar.current?.children[2] as HTMLDivElement);
-    const prog = slider.style.transform.split(',')[1]?.trim()?.replace('px', '');
-    setProgress(+prog || 0)
+    const prog = slider.style.transform.split(',')[1]?.trim()?.replace('px', '') || 0;
+    setProgress(+prog);
+    dispatch(setProgressSB(+prog * 100 / dragLimit));
   };
 
   const bind = useGesture({

@@ -8,7 +8,9 @@ let store;
 
 const initialState: State = {
   projects,
-  selectedProject: projects[0]
+  selectedProject: projects[0],
+  scrollBarProgress: 0,
+  movingScrollBar: false
 }
 
 const makeStore = (preloadedState: State) => createStore(

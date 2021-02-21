@@ -7,10 +7,12 @@ import vertex from './shaders/vertex';
 import { NextRouter } from 'next/router';
 import { Project } from 'portfolio';
 import { SetPlaneRefAction } from '@redux/actions/types';
+import { animate } from 'framer-motion';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, moving }) => {
   const [position, setPosition] = useState(new Vector3(-0.105, -0.8, 1.5));
   const [show, setShow] = useState(false);
+  const [scale, setScale] = useState<number>(1);
 
   const uniforms = getUniforms(textures[0]);
   const mouse = new Vector2();
@@ -66,6 +68,20 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   }, [show]);
 
   useEffect(() => {
+    if(moving) {
+      animate(scale, 0.85, {
+        onUpdate: setScale,
+        duration: 0.5
+      });
+    } else {
+      animate(scale, 1, {
+        onUpdate: setScale,
+        duration: 0.5
+      });
+    }
+  }, [moving]);
+
+  useEffect(() => {
     router.events.on('routeChangeComplete', handleRouteChange);
     if(router.pathname === '/projects') setShow(true);
     setPlaneRef(planeRef.current, 'electra');
@@ -88,7 +104,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         position={[-0.105, -0.8, 1.5]}
         ref={planeRef}
       > 
-        <planeBufferGeometry args={[0.4, 0.25, 16, 16]} />
+        <planeBufferGeometry args={[0.4 * scale, 0.25 * scale, 16, 16]} />
         <shaderMaterial 
           vertexShader={vertex}
           fragmentShader={fragment}
@@ -110,4 +126,5 @@ export default ProjectPlane;
 interface ProjectPlaneProps extends Project {
   router: NextRouter
   setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
+  moving: boolean
 }

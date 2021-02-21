@@ -3,7 +3,9 @@ import { AnyAction } from './actions/types';
 
 const initialState: State = {
   projects: [],
-  selectedProject: null
+  selectedProject: null,
+  scrollBarProgress: 0,
+  movingScrollBar: false
 };
 
 const reducer = (state = initialState, action: AnyAction): State => {
@@ -39,6 +41,24 @@ const reducer = (state = initialState, action: AnyAction): State => {
       return {
         ...state,
         selectedProject
+      };
+    };
+
+    case 'SET_PROGRESS': {
+      const scrollBarProgress = action.payload;
+
+      return {
+        ...state,
+        scrollBarProgress
+      };
+    };
+
+    case 'SET_MOVING_SCROLL_BAR': {
+      const movingScrollBar = action.payload;
+
+      return {
+        ...state,
+        movingScrollBar
       };
     };
 
