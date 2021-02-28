@@ -36,7 +36,8 @@ const reducer = (state = initialState, action: AnyAction): State => {
     };
 
     case 'SET_SELECTED_PROJECT': {
-      const selectedProject = action.payload;
+      const id = action.payload;
+      const selectedProject = state.projects.find(p => p.id === id);
 
       return {
         ...state,

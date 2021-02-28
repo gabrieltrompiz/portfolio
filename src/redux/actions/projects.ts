@@ -6,4 +6,4 @@ export const setPlaneRef = (ref: Mesh, id: string): SetPlaneRefAction => ({ type
 
 export const addTexture = (texture: Texture, id: string): AddTextureAction => ({ type: 'ADD_TEXTURE', payload: { id, texture } });
 
-export const setSelectedProject = (project: Project): SetSelectedProjectAction => ({ type: 'SET_SELECTED_PROJECT', payload: project });
+export const setSelectedProject = (id: string): SetSelectedProjectAction => ({ type: 'SET_SELECTED_PROJECT', payload: id });

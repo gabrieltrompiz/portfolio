@@ -25,7 +25,7 @@ export interface SetPlaneRefAction {
 
 export interface SetSelectedProjectAction {
   type: typeof SET_SELECTED_PROJECT,
-  payload: Project
+  payload: string
 }
 
 export interface SetProgressAction {

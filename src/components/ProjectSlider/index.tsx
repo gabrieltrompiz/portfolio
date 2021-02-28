@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DragHandlers, HTMLMotionProps, motion, useAnimation, useMotionValue } from 'framer-motion';
+import { animate, DragHandlers, HTMLMotionProps, motion, useAnimation, useDragControls, useMotionValue } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { slider as variants } from '@utils/variants';
 import Chevron from './Chevron';
 import { useGesture } from 'react-use-gesture';
 import { setMovingScollBar, setProgress as setProgressSB } from '@redux/actions/scrollBar';
+import { totalProjects } from 'src/projects';
+import { setSelectedProject } from '@redux/actions/projects';
 
 const ProjectSlider: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [dragLimit, setDragLimit] = useState<number>(0);
 
   const projects = useSelector((state: State) => state.projects);
-  const selectedProjects = useSelector((state: State) => state.selectedProject);
-  const currentIndex = projects.findIndex(p => p.id === selectedProjects.id) + 1;
+  const selectedProject = useSelector((state: State) => state.selectedProject);
+  const currentIndex = projects.findIndex(p => p.id === selectedProject.id) + 1;
 
   const controls = useAnimation();
   const dispatch = useDispatch();
@@ -29,7 +31,18 @@ const ProjectSlider: React.FC = () => {
 
   const onMouseUp = () => {
     controls.start('initial');
-    dispatch(setMovingScollBar(false));
+    const percentage = progress * 100 / dragLimit;
+    const target = getNearestProject(percentage);
+    animate(percentage, target.position, {
+      onUpdate: (v) => {
+        setProgress(v / 100 * dragLimit);
+        dispatch(setProgressSB(v));
+      },
+      onComplete: () => {
+        dispatch(setSelectedProject(target.id));
+        dispatch(setMovingScollBar(false));
+      }
+    });
   };
   
   const onMouseDown = () => {
@@ -37,6 +50,14 @@ const ProjectSlider: React.FC = () => {
     controls.start('hold');
     dispatch(setMovingScollBar(true));
   }; 
+
+  const getNearestProject = (percentage: number) => {
+    const division = 100 / totalProjects;
+    const checkpoints = projects.map((p, i) => ({ id: p.id, anchor: (division * (2 * i + 1)) / 2, position: division * i }));
+    return checkpoints.reduce((a, b) => {
+      return Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a;
+    });
+  };
 
   const onDrag: DragHandlers['onDrag'] = () => {
     const slider = (scrollBar.current?.children[2] as HTMLDivElement);
@@ -59,7 +80,7 @@ const ProjectSlider: React.FC = () => {
     dragConstraints: { top: 0, bottom: dragLimit || 0 },
     dragElastic: 0,
     dragMomentum: false,
-    onDrag
+    onDrag,
   };
 
   return (
@@ -72,7 +93,7 @@ const ProjectSlider: React.FC = () => {
         </motion.div>        
         <motion.p initial='initial' animate={controls} variants={variants.firstSlide}>{currentIndex}</motion.p>
         <motion.div id='separator' initial='initial' animate={controls} variants={variants.separator} />
-        <motion.p initial='initial' animate={controls} variants={variants.secondSlide}>6</motion.p>
+        <motion.p initial='initial' animate={controls} variants={variants.secondSlide}>{totalProjects}</motion.p>
         <motion.div id='chevron' initial='initial' animate={controls} variants={variants.chevron} custom={false}>
           <Chevron />
         </motion.div>
