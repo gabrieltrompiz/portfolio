@@ -31,8 +31,8 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'FMS Stats: Statistics for FMS',
-    id: 'fms0',
+    title: 'Raven: Messaging App',
+    id: 'raven',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
     textures: [],
@@ -45,8 +45,8 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'FMS Stats: Statistics for FMS',
-    id: 'fms1',
+    title: 'Pandagram: Social Media',
+    id: 'pandagram',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
     textures: [],
@@ -59,8 +59,8 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'FMS Stats: Statistics for FMS',
-    id: 'fms2',
+    title: 'LoL: Statistics for LoL',
+    id: 'lol',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
     textures: [],
@@ -73,8 +73,8 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'FMS Stats: Statistics for FMS',
-    id: 'fms3',
+    title: 'Portfolio: I Like Recursiveness',
+    id: 'portfolio',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
     textures: [],

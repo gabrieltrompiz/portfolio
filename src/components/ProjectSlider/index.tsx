@@ -37,12 +37,10 @@ const ProjectSlider: React.FC = () => {
       onUpdate: (v) => {
         setProgress(v / 100 * dragLimit);
         dispatch(setProgressSB(v));
-      },
-      onComplete: () => {
-        dispatch(setSelectedProject(target.id));
-        dispatch(setMovingScollBar(false));
       }
     });
+    dispatch(setSelectedProject(target.id));
+    dispatch(setMovingScollBar(false));
   };
   
   const onMouseDown = () => {
@@ -53,10 +51,8 @@ const ProjectSlider: React.FC = () => {
 
   const getNearestProject = (percentage: number) => {
     const division = 100 / totalProjects;
-    const checkpoints = projects.map((p, i) => ({ id: p.id, anchor: (division * (2 * i + 1)) / 2, position: division * i }));
-    return checkpoints.reduce((a, b) => {
-      return Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a;
-    });
+    const checkpoints = projects.map((p, i) => ({ id: p.id, anchor: (division * (2 * i + 1)) / 2, position: (division * i) + (totalProjects / 2 * i) }));
+    return checkpoints.reduce((a, b) => Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a);
   };
 
   const onDrag: DragHandlers['onDrag'] = () => {

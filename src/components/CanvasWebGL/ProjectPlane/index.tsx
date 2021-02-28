@@ -22,6 +22,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const planeRef = useRef<Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
+  const selectedRef = useRef<boolean>(selected);
 
   const alphaP = useRef<Vector3>(new Vector3(0, (0.22 * (1 - index * 1.2)) + 0.003 * totalProjects * progress, 0));
   
@@ -43,10 +44,10 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     const raycaster = raycasterRef.current;
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObject(planeRef.current);
-    if(intersects.length && selected) {
+    if(intersects.length && selectedRef.current) {
       document.body.style.cursor = 'pointer';
       document.body.addEventListener('click', clickRef.current)
-    } else if(selected) {
+    } else if(selectedRef.current) {
       document.body.style.cursor = 'initial';
       document.body.removeEventListener('click', clickRef.current)
     }
@@ -64,13 +65,13 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   }, [progress]);
 
   useEffect(() => {
-    if(show) {
+    if(show && !moving) {
       if(!addedListener) {
         setAddedListener(true);
         window.addEventListener('mousemove', moveRef.current);
       }
       setPosition(new Vector3(-0.105, -0.22, 1.5).add(alphaP.current));
-    } else {
+    } else if(!moving) {
       if(addedListener) {
         setAddedListener(false);
         window.removeEventListener('mousemove', moveRef.current);
@@ -79,7 +80,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       document.body.removeEventListener('click', clickRef.current);
       setPosition(new Vector3(-0.105, -0.8 , 1.5).add(alphaP.current))
     }
-  }, [show, progress]);
+  }, [show, progress, moving]);
 
   useEffect(() => {
     if(moving) {
@@ -104,6 +105,10 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       router.events.off('routeChangeComplete', handleRouteChange);
     }
   }, []);
+
+  useEffect(() => {
+    selectedRef.current = selected;
+  }, [selected]);
 
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
