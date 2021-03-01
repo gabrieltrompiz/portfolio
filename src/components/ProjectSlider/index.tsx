@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { animate, DragHandlers, HTMLMotionProps, motion, useAnimation, useDragControls, useMotionValue } from 'framer-motion';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { animate, DragHandlers, HTMLMotionProps, motion, transform, useAnimation, useDragControls, useMotionValue } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { slider as variants } from '@utils/variants';
@@ -12,20 +12,32 @@ import { setSelectedProject } from '@redux/actions/projects';
 const ProjectSlider: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [dragLimit, setDragLimit] = useState<number>(0);
+  const [indexProject, setIndexProject] = useState<number>(1);
+  const [offset, setOffset] = useState<number>(0);
 
   const projects = useSelector((state: State) => state.projects);
-  const selectedProject = useSelector((state: State) => state.selectedProject);
-  const currentIndex = projects.findIndex(p => p.id === selectedProject.id) + 1;
 
   const controls = useAnimation();
   const dispatch = useDispatch();
 
   const scrollBar = useRef<HTMLDivElement>(null);
 
+  const division = 100 / totalProjects;
+  const checkpoints = projects.map((p, i) => ({ 
+    id: p.id, 
+    anchor: (division * (2 * i + 1)) / 2, 
+    position: (division * i) + (totalProjects / 2 * i) 
+  }));
+
   useEffect(() => {
     if(scrollBar.current) setDragLimit(scrollBar.current.clientHeight - 80);
   }, [scrollBar.current]);
-  
+
+  useEffect(() => {
+    const id = getNearestProject(progress * 100 / dragLimit).id
+    setIndexProject(projects.findIndex(p => p.id === id) + 1);
+  }, [progress]);
+
   const onMouseOver = () => controls.start('hover');
   const onMouseOut = () => controls.start('initial');
 
@@ -33,9 +45,13 @@ const ProjectSlider: React.FC = () => {
     controls.start('initial');
     const percentage = progress * 100 / dragLimit;
     const target = getNearestProject(percentage);
+    const shouldBeOn = target.position * dragLimit / 100;
+    
+    setOffset(shouldBeOn + 5);
     animate(percentage, target.position, {
       onUpdate: (v) => {
-        setProgress(v / 100 * dragLimit);
+        const pixels = (v / 100 * dragLimit);
+        setProgress(pixels);
         dispatch(setProgressSB(v));
       }
     });
@@ -49,17 +65,14 @@ const ProjectSlider: React.FC = () => {
     dispatch(setMovingScollBar(true));
   }; 
 
-  const getNearestProject = (percentage: number) => {
-    const division = 100 / totalProjects;
-    const checkpoints = projects.map((p, i) => ({ id: p.id, anchor: (division * (2 * i + 1)) / 2, position: (division * i) + (totalProjects / 2 * i) }));
-    return checkpoints.reduce((a, b) => Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a);
-  };
+  const getNearestProject = (percentage: number) => checkpoints.reduce((a, b) => Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a);
 
   const onDrag: DragHandlers['onDrag'] = () => {
-    const slider = (scrollBar.current?.children[2] as HTMLDivElement);
-    const prog = slider.style.transform.split(',')[1]?.trim()?.replace('px', '') || 0;
+    const slider = (scrollBar.current.children[2] as HTMLDivElement);
+    const prog = slider?.style?.transform?.split(',')[1]?.trim()?.replace('px', '') || 0;
+    const perc = +prog * 100 / dragLimit;
     setProgress(+prog);
-    dispatch(setProgressSB(+prog * 100 / dragLimit));
+    dispatch(setProgressSB(perc));
   };
 
   const bind = useGesture({
@@ -76,18 +89,18 @@ const ProjectSlider: React.FC = () => {
     dragConstraints: { top: 0, bottom: dragLimit || 0 },
     dragElastic: 0,
     dragMomentum: false,
-    onDrag,
+    onDrag
   };
 
   return (
     <div id='project-slider' ref={scrollBar}>
       <motion.div className='scroll-bar' id='top' style={{ height: `calc(0% + ${progress}px)` }} />
-      <div id='placeholder-slider' />
-      <motion.div id='thumbnail' {...dragOptions} {...bind()} initial='initial' animate={controls} variants={variants.thumbnail}>
+      <div id='placeholder-slider'/>
+      <motion.div custom={offset} id='thumbnail' {...dragOptions} {...bind()} initial='initial' animate={controls} variants={variants.thumbnail}>
         <motion.div id='chevron' initial='initial' animate={controls} variants={variants.chevron} custom={true}>
           <Chevron />
         </motion.div>        
-        <motion.p initial='initial' animate={controls} variants={variants.firstSlide}>{currentIndex}</motion.p>
+        <motion.p initial='initial' animate={controls} variants={variants.firstSlide}>{indexProject}</motion.p>
         <motion.div id='separator' initial='initial' animate={controls} variants={variants.separator} />
         <motion.p initial='initial' animate={controls} variants={variants.secondSlide}>{totalProjects}</motion.p>
         <motion.div id='chevron' initial='initial' animate={controls} variants={variants.chevron} custom={false}>

@@ -3,7 +3,7 @@ import { Vector3 } from 'three';
 
 export const projects: Project[] = [
   {
-    title: 'Electra: Collaboration App',
+    title: 'Electra: Team Collaboration App',
     id: 'electra',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     textures: [],
     assets: [
       {
-        url: '/images/fms/home.png',
+        url: '/images/raven/mockup.png',
         w: 1080,
         q: 75
       }
@@ -59,7 +59,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'LoL: Statistics for LoL',
+    title: 'Unnamed: Statistics for LoL',
     id: 'lol',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
@@ -73,19 +73,23 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Portfolio: I Like Recursiveness',
+    title: 'Portfolio: Who doesn\'t like recursion?',
     id: 'portfolio',
     description: 'Lorem ipsum',
     point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
-        url: '/images/fms/home.png',
+        url: '/images/portfolio/home.png',
         w: 1080,
         q: 75
       }
     ]
-  }
+  },
 ];
 
 export const totalProjects = projects.length;
+
+// Don't really know how to calculate this, need to think about it
+export const DIFFERENCE = totalProjects * 0.00015;
+export const FACTOR = (0.00390 - DIFFERENCE) * totalProjects;

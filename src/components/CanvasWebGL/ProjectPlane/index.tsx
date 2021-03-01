@@ -8,7 +8,7 @@ import { NextRouter } from 'next/router';
 import { Project } from 'portfolio';
 import { SetPlaneRefAction } from '@redux/actions/types';
 import { animate } from 'framer-motion';
-import { totalProjects } from 'src/projects';
+import { FACTOR, totalProjects } from 'src/projects';
 
 const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, moving, index, progress, selected }) => {
   const [position, setPosition] = useState(new Vector3(-0.105, -0.8 * index, 1.5));
@@ -61,7 +61,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const clickRef = useRef<typeof onClick>(onClick);
   
   useEffect(() => {
-    alphaP.current = new Vector3(0, (0.22 * (1 - index) * 1.6) + 0.003 * totalProjects * progress, 0);
+    alphaP.current = new Vector3(0, (0.22 * (1 - index) * 1.6) + FACTOR * progress, 0);
   }, [progress]);
 
   useEffect(() => {

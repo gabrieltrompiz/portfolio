@@ -100,7 +100,7 @@ export const slider: { [title: string]: Variants } = {
       marginBottom: 0,
       marginTop: 0,
       height: 40,
-      rotate: 45
+      rotate: 45,
     },
     hover: {
       height: 18,
@@ -108,7 +108,7 @@ export const slider: { [title: string]: Variants } = {
       marginBottom: 2,
       top: 20,
       left: 20,
-      rotate: 90
+      rotate: 90,
     }
   },
   firstSlide: {
@@ -143,11 +143,12 @@ export const slider: { [title: string]: Variants } = {
     }
   },
   thumbnail: {
-    initial: {
+    initial: (y) => ({
       scale: 1,
-    },
-    hold: {
+      y
+    }),
+    hold: (y) => ({
       scale: 0.75,
-    }
+    })
   }
 };
