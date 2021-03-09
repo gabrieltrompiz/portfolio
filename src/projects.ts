@@ -6,7 +6,6 @@ export const projects: Project[] = [
     title: 'Electra: Team Collaboration App',
     id: 'electra',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
@@ -20,7 +19,6 @@ export const projects: Project[] = [
     title: 'FMS Stats: Statistics for FMS',
     id: 'fms',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
@@ -34,7 +32,6 @@ export const projects: Project[] = [
     title: 'Raven: Messaging App',
     id: 'raven',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
@@ -45,10 +42,9 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Pandagram: Social Media',
-    id: 'pandagram',
+    title: 'Unnamed: Statistics for LoL',
+    id: 'lol',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
@@ -59,14 +55,13 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Unnamed: Statistics for LoL',
-    id: 'lol',
+    title: 'Reign: Full-Stack Developer Test',
+    id: 'reign',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {
-        url: '/images/fms/home.png',
+        url: '/images/reign/description.png',
         w: 1080,
         q: 75
       }
@@ -76,7 +71,6 @@ export const projects: Project[] = [
     title: 'Portfolio: Who doesn\'t like recursion?',
     id: 'portfolio',
     description: 'Lorem ipsum',
-    point: new Vector3(0, 0, 0),
     textures: [],
     assets: [
       {

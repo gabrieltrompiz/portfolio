@@ -38,7 +38,6 @@ declare namespace portfolio {
   interface Project {
     title: readonly string
     id: readonly string
-    point: readonly Vector3
     description: readonly string
     assets: readonly Asset[]
     planeRef?: Mesh
