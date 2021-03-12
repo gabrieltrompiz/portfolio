@@ -9,6 +9,7 @@ let store;
 const initialState: State = {
   projects,
   selectedProject: projects[0],
+  nextProject: null,
   scrollBarProgress: 0,
   movingScrollBar: false
 }
