@@ -8,7 +8,7 @@ import CanvasWebGL from '@components/CanvasWebGL';
 import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
-import { FontLoader, LoadingManager, TextureLoader } from 'three';
+import { LoadingManager, TextureLoader } from 'three';
 import { useStore } from '@redux/store';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture } from '@redux/actions/projects';
@@ -21,11 +21,20 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
 
   const dispatch = useDispatch();
   const projects = useSelector((state: State) => state.projects);
+  const movingSB = useSelector((state: State) => state.movingScrollBar);
 
   const controls = useAnimation();
   const bind = useGesture({
-    onWheel: (e) => handleScroll(e, router),
-    onDrag: (e) => handleScroll(e, router)
+    onWheel: (e) => {
+      if(!movingSB) {
+        handleScroll(e, router, dispatch);
+      }
+    },
+    onDrag: (e) => {
+      if(!movingSB) {
+        handleScroll(e, router, dispatch);
+      }
+    }
   });
 
   const handleRouteChange = (url: string) => {

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { animate, DragHandlers, HTMLMotionProps, motion, transform, useAnimation, useDragControls, useMotionValue } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { animate, DragHandlers, HTMLMotionProps, motion, useAnimation } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { slider as variants } from '@utils/variants';
@@ -16,6 +16,7 @@ const ProjectSlider: React.FC = () => {
   const [offset, setOffset] = useState<number>(0);
 
   const projects = useSelector((state: State) => state.projects);
+  const nextProject = useSelector((state: State) => state.nextProject);
 
   const controls = useAnimation();
   const dispatch = useDispatch();
@@ -34,17 +35,28 @@ const ProjectSlider: React.FC = () => {
   }, [scrollBar.current]);
 
   useEffect(() => {
-    const id = getNearestProject(progress * 100 / dragLimit).id
+    controls.start('initial');
+  }, [offset]);
+
+  useEffect(() => {
+    const id = getNearestProject(progress * 100 / dragLimit).id;
     setIndexProject(projects.findIndex(p => p.id === id) + 1);
   }, [progress]);
+
+  useEffect(() => {
+    if(nextProject) {
+      const cp = checkpoints.find(c => c.id === nextProject.id);
+      onMouseUp(cp);
+    };
+  }, [nextProject]);
 
   const onMouseOver = () => controls.start('hover');
   const onMouseOut = () => controls.start('initial');
 
-  const onMouseUp = () => {
+  const onMouseUp = (cp) => {
     controls.start('initial');
     const percentage = progress * 100 / dragLimit;
-    const target = getNearestProject(percentage);
+    const target = cp || getNearestProject(percentage);
     const shouldBeOn = target.position * dragLimit / 100;
     
     setOffset(shouldBeOn + 5);
@@ -79,9 +91,9 @@ const ProjectSlider: React.FC = () => {
     onMouseOver,
     onMouseOut,
     onMouseDown,
-    onMouseUp,
+    onMouseUp: () => onMouseUp(null),
     onTouchStart: onMouseDown,
-    onTouchEnd: onMouseUp
+    onTouchEnd: () => onMouseUp(null)
   });
 
   const dragOptions: HTMLMotionProps<'div'> = {

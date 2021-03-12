@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { animate } from 'framer-motion';
 import { Canvas, CanvasProps } from 'react-three-fiber';
 import { Mesh, Vector3 } from 'three';
-import Overlay from '@components/Overlay';
+// import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';
 import ProjectPlane from './ProjectPlane';
 import { NextRouter } from 'next/router';
@@ -20,6 +20,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const selectedProject = useSelector((state: State) => state.selectedProject);
   const movingSB = useSelector((state: State) => state.movingScrollBar);
   const progress = useSelector((state: State) => state.scrollBarProgress);
+  const nextProject = useSelector((state: State) => state.nextProject);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -72,6 +73,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
               setPlaneRef={setPlaneRef} 
               router={router} 
               selected={selectedProject.id === project.id}
+              nextProject={nextProject}
               key={project.id}
             />
           )}

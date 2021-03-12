@@ -147,7 +147,7 @@ export const slider: { [title: string]: Variants } = {
       scale: 1,
       y
     }),
-    hold: (y) => ({
+    hold: () => ({
       scale: 0.75,
     })
   }

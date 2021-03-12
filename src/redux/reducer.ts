@@ -5,7 +5,8 @@ const initialState: State = {
   projects: [],
   selectedProject: null,
   scrollBarProgress: 0,
-  movingScrollBar: false
+  movingScrollBar: false,
+  nextProject: null
 };
 
 const reducer = (state = initialState, action: AnyAction): State => {
@@ -60,6 +61,19 @@ const reducer = (state = initialState, action: AnyAction): State => {
       return {
         ...state,
         movingScrollBar
+      };
+    };
+
+    case 'GO_TO_PROJECT': {
+      const direction = action.payload;
+      const currentIndex = state.projects.findIndex(p => p.id === state.selectedProject.id);
+      const nextIndex = direction === 'NEXT' ? (currentIndex === state.projects.length - 1 ? currentIndex : currentIndex + 1) 
+        : (currentIndex <= 0 ? currentIndex : currentIndex - 1);
+      const nextProject = state.projects[nextIndex];
+      
+      return {
+        ...state,
+        nextProject
       };
     };
 

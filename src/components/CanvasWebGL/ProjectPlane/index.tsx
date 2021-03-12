@@ -10,7 +10,7 @@ import { SetPlaneRefAction } from '@redux/actions/types';
 import { animate } from 'framer-motion';
 import { FACTOR, totalProjects } from 'src/projects';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, moving, index, progress, selected }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, moving, index, progress, selected, nextProject }) => {
   const [position, setPosition] = useState(new Vector3(-0.105, -0.8 * index, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
@@ -75,9 +75,9 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       if(addedListener) {
         setAddedListener(false);
         window.removeEventListener('mousemove', moveRef.current);
+        document.body.removeEventListener('click', clickRef.current);
       }
       document.body.style.cursor = 'initial';
-      document.body.removeEventListener('click', clickRef.current);
       setPosition(new Vector3(-0.105, -0.8 , 1.5).add(alphaP.current))
     }
   }, [show, progress, moving]);
@@ -150,4 +150,5 @@ interface ProjectPlaneProps extends Project {
   index: number
   progress: number
   selected: boolean
+  nextProject: Project
 }

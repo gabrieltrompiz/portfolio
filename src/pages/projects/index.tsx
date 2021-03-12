@@ -12,7 +12,7 @@ const Projects: React.FC = () => {
   const controls = useAnimation();
 
   useEffect(() => {
-    controls.start('enter')
+    controls.start('enter');
   }, []);
 
   useEffect(() => {
@@ -22,6 +22,10 @@ const Projects: React.FC = () => {
       controls.start('enter');
     }
   }, [movingSB]);
+
+  useEffect(() => {
+    controls.start('enter');
+  }, [selectedProject]);
 
   return (
     <div className='flex-full'>

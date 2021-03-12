@@ -1,5 +1,4 @@
 import { Project } from 'portfolio';
-import { Vector3 } from 'three';
 
 export const projects: Project[] = [
   {

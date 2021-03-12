@@ -1,5 +1,5 @@
 import { Spring, Tween } from 'framer-motion';
-import { Mesh, Texture, Vector3 } from 'three';
+import { Mesh, Texture } from 'three';
 
 declare namespace portfolio {
 
@@ -8,6 +8,7 @@ declare namespace portfolio {
     selectedProject: Project
     scrollBarProgress: number
     movingScrollBar: boolean
+    nextProject: Project
   }
 
   type Coordinates = {
@@ -48,6 +49,11 @@ declare namespace portfolio {
     url: readonly string
     w: readonly number
     q: readonly number
+  }
+
+  export const enum ProjectDirection {
+    'NEXT' = 'NEXT',
+    'PREV' = 'PREV'
   }
   
 }
