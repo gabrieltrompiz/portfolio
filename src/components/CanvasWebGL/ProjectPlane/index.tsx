@@ -5,16 +5,20 @@ import fragment from './shaders/fragment';
 import { getUniforms } from './shaders/uniforms';
 import vertex from './shaders/vertex';
 import { NextRouter } from 'next/router';
-import { Project } from 'portfolio';
+import { Project, State } from 'portfolio';
 import { SetPlaneRefAction } from '@redux/actions/types';
 import { animate } from 'framer-motion';
 import { FACTOR, totalProjects } from 'src/projects';
+import { useSelector } from 'react-redux';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, moving, index, progress, selected, nextProject }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress }) => {
   const [position, setPosition] = useState(new Vector3(-0.105, -0.8 * index, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
+
+  const moving = useSelector((state: State) => state.movingScrollBar);
+  const selected = useSelector((state: State) => state.selectedProject.id === id);
 
   const uniforms = getUniforms(textures[0]);
   const mouse = new Vector2();
@@ -145,10 +149,8 @@ export default ProjectPlane;
 
 interface ProjectPlaneProps extends Project {
   router: NextRouter
+  // eslint-disable-next-line
   setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
-  moving: boolean
   index: number
   progress: number
-  selected: boolean
-  nextProject: Project
 }
