@@ -17,6 +17,10 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const [opacity, setOpacity] = useState(0);
 
   const store = useStore();
+  /* progress is sent as a prop to the ProjectPlane and is not consumed directly
+  * by that component because using a bridge to connect the store to the components inside
+  * Canvas degrades performance and progress changes constantly and quickly. Had to create
+  * such bridge because Canvas uses a reconciler and store's Context doesn't go through */
   const progress = useSelector((state: State) => state.scrollBarProgress);
   const projects = useSelector((state: State) => state.projects);
 
