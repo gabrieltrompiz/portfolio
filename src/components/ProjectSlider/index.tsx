@@ -16,6 +16,7 @@ const ProjectSlider: React.FC = () => {
   const [offset, setOffset] = useState<number>(0);
 
   const projects = useSelector((state: State) => state.projects);
+  const selectedProject = useSelector((state: State) => state.selectedProject);
   const nextProject = useSelector((state: State) => state.nextProject);
 
   const controls = useAnimation();
@@ -31,7 +32,11 @@ const ProjectSlider: React.FC = () => {
   }));
 
   useEffect(() => {
-    if(scrollBar.current) setDragLimit(scrollBar.current.clientHeight - 80);
+    if(scrollBar.current) {
+      setDragLimit(scrollBar.current.clientHeight - 80);
+      const cp = checkpoints.find(c => c.id === selectedProject.id);
+      if(cp) onMouseUp(cp);
+    }
   }, [scrollBar.current]);
 
   useEffect(() => {
@@ -46,7 +51,7 @@ const ProjectSlider: React.FC = () => {
   useEffect(() => {
     if(nextProject) {
       const cp = checkpoints.find(c => c.id === nextProject.id);
-      onMouseUp(cp);
+      if(cp) onMouseUp(cp);
     };
   }, [nextProject]);
 
@@ -58,6 +63,7 @@ const ProjectSlider: React.FC = () => {
     const percentage = progress * 100 / dragLimit;
     const target = cp || getNearestProject(percentage);
     const shouldBeOn = target.position * dragLimit / 100;
+    
     
     setOffset(shouldBeOn + 5);
     animate(percentage, target.position, {

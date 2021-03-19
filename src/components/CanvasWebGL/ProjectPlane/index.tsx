@@ -16,6 +16,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
+  const [clickListening, setClickListening] = useState(false);
 
   const moving = useSelector((state: State) => state.movingScrollBar);
   const selected = useSelector((state: State) => state.selectedProject.id === id);
@@ -27,6 +28,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
   const selectedRef = useRef<boolean>(selected);
+  const clickingRef = useRef<boolean>(clickListening);
 
   const alphaP = useRef<Vector3>(new Vector3(0, (0.22 * (1 - index * 1.2)) + 0.003 * totalProjects * progress, 0));
   
@@ -50,10 +52,16 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     const intersects = raycaster.intersectObject(planeRef.current);
     if(intersects.length && selectedRef.current) {
       document.body.style.cursor = 'pointer';
-      document.body.addEventListener('click', clickRef.current)
+      if(!clickingRef.current) {
+        setClickListening(true);
+        document.body.addEventListener('click', clickRef.current);
+      }
     } else if(selectedRef.current) {
       document.body.style.cursor = 'initial';
-      document.body.removeEventListener('click', clickRef.current)
+      if(clickingRef.current) {
+        setClickListening(false);
+        document.body.removeEventListener('click', clickRef.current);
+      }
     }
   };
   
@@ -112,7 +120,15 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
 
   useEffect(() => {
     selectedRef.current = selected;
+    if(clickListening) {
+      setClickListening(false);
+      document.body.removeEventListener('click', clickRef.current);
+    }
   }, [selected]);
+
+  useEffect(() => {
+    clickingRef.current = clickListening;
+  }, [clickListening]);
 
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;

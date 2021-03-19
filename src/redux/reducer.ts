@@ -51,7 +51,7 @@ const reducer = (state = initialState, action: AnyAction): State => {
 
       return {
         ...state,
-        scrollBarProgress
+        scrollBarProgress: scrollBarProgress || state.scrollBarProgress
       };
     };
 
