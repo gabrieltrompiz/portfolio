@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { animate } from 'framer-motion';
-import { Canvas, CanvasProps } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
 // import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';
@@ -15,7 +15,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
-
+  
   const store = useStore();
   /* progress is sent as a prop to the ProjectPlane and is not consumed directly
   * by that component because using a bridge to connect the store to the components inside
@@ -43,7 +43,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
     });
   };
 
-  const cameraOptions: CanvasProps['camera'] = {
+  const cameraOptions = {
     position: new Vector3(0, -0.2, 1.85),
     fov: 75,
     aspect,
@@ -56,7 +56,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
       <Canvas 
         id='webgl' 
         camera={cameraOptions} 
-        pixelRatio={pixelRatio} 
+        dpr={pixelRatio} 
         style={{ opacity }}
       >
         <Provider store={store}>
