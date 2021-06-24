@@ -17,6 +17,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
   const [clickListening, setClickListening] = useState(false);
+  const [vec] = useState(() => new Vector3())
 
   const moving = useSelector((state: State) => state.movingScrollBar);
   const selected = useSelector((state: State) => state.selectedProject.id === id);
@@ -134,7 +135,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
     planeRef.current.position.copy(planeRef.current.position.clone().lerp(position, 0.05));
     if(selected && !moving) planeRef.current.lookAt(camera.position);
-    if(moving) planeRef.current.rotation.setFromVector3(planeRef.current.rotation.toVector3().lerp(new Vector3(0, 0.3, 0), 0.05));
+    if(moving) planeRef.current.rotation.setFromVector3(planeRef.current.rotation.toVector3().lerp(vec.set(0, 0.3, 0), 0.05));
   });
 
   return (
