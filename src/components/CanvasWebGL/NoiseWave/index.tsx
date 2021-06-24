@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { MeshProps, useFrame, useThree } from 'react-three-fiber';
+import { MeshProps, useFrame, useThree } from '@react-three/fiber';
 import { Mesh, ShaderMaterial, Vector3 } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';

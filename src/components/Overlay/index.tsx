@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { MeshProps } from 'react-three-fiber';
+import { MeshProps } from '@react-three/fiber';
 import { Mesh } from 'three';
 import fragment from './shaders/fragment';
 import vertex from './shaders/vertex';

@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { animate } from 'framer-motion';
-import { Canvas, CanvasProps } from 'react-three-fiber';
+import { Canvas, CanvasProps } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
 // import Overlay from '@components/Overlay';
 import NoiseWave from './NoiseWave';

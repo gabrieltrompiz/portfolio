@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFrame, useThree } from 'react-three-fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Mesh, Raycaster, ShaderMaterial, Vector2, Vector3 } from 'three';
 import fragment from './shaders/fragment';
 import { getUniforms } from './shaders/uniforms';
