@@ -40,6 +40,8 @@ declare namespace portfolio {
     title: readonly string
     id: readonly string
     description: readonly string
+    backgroundColor: readonly string
+    titleColor: readonly string
     assets: readonly Asset[]
     planeRef?: Mesh
     textures: Texture[]

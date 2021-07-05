@@ -24,11 +24,10 @@ const ProjectSlider: React.FC = () => {
 
   const scrollBar = useRef<HTMLDivElement>(null);
 
-  const division = 100 / totalProjects;
+  const division = 100 / (totalProjects - 1);
   const checkpoints = projects.map((p, i) => ({ 
     id: p.id, 
-    anchor: (division * (2 * i + 1)) / 2, 
-    position: (division * i) + (totalProjects / 2 * i) 
+    position: division * i
   }));
 
   useEffect(() => {
@@ -64,7 +63,6 @@ const ProjectSlider: React.FC = () => {
     const target = cp || getNearestProject(percentage);
     const shouldBeOn = target.position * dragLimit / 100;
     
-    
     setOffset(shouldBeOn + 5);
     animate(percentage, target.position, {
       onUpdate: (v) => {
@@ -83,7 +81,7 @@ const ProjectSlider: React.FC = () => {
     dispatch(setMovingScollBar(true));
   }; 
 
-  const getNearestProject = (percentage: number) => checkpoints.reduce((a, b) => Math.abs(b.anchor - percentage) < Math.abs(a.anchor - percentage) ? b : a);
+  const getNearestProject = (percentage: number) => checkpoints.reduce((a, b) => Math.abs(b.position - percentage) < Math.abs(a.position - percentage) ? b : a);
 
   const onDrag: DragHandlers['onDrag'] = () => {
     const slider = (scrollBar.current.children[2] as HTMLDivElement);

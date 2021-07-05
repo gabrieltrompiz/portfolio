@@ -8,20 +8,22 @@ import { NextRouter } from 'next/router';
 import { Project, State } from 'portfolio';
 import { SetPlaneRefAction } from '@redux/actions/types';
 import { animate } from 'framer-motion';
-import { FACTOR, totalProjects } from 'src/projects';
 import { useSelector } from 'react-redux';
+import { totalProjects } from 'src/projects';
 
 const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress }) => {
-  const [position, setPosition] = useState(new Vector3(-0.105, -0.8 * index, 1.5));
+  const [position, setPosition] = useState(new Vector3(0.45 * index, 0, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
   const [clickListening, setClickListening] = useState(false);
+  const [lookingAtCamera, setLookingAtCamera] = useState(true);
   const [vec] = useState(() => new Vector3())
-
+  
   const moving = useSelector((state: State) => state.movingScrollBar);
   const selected = useSelector((state: State) => state.selectedProject.id === id);
-
+  const nextProject = useSelector((state: State) => state.nextProject);
+  
   const uniforms = getUniforms(textures[0]);
   const mouse = new Vector2();
   
@@ -30,28 +32,30 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const raycasterRef = useRef<Raycaster>(null);
   const selectedRef = useRef<boolean>(selected);
   const clickingRef = useRef<boolean>(clickListening);
+  // difference in % between each project showcase
+  const percentageDivision = 100 / (totalProjects - 1);
 
-  const alphaP = useRef<Vector3>(new Vector3(0, (0.22 * (1 - index * 1.2)) + 0.003 * totalProjects * progress, 0));
-  
+  // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
+  const alphaP = useRef<Vector3>(new Vector3((index - progress / percentageDivision) * 0.45, 0, 0));
+
   const { camera, clock } = useThree();
   
   const handleRouteChange = (url: string) => {
-    if(url === '/projects') setShow(true);
-    else setShow(false);
+    setShow(url === '/projects');
   };
   
   const onMouseMove = (event: MouseEvent) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     
-    const x = - 0.105 + (event.clientX / window.innerWidth * 0.04);
-    const y = - 0.22 + (event.clientY / window.innerWidth * 0.04);
+    const x = (((event.clientX / window.innerWidth) - 0.5) * 0.04);
+    const y = (((event.clientY / window.innerWidth) - 0.3) * 0.04);
     setPosition(new Vector3(x, y, 1.5).add(alphaP.current));
     
     const raycaster = raycasterRef.current;
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(planeRef.current);
-    if(intersects.length && selectedRef.current) {
+    raycaster?.setFromCamera(mouse, camera);
+    const intersects = raycaster?.intersectObject(planeRef.current);
+    if(intersects?.length && selectedRef.current) {
       document.body.style.cursor = 'pointer';
       if(!clickingRef.current) {
         setClickListening(true);
@@ -74,7 +78,8 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const clickRef = useRef<typeof onClick>(onClick);
   
   useEffect(() => {
-    alphaP.current = new Vector3(0, (0.22 * (1 - index) * 1.6) + FACTOR * progress, 0);
+    // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
+    alphaP.current = new Vector3((index - progress / percentageDivision) * 0.45, 0, 0);
   }, [progress]);
 
   useEffect(() => {
@@ -83,7 +88,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         setAddedListener(true);
         window.addEventListener('mousemove', moveRef.current);
       }
-      setPosition(new Vector3(-0.105, -0.22, 1.5).add(alphaP.current));
+      setPosition(new Vector3(0, 0, 1.5).add(alphaP.current));
     } else if(!moving) {
       if(addedListener) {
         setAddedListener(false);
@@ -91,23 +96,30 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         document.body.removeEventListener('click', clickRef.current);
       }
       document.body.style.cursor = 'initial';
-      setPosition(new Vector3(-0.105, -0.8 , 1.5).add(alphaP.current))
+      setPosition(new Vector3(0, 0, 1.5).add(alphaP.current))
     }
   }, [show, progress, moving]);
 
   useEffect(() => {
     if(moving) {
+      setLookingAtCamera(false);
       animate(scale, 0.85, {
         onUpdate: setScale,
         duration: 0.5
       });
     } else {
+      setTimeout(() => setLookingAtCamera(true), 1500);
       animate(scale, 1, {
         onUpdate: setScale,
         duration: 0.5
       });
     }
   }, [moving]);
+
+  useEffect(() => {
+    setLookingAtCamera(false);
+    setTimeout(() => setLookingAtCamera(true), 1500);
+  }, [nextProject]);
 
   useEffect(() => {
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -130,35 +142,35 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   useEffect(() => {
     clickingRef.current = clickListening;
   }, [clickListening]);
-
+  
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
     planeRef.current.position.copy(planeRef.current.position.clone().lerp(position, 0.05));
-    if(selected && !moving) planeRef.current.lookAt(camera.position);
-    if(moving) planeRef.current.rotation.setFromVector3(planeRef.current.rotation.toVector3().lerp(vec.set(0, 0.3, 0), 0.05));
+    if(selected && !moving && lookingAtCamera) planeRef.current.lookAt(camera.position);
+    if(moving) planeRef.current.rotation.setFromVector3(planeRef.current.rotation.toVector3().lerp(vec.set(0, 0, 0), 0.05));
   });
 
   return (
-    <group>
+    <>
       <mesh
-        rotation={[0, 0.3, 0]}
-        position={[-0.105, -0.8, 1.5]}
+        rotation={[0, 0, 0]}
+        position={[0, 0, 1.5]}
         ref={planeRef}
       > 
         <planeBufferGeometry args={[0.4 * scale, 0.25 * scale, 16, 16]} />
         <shaderMaterial 
+          attach="material"
           vertexShader={vertex}
           fragmentShader={fragment}
           uniforms={uniforms}
           ref={materialRef}
+          transparent
         />
-        <ambientLight />
         <raycaster 
           ref={raycasterRef}
         />
       </mesh>
-
-    </group>
+    </>
   );
 };
 

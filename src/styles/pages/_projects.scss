@@ -3,7 +3,11 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+#projects > p {
+  transition: color 0.5s ease-in-out;
 }
 
 @media only screen and (max-width: 600px) {
@@ -13,10 +17,11 @@
   }
 }
 
-#projectTitle {
-  font-family: 'Frauces', serif;
-  font-weight: 700;
-  @include font-size(60px);
-  width: 400px;
+#project-title {
+  font-family: 'TFY', serif;
+  @include font-size(180px);
+  letter-spacing: 2rem;
+  // width: 400px;
   text-align: left;
+  position: absolute;
 }

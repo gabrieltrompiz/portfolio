@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { animate } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
@@ -23,6 +23,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   * such bridge because Canvas uses a reconciler and store's Context doesn't go through */
   const progress = useSelector((state: State) => state.scrollBarProgress);
   const projects = useSelector((state: State) => state.projects);
+  const selectedProject = useSelector((state: State) => state.selectedProject);
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -44,7 +45,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   };
 
   const cameraOptions = {
-    position: new Vector3(0, -0.2, 1.85),
+    position: new Vector3(0, 0, 1.85),
     fov: 75,
     aspect,
     near: 0.1,
@@ -57,27 +58,27 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
         id='webgl' 
         camera={cameraOptions} 
         dpr={pixelRatio} 
-        style={{ opacity }}
+        style={{ opacity, backgroundColor: selectedProject.backgroundColor }}
       >
         <Provider store={store}>
           <NoiseWave 
-            position={[0, 1.3, -0.1]}
-            rotation={[- Math.PI * 0.24, 0.25, 0]}
+            position={[0.3, 1.9, -0.1]}
+            rotation={[- Math.PI * 0.20, 0.15, 0.3]}
             wireframe={wireframe}
           />
           {!loading && 
-          <Suspense fallback={null}>
+          <>
             {projects.map((project, index) => 
               <ProjectPlane 
-                {...project} 
+                {...project}
                 progress={progress}
-                index={index + 1} 
+                index={index} 
                 setPlaneRef={setPlaneRef} 
                 router={router} 
                 key={project.id}
               />
             )}
-          </Suspense>}
+          </>}
           {/* <Overlay /> */}
         </Provider>
       </Canvas>

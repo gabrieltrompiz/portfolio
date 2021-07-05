@@ -28,12 +28,12 @@ const Projects: React.FC = () => {
   }, [selectedProject]);
 
   return (
-    <div className='flex-full'>
+    <div className='flex-full flex-column'>
+      {/* <ProjectSlider />  */}
       <div id='projects'>
-        <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='projectTitle'>
+        <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>
           {selectedProject?.title}
         </motion.p>
-        <ProjectSlider />
       </div>
     </div>
   );

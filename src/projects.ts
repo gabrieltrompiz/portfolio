@@ -2,9 +2,11 @@ import { Project } from 'portfolio';
 
 export const projects: Project[] = [
   {
-    title: 'Electra: Team Collaboration App',
+    title: 'Electra',
     id: 'electra',
     description: 'Lorem ipsum',
+    backgroundColor: '#183642',
+    titleColor: '#EAEAEA',
     textures: [],
     assets: [
       {
@@ -15,9 +17,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'FMS Stats: Statistics for FMS',
+    title: 'FMS Stats',
     id: 'fms',
     description: 'Lorem ipsum',
+    backgroundColor: '#7A9CC6',
+    titleColor: '#FFFD98',
     textures: [],
     assets: [
       {
@@ -28,9 +32,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Raven: Messaging App',
+    title: 'Raven',
     id: 'raven',
     description: 'Lorem ipsum',
+    backgroundColor: '#839788',
+    titleColor: '#EEE0CB',
     textures: [],
     assets: [
       {
@@ -41,9 +47,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Unnamed: Statistics for LoL',
+    title: 'Unnamed',
     id: 'lol',
     description: 'Lorem ipsum',
+    backgroundColor: '#191919',
+    titleColor: '#FFF',
     textures: [],
     assets: [
       {
@@ -54,9 +62,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Reign: Full-Stack Developer Test',
+    title: 'Reign',
     id: 'reign',
     description: 'Lorem ipsum',
+    backgroundColor: '#353535',
+    titleColor: '#D9D9D9',
     textures: [],
     assets: [
       {
@@ -67,9 +77,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Portfolio: Who doesn\'t like recursion?',
+    title: 'Portfolio',
     id: 'portfolio',
     description: 'Lorem ipsum',
+    backgroundColor: '#191919',
+    titleColor: '#FFF',
     textures: [],
     assets: [
       {
@@ -82,7 +94,3 @@ export const projects: Project[] = [
 ];
 
 export const totalProjects = projects.length;
-
-// Don't really know how to calculate this, need to think about it
-export const DIFFERENCE = totalProjects * 0.00015;
-export const FACTOR = (0.00390 - DIFFERENCE) * totalProjects;

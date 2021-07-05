@@ -277,6 +277,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==
 
+"@types/three@^0.130.0":
+  version "0.130.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.130.0.tgz#f048f1fb73e789a2c0dfcc66a45ffcbf259a75f6"
+  integrity sha512-7MKKxlEjHoAGTBRxEcDOjO4OvOrvUM6xtyjPiubNcU6bRPNmjNaV/PI9tiaXkk8cauZ9FuRbdCV4g0rQod+FkQ==
+
 "@typescript-eslint/eslint-plugin@^4.16.1":
   version "4.28.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.28.0.tgz#1a66f03b264844387beb7dc85e1f1d403bd1803f"
@@ -1041,9 +1046,9 @@ camelcase@^6.0.0:
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
 caniuse-lite@^1.0.30001093, caniuse-lite@^1.0.30001113, caniuse-lite@^1.0.30001154:
-  version "1.0.30001239"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001239.tgz#66e8669985bb2cb84ccb10f68c25ce6dd3e4d2b8"
-  integrity sha512-cyBkXJDMeI4wthy8xJ2FvDU6+0dtcZSJW3voUF8+e9f1bBeuvyZfc3PNbkOETyhbR+dGCPzn9E7MA3iwzusOhQ==
+  version "1.0.30001241"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001241.tgz"
+  integrity sha512-1uoSZ1Pq1VpH0WerIMqwptXHNNGfdl7d1cJUFs80CwQ/lVzdhTvsFZCeNFslze7AjsQnb4C85tzclPa1VShbeQ==
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
@@ -4788,10 +4793,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three@^0.126.1:
-  version "0.126.1"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.126.1.tgz#cf4e4e52060fd952f6f0d5440cbd422c66bc4be7"
-  integrity sha512-eOEXnZeE1FDV0XgL1u08auIP13jxdN9LQBAEmlErYzMxtIIfuGIAZbijOyookALUhqVzVOx0Tywj6n192VM+nQ==
+three@^0.130.1:
+  version "0.130.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.130.1.tgz#797588b2877ace31603bbbc864eb2e3022f0b3b4"
+  integrity sha512-OSPPKcGvFSiGkG3jFrwwC76PBV/ZSrGxpBbg28bW8s9GU8r/y2spNGtEXHEb/CVqo0Ctf5Lx2rVaxQZB6OasaA==
 
 through2@^2.0.0:
   version "2.0.5"
