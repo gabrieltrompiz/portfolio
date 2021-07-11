@@ -1,11 +1,10 @@
 #project-slider {
   height: 80px;
-  width: 80%;
+  width: 70%;
+  top: 120px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
 }
 
 #thumbnail {
@@ -14,7 +13,7 @@
   z-index: 2;
   display: flex;
   position: absolute;
-  top: 8px;
+  left: 17px;
 
   &:hover {
     cursor: pointer;
@@ -23,13 +22,11 @@
   #separator {
     position: absolute;
     width: 2px;
-    background-color: white;
   }
 
   & > p {
     @include font-size(18px);
-    font-family: 'Open Sans', Helvetica, sans-serif;
-    font-weight: 900;
+    font-family: 'JWS', Helvetica, sans-serif;
     position: absolute;
 
     &:first-child {
@@ -44,25 +41,25 @@
   }
 }
 
-#chevron {
+.chevron {
   position: absolute;
 }
 
 #placeholder-slider {
-  height: 100px;
-  width: 1px;
+  width: 80px;
+  height: 1px;
 }
 
 .scroll-bar {
-  width: 1px;
+  color: inherit;
+  background-color: inherit;
+  height: 1px;
   opacity: 0.8;
-  height: 100%;
-  background-color: white;
+  width: 100%;
   z-index: 1;
-  margin-right: 6px;
 
   &#top {
-    height: 0%;
+    width: 0%;
     margin-right: 6px;
   }
 }

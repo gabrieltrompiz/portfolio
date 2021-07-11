@@ -29,7 +29,7 @@ const Projects: React.FC = () => {
 
   return (
     <div className='flex-full flex-column'>
-      {/* <ProjectSlider />  */}
+      <ProjectSlider /> 
       <div id='projects'>
         <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>
           {selectedProject?.title}

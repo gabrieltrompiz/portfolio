@@ -103,12 +103,12 @@ export const slider: { [title: string]: Variants } = {
       rotate: 45,
     },
     hover: {
-      height: 18,
+      height: 16,
       marginTop: 2,
       marginBottom: 2,
-      top: 20,
-      left: 20,
-      rotate: 90,
+      top: 21,
+      left: 22,
+      rotate: 0,
     }
   },
   firstSlide: {
@@ -117,38 +117,49 @@ export const slider: { [title: string]: Variants } = {
       left: 0
     },
     hover: {
-      top: 17,
-      left: -10
+      top: 20,
+      left: 0
     }
   },
   secondSlide: {
     initial: {
       top: 30,
-      left: 30
+      left: 28
     },
     hover: {
-      top: 17,
-      left: 45
+      top: 20,
+      left: 35
     }
   },
   chevron: {
     initial: (first) => ({
-      top: !first ? 10 : 52,
-      left: !first ? 11 : 32,
+      top: !first ? 22.5 : 18.5,
+      left: !first ? 50 : -22,
       opacity: 0,
-      rotate: first ? 90 : -90
+      rotate: first ? 180 : 0
     }),
     hover: {
       opacity: 1,
     }
   },
   thumbnail: {
-    initial: (y) => ({
+    initial: (x) => ({
       scale: 1,
-      y
+      x
     }),
+    hover: {
+      left: 20
+    },
     hold: () => ({
       scale: 0.75,
     })
+  },
+  sliderPlaceholder: {
+    initial: {
+      width: 80,
+    },
+    hover: {
+      width: 90
+    }
   }
 };
