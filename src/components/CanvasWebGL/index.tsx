@@ -7,11 +7,11 @@ import NoiseWave from './NoiseWave';
 import ProjectPlane from './ProjectPlane';
 import { NextRouter } from 'next/router';
 import { connect, Provider, useSelector, useStore } from 'react-redux';
-import { setPlaneRef } from '@redux/actions/projects';
-import { SetPlaneRefAction } from '@redux/actions/types';
+import { goToNextProject, setPlaneRef } from '@redux/actions/projects';
+import { GoToProjectAction, SetPlaneRefAction } from '@redux/actions/types';
 import { State } from 'portfolio';
 
-const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef, loading }) => {
+const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef, loading, goToNextProject }) => {
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
@@ -76,6 +76,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
                 setPlaneRef={setPlaneRef} 
                 router={router} 
                 key={project.id}
+                goToNextProject={goToNextProject}
               />
             )}
           </>}
@@ -86,12 +87,14 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   );
 };
 
-export default connect(undefined, { setPlaneRef })(CanvasWebGL);
+export default connect(undefined, { setPlaneRef, goToNextProject })(CanvasWebGL);
 
 interface CanvasWebGLProps {
   wireframe: boolean
   router: NextRouter
   // eslint-disable-next-line
   setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
+  // eslint-disable-next-line
+  goToNextProject: (direction: 'NEXT' | 'PREV') => GoToProjectAction
   loading: boolean
 }

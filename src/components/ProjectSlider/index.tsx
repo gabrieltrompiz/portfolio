@@ -44,7 +44,6 @@
     }, [offset]);
 
     useEffect(() => {
-      console.log(progress)
       const id = getNearestProject(progress * 100 / dragLimit).id;
       setIndexProject(projects.findIndex(p => p.id === id) + 1);
     }, [progress]);

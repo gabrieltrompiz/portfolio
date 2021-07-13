@@ -6,12 +6,12 @@ import { getUniforms } from './shaders/uniforms';
 import vertex from './shaders/vertex';
 import { NextRouter } from 'next/router';
 import { Project, State } from 'portfolio';
-import { SetPlaneRefAction } from '@redux/actions/types';
+import { GoToProjectAction, SetPlaneRefAction } from '@redux/actions/types';
 import { animate } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { totalProjects } from 'src/projects';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress, goToNextProject }) => {
   const [position, setPosition] = useState(new Vector3(0.45 * index, 0, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
@@ -22,6 +22,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   
   const moving = useSelector((state: State) => state.movingScrollBar);
   const selected = useSelector((state: State) => state.selectedProject.id === id);
+  const selectedIndex = useSelector((state: State) => state.projects.indexOf(state.selectedProject));
   const nextProject = useSelector((state: State) => state.nextProject);
   
   const uniforms = getUniforms(textures[0]);
@@ -30,8 +31,11 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const planeRef = useRef<Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
+  
   const selectedRef = useRef<boolean>(selected);
   const clickingRef = useRef<boolean>(clickListening);
+  const selectedIndexRef = useRef<number>(0);
+
   // difference in % between each project showcase
   const percentageDivision = 100 / (totalProjects - 1);
 
@@ -55,23 +59,25 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     const raycaster = raycasterRef.current;
     raycaster?.setFromCamera(mouse, camera);
     const intersects = raycaster?.intersectObject(planeRef.current);
-    if(intersects?.length && selectedRef.current) {
+    if(intersects?.length) {
       document.body.style.cursor = 'pointer';
       if(!clickingRef.current) {
         setClickListening(true);
         document.body.addEventListener('click', clickRef.current);
       }
-    } else if(selectedRef.current) {
+    } else if(clickingRef.current) {
       document.body.style.cursor = 'initial';
-      if(clickingRef.current) {
-        setClickListening(false);
-        document.body.removeEventListener('click', clickRef.current);
-      }
+      setClickListening(false);
+      document.body.removeEventListener('click', clickRef.current);
     }
   };
   
   const onClick = () => {
-    router.push(`/projects/${id}`);
+    if(selectedRef.current) {
+      router.push(`/projects/${id}`);
+    } else {
+      goToNextProject(index > selectedIndexRef.current ? 'NEXT' : 'PREV')
+    }
   };
   
   const moveRef = useRef<typeof onMouseMove>(onMouseMove);
@@ -118,7 +124,8 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
 
   useEffect(() => {
     setLookingAtCamera(false);
-    setTimeout(() => setLookingAtCamera(true), 1500);
+    const id = setTimeout(() => setLookingAtCamera(true), 1500);
+    return () => clearTimeout(id);
   }, [nextProject]);
 
   useEffect(() => {
@@ -142,11 +149,16 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   useEffect(() => {
     clickingRef.current = clickListening;
   }, [clickListening]);
+
+  useEffect(() => {
+    selectedIndexRef.current = selectedIndex;
+  }, [selectedIndex]);
   
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
     planeRef.current.position.copy(planeRef.current.position.clone().lerp(position, 0.05));
     if(selected && !moving && lookingAtCamera) planeRef.current.lookAt(camera.position);
+    if(!selected && !moving && !lookingAtCamera) planeRef.current.lookAt(0, 0, 1.85 + ((index + 1) * 20));
     if(moving) planeRef.current.rotation.setFromVector3(planeRef.current.rotation.toVector3().lerp(vec.set(0, 0, 0), 0.05));
   });
 
@@ -180,6 +192,8 @@ interface ProjectPlaneProps extends Project {
   router: NextRouter
   // eslint-disable-next-line
   setPlaneRef: (mesh: Mesh, id: string) => SetPlaneRefAction
+  // eslint-disable-next-line
+  goToNextProject: (direction: 'NEXT' | 'PREV') => GoToProjectAction
   index: number
   progress: number
 }
