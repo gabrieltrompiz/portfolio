@@ -1,6 +1,6 @@
 
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { MeshProps, useFrame, useThree } from '@react-three/fiber';
+import { MeshProps, useFrame, useThree, Vector3 } from '@react-three/fiber';
 import { Mesh, ShaderMaterial, Color } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';
@@ -9,12 +9,14 @@ import { animate } from 'framer-motion';
 import { uniforms } from './shaders/uniforms';
 import { useSelector } from 'react-redux';
 import { State } from 'portfolio';
+import { NextRouter } from 'next/router';
 
 const solidUniforms = cloneDeep(uniforms);
 const wireframeUniforms = cloneDeep(uniforms);
 
-const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }) => {
+const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframePosition, router, ...props }) => {
   const [solidOpacity, setSolidOpacity] = useState(1);
+  const [wireframeOpacity, setWireframeOpacity] = useState(0);
   const [depthColor, setDepthColor] = useState(new Color('#000'));
   const [surfaceColor, setSurfaceColor] = useState(new Color('#FFF'));
   // const [position, setPosition] = useState(new Vector3(0, -0.2, 1.85));
@@ -28,7 +30,6 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
 
   // const { clock, camera } = useThree();
   const { clock } = useThree();
-
 
   // useEffect(() => {
   //   window.addEventListener('mousemove', (event) => {
@@ -51,20 +52,29 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
       animate(0, 1, {
         onUpdate: setSolidOpacity,
         duration: 2
-      })
+      });
     }
   }, [wireframe]);
 
   useEffect(() => {
-    animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
-    animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
-  }, [selectedProject])
+    setWireframeOpacity(1 - solidOpacity);
+  }, [solidOpacity]);
+
+  useEffect(() => {
+    if(router?.route === '/projects') {
+      animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
+      animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
+    } else {
+      animateColor(depthColor, new Color('#191919'), setDepthColor);
+      animateColor(surfaceColor, new Color('#191919'), setSurfaceColor);
+    }
+  }, [selectedProject, router?.route])
 
   useFrame(() => {
     solidRef.current.uniforms.uTime.value = clock.elapsedTime;
     wireframeRef.current.uniforms.uTime.value = clock.elapsedTime;
     solidRef.current.uniforms.uOpacity.value = solidOpacity;
-    wireframeRef.current.uniforms.uOpacity.value = 1;
+    wireframeRef.current.uniforms.uOpacity.value = wireframeOpacity;
 
     wireframeRef.current.uniforms.uDepthColor.value = depthColor;
     wireframeRef.current.uniforms.uSurfaceColor.value = surfaceColor;
@@ -106,6 +116,7 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, ...props }
       </mesh>
       <mesh
         {...props}
+        position={wireframePosition}
         ref={wireframeMesh}
       >
         <planeBufferGeometry args={[4, 4, 256, 256]} />
@@ -127,4 +138,6 @@ export default NoiseWave;
 
 interface NoiseWaveProps {
   wireframe: boolean
+  wireframePosition: Vector3
+  router: NextRouter
 }

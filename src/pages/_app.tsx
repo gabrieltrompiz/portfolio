@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
-import { AnimatePresence, motion, useAnimation } from 'framer-motion';
-import SideLink from '@components/SideLink';
+import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import CanvasWebGL from '@components/CanvasWebGL';
-import { pages, sideLinkContainer } from '@utils/variants';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
 import { LoadingManager, TextureLoader } from 'three';
@@ -13,17 +11,16 @@ import { useStore } from '@redux/store';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture } from '@redux/actions/projects';
 import { State } from 'portfolio';
+import AboutOverlay from '@components/AboutOverlay';
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [loading, setLoading] = useState(true);
 
-  const isAbout = router.route === '/about';
-
   const dispatch = useDispatch();
   const projects = useSelector((state: State) => state.projects);
   const movingSB = useSelector((state: State) => state.movingScrollBar);
+  const color = useSelector((state: State) => state.selectedProject.titleColor);
 
-  const controls = useAnimation();
   const bind = useGesture({
     onWheel: (e) => {
       if(!movingSB) {
@@ -37,24 +34,12 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     }
   });
 
-  const handleRouteChange = (url: string) => {
-    controls.start('enter');
-    switch(url) {
-      case '/projects': 
-        controls.start('goToProjects');
-        break;
-      default:
-        break;
-    }
-  }
-
   const setUpManagers = (loader: LoadingManager) => {
     loader.onProgress = (...args) => {
       // do something
     };
     loader.onLoad = () => {
       setLoading(false);
-      controls.start('enter');
     };
   };
 
@@ -72,17 +57,11 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   };
 
   useEffect(() => {
-    router.events.on('routeChangeComplete', handleRouteChange);
-
     const loader = new LoadingManager();
     const textureLoader = new TextureLoader(loader);
 
     setUpManagers(loader);
     startLoading(textureLoader);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    }
   }, []);
 
   return (
@@ -93,15 +72,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       </Head>
       <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={loading} />
       <AnimatePresence>
-        <motion.div key={`overlay-${isAbout}`} id='overlay' exit='exit' initial='initial' animate={controls} variants={sideLinkContainer}>
-          <SideLink href='mailto:hello@gabrieltrompiz.com?subject=Hello Gabriel'>
-            hello@gabrieltrompiz.com
-          </SideLink>
-          <SideLink onClick={() => router.push(isAbout ? '/' : '/about')}>
-            {isAbout ? 'Back' : 'About me'}
-          </SideLink>
-        </motion.div>
-        <motion.div key={router.route} custom={router.route} id='wrapper' exit='exit' initial='initial' animate={controls} variants={pages} {...bind()}>
+        <motion.div key={router.route} custom={router.route} id="wrapper" {...bind()}>
           {!loading && <Component {...pageProps} key={router.route} />}
         </motion.div>
       </AnimatePresence>

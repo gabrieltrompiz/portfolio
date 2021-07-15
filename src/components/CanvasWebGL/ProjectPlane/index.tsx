@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { totalProjects } from 'src/projects';
 
 const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress, goToNextProject }) => {
-  const [position, setPosition] = useState(new Vector3(0.45 * index, 0, 1.5));
+  const [position, setPosition] = useState(new Vector3(0.45 * index, -0.5, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
@@ -102,7 +102,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         document.body.removeEventListener('click', clickRef.current);
       }
       document.body.style.cursor = 'initial';
-      setPosition(new Vector3(0, 0, 1.5).add(alphaP.current))
+      setPosition(new Vector3(0, -0.5, 1.5).add(alphaP.current))
     }
   }, [show, progress, moving]);
 

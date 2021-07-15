@@ -18,9 +18,10 @@
 }
 
 #project-title {
-  font-family: 'TFY', serif;
+  font-family: 'Redig', sans-serif;
   @include font-size(180px);
-  letter-spacing: 2rem;
+  letter-spacing: 1rem;
+  text-transform: uppercase;
   // width: 400px;
   text-align: left;
   position: absolute;

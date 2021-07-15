@@ -26,7 +26,8 @@
 
   & > p {
     @include font-size(18px);
-    font-family: 'JWS', Helvetica, sans-serif;
+    font-family: 'Maven Pro', Helvetica, sans-serif;
+    font-feature-settings: "liga" 0;
     position: absolute;
 
     &:first-child {

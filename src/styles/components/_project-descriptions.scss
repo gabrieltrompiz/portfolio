@@ -1,0 +1,39 @@
+#project-descriptions {
+  position: absolute;
+  width: 800px;
+  bottom: 5px;
+  height: 100px;
+  display: flex;
+
+  & > div {
+    flex: 1;
+  }
+
+  & > div:nth-child(2) {
+    flex: 1;
+  }
+
+  & p {
+    font-family: 'Maven Pro', serif;
+    font-feature-settings: "liga" 0;
+    text-transform: uppercase;
+    font-weight: 400;
+    @include font-size(11px);
+    font-stretch: 100%;
+    opacity: 0.7;
+    text-align: left;
+    color: inherit;
+  }
+}
+
+#additional-data {
+  display: flex;
+
+  & > div {
+    flex: 1;
+  }
+}
+
+#description > p {
+  text-align: right;
+}

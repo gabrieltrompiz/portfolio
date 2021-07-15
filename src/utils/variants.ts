@@ -59,14 +59,7 @@ export const pages: Variants = {
       ease: 'easeInOut',
       duration: 0.5, 
     }
-  }),
-  goToProjects: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      delay: 1
-    }
-  }
+  })
 }
 
 export const sideLinkContainer: Variants = {

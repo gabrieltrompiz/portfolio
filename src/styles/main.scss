@@ -8,11 +8,13 @@
 @import './base/typography';
 
 // import layout
+@import 'layout/about-overlay';
 
 // import components
 @import './components/background';
 @import './components/arrow-down';
 @import './components/project-slider';
+@import './components/project-descriptions';
 
 // import pages
 @import './pages/home';
@@ -32,8 +34,8 @@ body, #wrapper {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   pointer-events: none;
 
   & > div {

@@ -70,7 +70,7 @@
           const pixels = (v / 100 * dragLimit);
           setProgress(pixels);
           dispatch(setProgressSB(v));
-        }
+        },
       });
       dispatch(setSelectedProject(target.id));
       dispatch(setMovingScollBar(false));
@@ -110,7 +110,7 @@
     };
 
     return (
-      <div id='project-slider' ref={scrollBar}>
+      <motion.div id='project-slider' ref={scrollBar} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <motion.div className='scroll-bar' id='top' style={{ width: `calc(0% + ${progress}px)`, backgroundColor: color }} />
         <motion.div id='placeholder-slider' animate={controls} variants={variants.sliderPlaceholder} />
         <motion.div custom={offset} id='thumbnail' {...dragOptions} {...bind()} initial='initial' animate={controls} variants={variants.thumbnail}>
@@ -129,7 +129,7 @@
           </motion.div>
         </motion.div>
         <motion.div className='scroll-bar' id='bottom' style={{ width: `calc(100% - ${progress}px - 90px)`, backgroundColor: color }} />
-      </div>
+      </motion.div>
     );
   };
 

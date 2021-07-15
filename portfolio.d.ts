@@ -2,7 +2,6 @@ import { Spring, Tween } from 'framer-motion';
 import { Mesh, Texture } from 'three';
 
 declare namespace portfolio {
-
   interface State {
     projects: Project[]
     selectedProject: Project
@@ -45,6 +44,9 @@ declare namespace portfolio {
     assets: readonly Asset[]
     planeRef?: Mesh
     textures: Texture[]
+    completedDate: readonly string
+    type: readonly ProjectType
+    role: readonly string
   }
 
   interface Asset {
@@ -54,10 +56,9 @@ declare namespace portfolio {
   }
 
   export const enum ProjectDirection {
-    'NEXT' = 'NEXT',
-    'PREV' = 'PREV'
+    'NEXT',
+    'PREV'
   }
-  
 }
 
 declare module 'portfolio' {

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@react-three/fiber": "^7.0.1",
-    "framer-motion": "^3.2.2-rc.1",
+    "framer-motion": "^4.1.17",
     "lodash": "^4.17.20",
     "next": "10.0.5",
     "react": "^17.0.1",

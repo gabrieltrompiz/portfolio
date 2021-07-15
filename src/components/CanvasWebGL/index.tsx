@@ -24,6 +24,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const progress = useSelector((state: State) => state.scrollBarProgress);
   const projects = useSelector((state: State) => state.projects);
   const selectedProject = useSelector((state: State) => state.selectedProject);
+  const color = router?.route === '/projects' ? selectedProject?.backgroundColor : '#191919';
 
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -58,13 +59,15 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
         id='webgl' 
         camera={cameraOptions} 
         dpr={pixelRatio} 
-        style={{ opacity, backgroundColor: selectedProject.backgroundColor }}
+        style={{ opacity, backgroundColor: color }}
       >
         <Provider store={store}>
           <NoiseWave 
             position={[0.3, 1.9, -0.1]}
+            wireframePosition={[0.3, 1.9, -0.1]}
             rotation={[- Math.PI * 0.20, 0.15, 0.3]}
             wireframe={wireframe}
+            router={router}
           />
           {!loading && 
           <>

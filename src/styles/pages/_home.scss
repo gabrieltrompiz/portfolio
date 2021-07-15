@@ -31,16 +31,26 @@ a:active {
   outline: 0;
 }
 
-p, a {
+#introduction p, #introduction a {
   text-decoration: none;
   outline: 0;
   color: white;
-  font-family: 'Open Sans', sans-serif;
-  text-align: center;
+  font-family: 'Harmond', sans-serif;
+  text-align: left;
+  color: #FFF;
+
+  &:hover { cursor: pointer; }
   
   &#name {
-    @include font-size(50px);
-    font-family: 'Fraunces', serif;
+    @include font-size(100px);
+  }
+
+  &:nth-child(3) {
+    text-align: center;
+  }
+
+  &:nth-child(2) {
+    text-align: right;
   }
   
   &#role {
