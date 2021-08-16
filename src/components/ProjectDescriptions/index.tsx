@@ -34,9 +34,9 @@ const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ compl
         </div>
       </div>
       <div id="explore">
-        <div className="hoverable" onClick={() => router.push(`/projects/${id}`)}>
-          <p className="hoverable">Learn more</p>
-          <BsArrowDown color={titleColor} style={{ opacity: 0.7 }} className="hoverable" />
+        <div onClick={() => router.push(`/projects/${id}`)}>
+          <p>Learn more</p>
+          <BsArrowDown id="arrow-learn-more" color={titleColor} />
         </div>
       </div>
       <div id="description">
