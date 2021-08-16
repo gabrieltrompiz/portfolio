@@ -10,14 +10,10 @@
 #thumbnail {
   height: 60px;
   width: 50px;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   position: absolute;
   left: 17px;
-
-  &:hover {
-    cursor: pointer;
-  }
 
   #separator {
     position: absolute;
@@ -29,6 +25,7 @@
     font-family: 'Maven Pro', Helvetica, sans-serif;
     font-feature-settings: "liga" 0;
     position: absolute;
+    z-index: 1;
 
     &:first-child {
       top: 0px;

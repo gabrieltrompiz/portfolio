@@ -37,3 +37,19 @@
 #description > p {
   text-align: right;
 }
+
+#explore {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+    & > p {
+      margin-bottom: 5px;
+    }
+  }
+}

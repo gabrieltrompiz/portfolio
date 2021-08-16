@@ -10,7 +10,7 @@ export const projects: Project[] = [
   {
     title: 'Electra',
     id: 'electra',
-    description: 'Issue tracking and communication platform with GitHub integration',
+    description: 'Issue tracking and communication platform making use of GitHub API',
     backgroundColor: '#183642',
     titleColor: '#EAEAEA',
     textures: [],
@@ -66,7 +66,7 @@ export const projects: Project[] = [
     id: 'lol',
     description: 'Mobile application for tier lists and profile tracking for League of Legends players',
     backgroundColor: '#191919',
-    titleColor: '#FFF',
+    titleColor: '#FFFFFF',
     textures: [],
     assets: [
       {
@@ -102,7 +102,7 @@ export const projects: Project[] = [
     id: 'portfolio',
     description: 'This very same portfolio, giving a try to Three.js',
     backgroundColor: '#191919',
-    titleColor: '#FFF',
+    titleColor: '#FFFFFF',
     textures: [],
     assets: [
       {

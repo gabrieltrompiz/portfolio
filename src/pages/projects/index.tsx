@@ -41,7 +41,7 @@ const Projects: React.FC = () => {
           {selectedProject?.title}
         </motion.p>
       </div>
-      <ProjectDescriptions {...selectedProject} />
+      <ProjectDescriptions {...selectedProject} router={router} />
     </div>
   );
 };
