@@ -23,7 +23,8 @@ export const projects: Project[] = [
     ],
     completedDate: 'December 2019',
     type: ProjectType['UNIVERSITY'],
-    role: 'FULLSTACK DEV'
+    role: 'FULLSTACK DEV',
+    repo: 'https://github.com/gabrieltrompiz/electra-front'
   },
   {
     title: 'FMS Stats',
@@ -41,7 +42,8 @@ export const projects: Project[] = [
     ],
     completedDate: 'July 2020',
     type: ProjectType['PERSONAL'],
-    role: 'BACKEND DEV'
+    role: 'BACKEND DEV',
+    repo: 'https://github.com/martinop/fmsstats-backend'
   },
   {
     title: 'Raven',
@@ -59,7 +61,8 @@ export const projects: Project[] = [
     ],
     completedDate: 'September 2019',
     type: ProjectType['UNIVERSITY'],
-    role: 'FULLSTACK DEV'
+    role: 'FULLSTACK DEV',
+    repo: 'https://github.com/gabrieltrompiz/raven-front'
   },
   {
     title: 'Unnamed',
@@ -77,7 +80,8 @@ export const projects: Project[] = [
     ],
     completedDate: 'May 2019',
     type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV'
+    role: 'FULLSTACK DEV',
+    repo: 'https://github.com/gabrieltrompiz/lol-project'
   },
   {
     title: 'Reign',
@@ -95,12 +99,13 @@ export const projects: Project[] = [
     ],
     completedDate: 'December 2020',
     type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV'
+    role: 'FULLSTACK DEV',
+    repo: 'https://gitlab.com/gabrieltrompiz/reign-test'
   },
   {
     title: 'Portfolio',
     id: 'portfolio',
-    description: 'This very same portfolio, giving a try to Three.js',
+    description: 'This very same portfolio, giving Tree.js a try',
     backgroundColor: '#191919',
     titleColor: '#FFFFFF',
     textures: [],
@@ -111,9 +116,10 @@ export const projects: Project[] = [
         q: 75
       }
     ],
-    completedDate: 'July 2021',
+    completedDate: 'October 2021',
     type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV'
+    role: 'FULLSTACK DEV',
+    repo: 'https://github.com/gabrieltrompiz/portfolio'
   },
 ];
 

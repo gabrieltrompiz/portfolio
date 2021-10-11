@@ -11,7 +11,7 @@ import { animate } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { totalProjects } from 'src/projects';
 
-const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress, goToNextProject }) => {
+const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneRef, id, index, progress, goToNextProject, repo }) => {
   const [position, setPosition] = useState(new Vector3(0.45 * index, -0.5, 1.5));
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
@@ -74,7 +74,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   
   const onClick = () => {
     if(selectedRef.current) {
-      router.push(`/projects/${id}`);
+      window.open(repo, '_blank');
     } else {
       goToNextProject(index > selectedIndexRef.current ? 'NEXT' : 'PREV')
     }

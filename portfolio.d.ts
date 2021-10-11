@@ -47,6 +47,7 @@ declare namespace portfolio {
     completedDate: readonly string
     type: readonly ProjectType
     role: readonly string
+    repo: readonly string
   }
 
   interface Asset {

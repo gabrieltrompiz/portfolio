@@ -6,7 +6,7 @@ import { sideLinkContainer as variants } from '@utils/variants';
 import { NextRouter } from 'next/router';
 import { BsArrowDown } from 'react-icons/bs';
 
-const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ completedDate, type, role, description, titleColor, id, router }) => {
+const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ completedDate, type, role, description, titleColor, router, repo }) => {
   const moving = useSelector((state: State) => state.movingScrollBar);
 
   const controls = useAnimation();
@@ -34,7 +34,7 @@ const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ compl
         </div>
       </div>
       <div id="explore">
-        <div onClick={() => router.push(`/projects/${id}`)}>
+        <div onClick={() => window.open(repo, '_blank')}>
           <p>Learn more</p>
           <BsArrowDown id="arrow-learn-more" color={titleColor} />
         </div>
