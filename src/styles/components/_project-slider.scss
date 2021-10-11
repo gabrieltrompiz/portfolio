@@ -15,6 +15,8 @@
   position: absolute;
   left: 17px;
 
+  &:hover { cursor: pointer; }
+
   #separator {
     position: absolute;
     width: 2px;

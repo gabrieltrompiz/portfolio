@@ -6,7 +6,7 @@ import { sideLinkContainer as variants } from '@utils/variants';
 import { NextRouter } from 'next/router';
 import { BsArrowDown } from 'react-icons/bs';
 
-const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ completedDate, type, role, description, titleColor, router, repo }) => {
+const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ completedDate, type, role, description, titleColor, repo }) => {
   const moving = useSelector((state: State) => state.movingScrollBar);
 
   const controls = useAnimation();
