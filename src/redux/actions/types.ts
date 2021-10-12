@@ -6,6 +6,7 @@ export const SET_SELECTED_PROJECT = 'SET_SELECTED_PROJECT';
 export const SET_PROGRESS = 'SET_PROGRESS';
 export const SET_MOVING_SCROLL_BAR = 'SET_MOVING_SCROLL_BAR';
 export const GO_TO_PROJECT = 'GO_TO_PROJECT';
+export const RESET_SELECTED_PROJECT = 'RESET_SELECTED_PROJECT';
 
 export interface AddTextureAction {
   type: typeof ADD_TEXTURE
@@ -42,4 +43,8 @@ export interface SetMovingSBAction {
   payload: boolean
 }
 
-export type AnyAction = AddTextureAction | SetPlaneRefAction | SetSelectedProjectAction | SetProgressAction | SetMovingSBAction | GoToProjectAction;
+export interface ResetSelectedProject {
+  type: typeof RESET_SELECTED_PROJECT
+}
+
+export type AnyAction = AddTextureAction | SetPlaneRefAction | SetSelectedProjectAction | SetProgressAction | SetMovingSBAction | GoToProjectAction | ResetSelectedProject;

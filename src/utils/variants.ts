@@ -28,6 +28,17 @@ export const introduction: { [name: string]: Variants } = {
         delay: 1
       }
     }
+  },
+  name: {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 1
+      }
+    }
   }
 };
 

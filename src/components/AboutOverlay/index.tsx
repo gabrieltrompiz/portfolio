@@ -1,17 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NextRouter } from 'next/router';
 import { BsArrowDownShort } from 'react-icons/bs';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { introduction as variants } from '@utils/variants';
 
-const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router }) => {
+const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) => {
   const isAbout = router?.route === '/about';
+  const isHome = router?.route === '/';
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start("hidden");
+    if(!isHome) controls.start("visible")
+  }, [isHome]);
 
   return (
-    <motion.div id="overlay" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div id="overlay" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} exit={{ opacity: 0 }} {...bind}>
       <div id="page-top">
-        <p>GABRIEL</p>
+        <motion.p variants={variants.name} initial="hidden" animate={controls}>
+          GABRIEL
+        </motion.p>
         <p>
-          <a onClick={() => router.push(isAbout ? '/projects' : '/about')}>
+          <a onClick={() => router.push(isAbout ? '/' : '/about')}>
             ABOUT
           </a>
         </p>

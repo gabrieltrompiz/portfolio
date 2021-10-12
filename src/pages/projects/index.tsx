@@ -5,7 +5,6 @@ import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
 import ProjectSlider from '@components/ProjectSlider';
 import ProjectDescriptions from '@components/ProjectDescriptions';
-import AboutOverlay from '@components/AboutOverlay';
 import { useRouter } from 'next/router';
 
 const Projects: React.FC = () => {
@@ -34,7 +33,6 @@ const Projects: React.FC = () => {
 
   return (
     <div className='flex-full flex-column'>
-      <AboutOverlay color={selectedProject.titleColor} router={router}  />
       <ProjectSlider /> 
       <div id='projects'>
         <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>

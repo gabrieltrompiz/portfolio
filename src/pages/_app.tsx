@@ -9,7 +9,7 @@ import { handleScroll } from '@utils/events';
 import { LoadingManager, TextureLoader } from 'three';
 import { useStore } from '@redux/store';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
-import { addTexture } from '@redux/actions/projects';
+import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { State } from 'portfolio';
 import AboutOverlay from '@components/AboutOverlay';
 
@@ -19,7 +19,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const dispatch = useDispatch();
   const projects = useSelector((state: State) => state.projects);
   const movingSB = useSelector((state: State) => state.movingScrollBar);
-  const color = useSelector((state: State) => state.selectedProject.titleColor);
+  const selectedProject = useSelector((state: State) => state.selectedProject);
 
   const bind = useGesture({
     onWheel: (e) => {
@@ -64,6 +64,18 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     startLoading(textureLoader);
   }, []);
 
+  useEffect(() => {
+    const onRouteChange = (url) => {
+      if(url !== '/projects') {
+        setTimeout(() => dispatch(resetSelectedProject()), 1000);
+      }
+    }
+
+    router.events.on('routeChangeStart', onRouteChange);
+
+    return () => router.events.off('routeChangeStart', onRouteChange);
+  }, [])
+
   return (
     <>
       <Head>
@@ -72,8 +84,9 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       </Head>
       <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={loading} />
       <AnimatePresence>
+        <AboutOverlay color={selectedProject.titleColor} router={router} />
         <motion.div key={router.route} custom={router.route} id="wrapper" {...bind()}>
-          {!loading && <Component {...pageProps} key={router.route} />}
+          {!loading &&<Component {...pageProps} key={router.route} />}
         </motion.div>
       </AnimatePresence>
     </>

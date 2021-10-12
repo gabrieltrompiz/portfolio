@@ -1,5 +1,6 @@
 import { State } from 'portfolio';
 import { AnyAction } from './actions/types';
+import { projects } from 'src/projects';
 
 const initialState: State = {
   projects: [],
@@ -76,6 +77,15 @@ const reducer = (state = initialState, action: AnyAction): State => {
         nextProject
       };
     };
+
+    case 'RESET_SELECTED_PROJECT': {
+      return {
+        ...state,
+        selectedProject: projects[0],
+        scrollBarProgress: 0,
+        nextProject: null
+      }
+    }
 
     default: return state;
   }
