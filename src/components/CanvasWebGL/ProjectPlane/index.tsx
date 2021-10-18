@@ -32,10 +32,6 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
   
-  const selectedRef = useRef<boolean>(selected);
-  const clickingRef = useRef<boolean>(clickListening);
-  const selectedIndexRef = useRef<number>(0);
-
   // difference in % between each project showcase
   const percentageDivision = 100 / (totalProjects - 1);
 
@@ -47,6 +43,16 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const handleRouteChange = (url: string) => {
     setShow(url === '/projects');
   };
+
+  const onClick = useCallback(() => {
+    if(clickListening) {
+      if(selected) {
+        window.open(repo, '_blank');
+      } else {
+        goToNextProject(index > selectedIndex ? 'NEXT' : 'PREV')
+      }
+    }
+  }, [selectedIndex, selected, clickListening]);
   
   const onMouseMove = useCallback((event: MouseEvent) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -61,24 +67,14 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     const intersects = raycaster?.intersectObject(planeRef.current);
     if(intersects?.length) {
       document.body.style.cursor = 'pointer';
-      if(!clickingRef.current) {
+      if(!clickListening) {
         setClickListening(true);
-        document.body.addEventListener('click', onClick);
       }
-    } else if(clickingRef.current) {
-      document.body.style.cursor = 'initial';
+    } else if(clickListening) {
       setClickListening(false);
-      document.body.removeEventListener('click', onClick);
+      document.body.style.cursor = 'initial';
     }
-  }, []);
-  
-  const onClick = useCallback(() => {
-    if(selectedRef.current) {
-      window.open(repo, '_blank');
-    } else {
-      goToNextProject(index > selectedIndexRef.current ? 'NEXT' : 'PREV')
-    }
-  }, []);
+  }, [clickListening]);
   
   useEffect(() => {
     // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
@@ -136,7 +132,6 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   }, []);
 
   useEffect(() => {
-    selectedRef.current = selected;
     if(clickListening) {
       setClickListening(false);
       document.body.removeEventListener('click', onClick);
@@ -144,12 +139,16 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   }, [selected]);
 
   useEffect(() => {
-    clickingRef.current = clickListening;
-  }, [clickListening]);
+    // re-attaches the onMouseMove event listener, usually happens when the mouse hovers between projects
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [onMouseMove]);
 
   useEffect(() => {
-    selectedIndexRef.current = selectedIndex;
-  }, [selectedIndex]);
+    // re-attaches the onClick event listener, usually happens when the mouse hovers between projects
+    document.body.addEventListener('click', onClick);
+    return () => document.body.removeEventListener('click', onClick);
+  }, [onClick]);
   
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;

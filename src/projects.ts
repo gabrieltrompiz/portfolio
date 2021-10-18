@@ -87,8 +87,8 @@ export const projects: Project[] = [
     title: 'Reign',
     id: 'reign',
     description: 'Test provided by a contractor. Covers subjects like Docker, React, Nest.js and MongoDB',
-    backgroundColor: '#353535',
-    titleColor: '#D9D9D9',
+    backgroundColor: '#D9D9D9',
+    titleColor: '#353535',
     textures: [],
     assets: [
       {
