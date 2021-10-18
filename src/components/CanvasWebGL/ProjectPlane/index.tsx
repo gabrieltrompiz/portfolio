@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Mesh, Raycaster, ShaderMaterial, Vector2, Vector3 } from 'three';
 import fragment from './shaders/fragment';
@@ -25,7 +25,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const selectedIndex = useSelector((state: State) => state.projects.indexOf(state.selectedProject));
   const nextProject = useSelector((state: State) => state.nextProject);
   
-  const uniforms = getUniforms(textures[0]);
+  const uniforms = useCallback(() => getUniforms(textures), [textures]);
   const mouse = new Vector2();
   
   const planeRef = useRef<Mesh>(null);
@@ -48,7 +48,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     setShow(url === '/projects');
   };
   
-  const onMouseMove = (event: MouseEvent) => {
+  const onMouseMove = useCallback((event: MouseEvent) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     
@@ -63,25 +63,22 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       document.body.style.cursor = 'pointer';
       if(!clickingRef.current) {
         setClickListening(true);
-        document.body.addEventListener('click', clickRef.current);
+        document.body.addEventListener('click', onClick);
       }
     } else if(clickingRef.current) {
       document.body.style.cursor = 'initial';
       setClickListening(false);
-      document.body.removeEventListener('click', clickRef.current);
+      document.body.removeEventListener('click', onClick);
     }
-  };
+  }, []);
   
-  const onClick = () => {
+  const onClick = useCallback(() => {
     if(selectedRef.current) {
       window.open(repo, '_blank');
     } else {
       goToNextProject(index > selectedIndexRef.current ? 'NEXT' : 'PREV')
     }
-  };
-  
-  const moveRef = useRef<typeof onMouseMove>(onMouseMove);
-  const clickRef = useRef<typeof onClick>(onClick);
+  }, []);
   
   useEffect(() => {
     // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
@@ -92,14 +89,14 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     if(show && !moving) {
       if(!addedListener) {
         setAddedListener(true);
-        window.addEventListener('mousemove', moveRef.current);
+        window.addEventListener('mousemove', onMouseMove);
       }
       setPosition(new Vector3(0, 0, 1.5).add(alphaP.current));
     } else if(!moving) {
       if(addedListener) {
         setAddedListener(false);
-        window.removeEventListener('mousemove', moveRef.current);
-        document.body.removeEventListener('click', clickRef.current);
+        window.removeEventListener('mousemove', onMouseMove);
+        document.body.removeEventListener('click', onClick);
       }
       document.body.style.cursor = 'initial';
       setPosition(new Vector3(0, -0.5, 1.5).add(alphaP.current))
@@ -142,7 +139,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     selectedRef.current = selected;
     if(clickListening) {
       setClickListening(false);
-      document.body.removeEventListener('click', clickRef.current);
+      document.body.removeEventListener('click', onClick);
     }
   }, [selected]);
 
@@ -174,7 +171,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
           attach="material"
           vertexShader={vertex}
           fragmentShader={fragment}
-          uniforms={uniforms}
+          uniforms={uniforms()}
           ref={materialRef}
           transparent
         />

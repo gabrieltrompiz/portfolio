@@ -1,5 +1,5 @@
 
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { MeshProps, useFrame, useThree, Vector3 } from '@react-three/fiber';
 import { Mesh, ShaderMaterial, Color } from 'three';
 import vertexShader from './shaders/vertex';
@@ -81,7 +81,7 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
     // camera.position.copy(camera.position.clone().lerp(position, 0.1));
   });
 
-  const animateColor = (from: Color, to: Color, stateCb: Dispatch<SetStateAction<Color>>) => {
+  const animateColor = useCallback((from: Color, to: Color, stateCb: Dispatch<SetStateAction<Color>>) => {
     animate(from.r, to.r, {
       onUpdate: (r) => {
         stateCb((color) => color.setRGB(r, color.g, color.b))
@@ -97,7 +97,7 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
         stateCb((color) => color.setRGB(color.r, color.g, b))
       },
     })
-  };
+  }, []);
 
   return (
     <>
