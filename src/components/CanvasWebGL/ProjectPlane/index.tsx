@@ -139,16 +139,20 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   }, [selected]);
 
   useEffect(() => {
-    // re-attaches the onMouseMove event listener, usually happens when the mouse hovers between projects
-    window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
-  }, [onMouseMove]);
+    if(show) {
+      // re-attaches the onMouseMove event listener, usually happens when the mouse hovers between projects
+      window.addEventListener('mousemove', onMouseMove);
+      return () => window.removeEventListener('mousemove', onMouseMove);
+    }
+  }, [onMouseMove, show]);
 
   useEffect(() => {
-    // re-attaches the onClick event listener, usually happens when the mouse hovers between projects
-    document.body.addEventListener('click', onClick);
-    return () => document.body.removeEventListener('click', onClick);
-  }, [onClick]);
+    if(show) {
+      // re-attaches the onClick event listener, usually happens when the mouse hovers between projects
+      document.body.addEventListener('click', onClick);
+      return () => document.body.removeEventListener('click', onClick);
+    }
+  }, [onClick, show]);
   
   useFrame(() => {
     materialRef.current.uniforms.uTime.value = clock.elapsedTime;
