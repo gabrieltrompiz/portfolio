@@ -1,6 +1,6 @@
 import { goToNextProject } from '@redux/actions/projects';
 import { Router } from 'next/router';
-import { Handler } from 'react-use-gesture/dist/types';
+import { Handler } from '@use-gesture/react/dist/declarations/src';
 
 let isTransitioning = false;
 const TRANSITION_TIME = 2000;

@@ -4,7 +4,7 @@
   import { State } from 'portfolio';
   import { slider as variants } from '@utils/variants';
   import Chevron from './Chevron';
-  import { useGesture } from 'react-use-gesture';
+  import { useGesture } from '@use-gesture/react';
   import { setMovingScollBar, setProgress as setProgressSB } from '@redux/actions/scrollBar';
   import { totalProjects } from 'src/projects';
   import { setSelectedProject } from '@redux/actions/projects';

@@ -4,7 +4,7 @@ import '@styles/main.scss';
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import CanvasWebGL from '@components/CanvasWebGL';
-import { useGesture } from 'react-use-gesture';
+import { useGesture } from '@use-gesture/react';
 import { handleScroll } from '@utils/events';
 import { LoadingManager, TextureLoader } from 'three';
 import { useStore } from '@redux/store';
@@ -50,7 +50,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         params.set('url', asset.url);
         params.set('w', asset.w.toString());
         params.set('q', asset.q.toString());
-        const texture = await textureLoader.loadAsync(`/_next/image?${params}`);
+        const texture = await textureLoader.load(`/_next/image?${params}`);
         dispatch(addTexture(texture, project.id));
       })
     })
