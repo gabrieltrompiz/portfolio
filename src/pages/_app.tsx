@@ -4,7 +4,7 @@ import '@styles/main.scss';
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import CanvasWebGL from '@components/CanvasWebGL';
-import { useGesture } from '@use-gesture/react';
+import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
 import { LoadingManager, TextureLoader } from 'three';
 import { useStore } from '@redux/store';
