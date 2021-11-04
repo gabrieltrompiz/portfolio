@@ -74,7 +74,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     router.events.on('routeChangeStart', onRouteChange);
 
     return () => router.events.off('routeChangeStart', onRouteChange);
-  }, [])
+  }, [router])
 
   return (
     <>

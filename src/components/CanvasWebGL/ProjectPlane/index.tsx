@@ -129,7 +129,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if(clickListening) {

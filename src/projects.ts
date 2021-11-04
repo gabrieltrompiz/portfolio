@@ -46,6 +46,25 @@ export const projects: Project[] = [
     repo: 'https://github.com/martinop/fmsstats-backend'
   },
   {
+    title: 'Shutter',
+    id: 'shutter',
+    description: 'Fully-fledged social network, built for a college subject',
+    backgroundColor: '#E4B1AB',
+    titleColor: '#CC444B',
+    textures: [],
+    assets: [
+      {
+        url: '/images/shutter/home.png',
+        w: 1080,
+        q: 75
+      }
+    ],
+    completedDate: 'May 2019',
+    type: ProjectType['PERSONAL'],
+    role: 'FULLSTACK DEV',
+    repo: 'https://github.com/gabrieltrompiz/shutter'
+  },
+  {
     title: 'Raven',
     id: 'raven',
     description: 'Cross-platform messaging app, built for a college subject',
@@ -63,25 +82,6 @@ export const projects: Project[] = [
     type: ProjectType['UNIVERSITY'],
     role: 'FULLSTACK DEV',
     repo: 'https://github.com/gabrieltrompiz/raven-front'
-  },
-  {
-    title: 'Unnamed',
-    id: 'lol',
-    description: 'Mobile application for tier lists and profile tracking for League of Legends players',
-    backgroundColor: '#191919',
-    titleColor: '#FFFFFF',
-    textures: [],
-    assets: [
-      {
-        url: '/images/fms/home.png',
-        w: 1080,
-        q: 75
-      }
-    ],
-    completedDate: 'May 2019',
-    type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV',
-    repo: 'https://github.com/gabrieltrompiz/lol-project'
   },
   {
     title: 'Reign',
@@ -116,7 +116,7 @@ export const projects: Project[] = [
         q: 75
       }
     ],
-    completedDate: 'October 2021',
+    completedDate: 'November 2021',
     type: ProjectType['PERSONAL'],
     role: 'FULLSTACK DEV',
     repo: 'https://github.com/gabrieltrompiz/portfolio'

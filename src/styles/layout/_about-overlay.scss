@@ -16,6 +16,10 @@
     }
   }
 
+  & a {
+    color: inherit !important;
+  }
+
   & > p:first-child {
     font-family: 'Redig', sans-serif;
     @include font-size(60px);
@@ -54,6 +58,7 @@
         opacity: 1;
       }
     }
+
   }
 
   & a {
