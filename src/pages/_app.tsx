@@ -50,7 +50,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         params.set('url', asset.url);
         params.set('w', asset.w.toString());
         params.set('q', asset.q.toString());
-        const texture = await textureLoader.load(`/_next/image?${params}`);
+        const texture = await textureLoader.load(asset.url);
         dispatch(addTexture(texture, project.id));
       })
     })
