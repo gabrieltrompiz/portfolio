@@ -49,7 +49,7 @@ export const projects: Project[] = [
     title: 'Shutter',
     id: 'shutter',
     description: 'Fully-fledged social network, built for a college subject',
-    backgroundColor: '#E4B1AB',
+    backgroundColor: '#F0D4D1',
     titleColor: '#CC444B',
     textures: [],
     assets: [

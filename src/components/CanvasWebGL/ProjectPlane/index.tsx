@@ -85,7 +85,6 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     if(show && !moving) {
       if(!addedListener) {
         setAddedListener(true);
-        window.addEventListener('mousemove', onMouseMove);
       }
       setPosition(new Vector3(0, 0, 1.5).add(alphaP.current));
     } else if(!moving) {
