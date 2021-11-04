@@ -92,7 +92,8 @@
       dispatch(setProgressSB(perc));
     };
 
-    const bind = useGesture({
+    // Apparently @use-gesture/react got the types wrong for useGesture
+    const bind: any = useGesture({
       onMouseOver,
       onMouseOut,
       onMouseDown,
