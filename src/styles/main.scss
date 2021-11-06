@@ -15,6 +15,7 @@
 @import './components/arrow-down';
 @import './components/project-slider';
 @import './components/project-descriptions';
+@import './components/loading';
 
 // import pages
 @import './pages/home';
@@ -36,8 +37,9 @@ body, #wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  pointer-events: none;
 
-  & > div {
+  & p {
     pointer-events: all;
   }
 }

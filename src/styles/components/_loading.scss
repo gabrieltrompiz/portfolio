@@ -1,0 +1,12 @@
+#loading-screen {
+  z-index: 999;
+  background: rgb(25, 25, 25);
+  @include size(100%, 100%);
+  @include font-size(60px);
+  
+  & > span {
+    font-family: 'Redig', 'Roboto', sans-serif;
+    color: white;
+    margin: 10px 40px;
+  }
+}

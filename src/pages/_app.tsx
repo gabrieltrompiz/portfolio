@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppProps } from 'next/app';
 import '@styles/main.scss';
-import { AnimatePresence, motion } from 'framer-motion';
+import { animate, AnimatePresence, AnimationPlaybackControls, motion } from 'framer-motion';
 import Head from 'next/head';
 import CanvasWebGL from '@components/CanvasWebGL';
 import { useGesture } from 'react-use-gesture';
@@ -12,34 +12,44 @@ import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { State } from 'portfolio';
 import AboutOverlay from '@components/AboutOverlay';
+import LoadingScreen from '@components/LoadingScreen';
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [loading, setLoading] = useState(true);
+  const [renderWebGL, setRenderWebGL] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const dispatch = useDispatch();
   const projects = useSelector((state: State) => state.projects);
   const movingSB = useSelector((state: State) => state.movingScrollBar);
   const selectedProject = useSelector((state: State) => state.selectedProject);
+  
+  const animation = useRef<AnimationPlaybackControls>(null);
 
-  const bind = useGesture({
-    onWheel: (e) => {
-      if(!movingSB) {
-        handleScroll(e, router, dispatch);
-      }
-    },
-    onDrag: (e) => {
-      if(!movingSB) {
-        handleScroll(e, router, dispatch);
-      }
+  const onWheel = useCallback((e) => {
+    if(!movingSB && !loading) {
+      handleScroll(e, router, dispatch);
     }
-  });
+  }, [movingSB, loading]);
+
+  const bind = useCallback(() => useGesture({
+    onWheel: (e) => onWheel(e),
+    onDrag: (e) => onWheel(e)
+  })(), [onWheel]);
 
   const setUpManagers = (loader: LoadingManager) => {
-    loader.onProgress = (...args) => {
-      // do something
+    loader.onProgress = (asset, current, total) => {
+      const nextProgress = Math.round(current / total * 100);
+      animation.current?.stop();
+      animation.current = animate(progress, nextProgress, {
+        onUpdate: (prog) => setProgress((progress) => Math.max(Math.round(prog), progress)),
+        duration: 0.5
+      })
     };
     loader.onLoad = () => {
-      setLoading(false);
+      setRenderWebGL(true);
+      // Wait half a second after loading to allow the webgl canvas to render
+      setTimeout(() => setLoading(false), 500);
     };
   };
 
@@ -82,11 +92,11 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={loading} />
+      <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={!renderWebGL} />
       <AnimatePresence>
-        <AboutOverlay color={selectedProject.titleColor} router={router} />
+        {!loading && <AboutOverlay color={selectedProject.titleColor} router={router} />}
         <motion.div key={router.route} custom={router.route} id="wrapper" {...bind()}>
-          {!loading &&<Component {...pageProps} key={router.route} />}
+          {loading ? <LoadingScreen progress={progress} /> : <Component {...pageProps} key={router.route} />}
         </motion.div>
       </AnimatePresence>
     </>

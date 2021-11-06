@@ -62,15 +62,15 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
         style={{ opacity, backgroundColor: color }}
       >
         <Provider store={store}>
-          <NoiseWave 
-            position={[0.3, 1.9, -0.1]}
-            wireframePosition={[0.3, 1.9, -0.1]}
-            rotation={[- Math.PI * 0.20, 0.15, 0.3]}
-            wireframe={wireframe}
-            router={router}
-          />
           {!loading && 
           <>
+            <NoiseWave 
+              position={[0.3, 1.9, -0.1]}
+              wireframePosition={[0.3, 1.9, -0.1]}
+              rotation={[- Math.PI * 0.20, 0.15, 0.3]}
+              wireframe={wireframe}
+              router={router}
+            />
             {projects.map((project, index) => 
               <ProjectPlane 
                 {...project}
