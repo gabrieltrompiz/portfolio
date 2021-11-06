@@ -49,7 +49,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     loader.onLoad = () => {
       setRenderWebGL(true);
       // Wait half a second after loading to allow the webgl canvas to render
-      setTimeout(() => setLoading(false), 0);
+      setTimeout(() => setLoading(false), 500);
     };
   };
 
