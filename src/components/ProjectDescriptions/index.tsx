@@ -1,5 +1,6 @@
-import { Project, State } from 'portfolio';
 import React, { useEffect } from 'react';
+
+import { Project, State } from 'portfolio';
 import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { sideLinkContainer as variants } from '@utils/variants';

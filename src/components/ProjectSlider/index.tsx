@@ -1,13 +1,15 @@
   import React, { useEffect, useRef, useState } from 'react';
+
+  import { State } from 'portfolio';
   import { animate, DragHandlers, HTMLMotionProps, motion, useAnimation } from 'framer-motion';
   import { useDispatch, useSelector } from 'react-redux';
-  import { State } from 'portfolio';
   import { slider as variants } from '@utils/variants';
-  import Chevron from './Chevron';
   import { useGesture } from 'react-use-gesture';
   import { setMovingScollBar, setProgress as setProgressSB } from '@redux/actions/scrollBar';
   import { totalProjects } from 'src/projects';
   import { setSelectedProject } from '@redux/actions/projects';
+
+  import Chevron from './Chevron';
 
   const ProjectSlider: React.FC = () => {
     const [progress, setProgress] = useState<number>(0);

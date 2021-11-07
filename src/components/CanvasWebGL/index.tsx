@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+
+import { State } from 'portfolio';
 import { animate } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
-// import Overlay from '@components/Overlay';
-import NoiseWave from './NoiseWave';
-import ProjectPlane from './ProjectPlane';
 import { NextRouter } from 'next/router';
 import { connect, Provider, useSelector, useStore } from 'react-redux';
 import { goToNextProject, setPlaneRef } from '@redux/actions/projects';
 import { GoToProjectAction, SetPlaneRefAction } from '@redux/actions/types';
-import { State } from 'portfolio';
+
+import NoiseWave from './NoiseWave';
+import ProjectPlane from './ProjectPlane';
 
 const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, setPlaneRef, loading, goToNextProject }) => {
   const [pixelRatio, setPixelRatio] = useState(2);

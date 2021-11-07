@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
+
 import { State } from 'portfolio';
 import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
+import { useRouter } from 'next/router';
+
 import ProjectSlider from '@components/ProjectSlider';
 import ProjectDescriptions from '@components/ProjectDescriptions';
-import { useRouter } from 'next/router';
 
 const Projects: React.FC = () => {
   const selectedProject = useSelector((state: State) => state.selectedProject);

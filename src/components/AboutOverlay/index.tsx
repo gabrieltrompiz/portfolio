@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import { NextRouter } from 'next/router';
 import { BsArrowDownShort } from 'react-icons/bs';
 import { motion, useAnimation } from 'framer-motion';

@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { AppProps } from 'next/app';
-import '@styles/main.scss';
 import { animate, AnimatePresence, AnimationPlaybackControls, motion } from 'framer-motion';
-import Head from 'next/head';
-import CanvasWebGL from '@components/CanvasWebGL';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
 import { LoadingManager, TextureLoader } from 'three';
@@ -11,8 +9,13 @@ import { useStore } from '@redux/store';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { State } from 'portfolio';
+
+import Head from 'next/head';
+import CanvasWebGL from '@components/CanvasWebGL';
 import AboutOverlay from '@components/AboutOverlay';
 import LoadingScreen from '@components/LoadingScreen';
+
+import '@styles/main.scss';
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [loading, setLoading] = useState(true);
