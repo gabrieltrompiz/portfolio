@@ -1,0 +1,11 @@
+#mobile-splash {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 40px;
+  box-sizing: border-box;
+  color: white;
+  font-family: 'Fraunces';
+  text-align: center;
+  @include size(100%, 100%);
+}
