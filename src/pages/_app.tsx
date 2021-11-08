@@ -34,10 +34,10 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const animation = useRef<AnimationPlaybackControls>(null);
 
   const onWheel = useCallback((e) => {
-    if(!movingSB && !loading) {
+    if(!movingSB && !loading && !isMobile) {
       handleScroll(e, router, dispatch);
     }
-  }, [movingSB, loading]);
+  }, [movingSB, loading, isMobile]);
 
   const bind = useCallback(() => useGesture({
     onWheel: (e) => onWheel(e),
