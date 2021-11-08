@@ -85,6 +85,12 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       setRenderWebGL(true);
     }
   }, []);
+  
+  useEffect(() => {
+    if(isMobile && router.pathname === '/projects') {
+      router.push('/');
+    }
+  }, [isMobile, router]);
 
   useEffect(() => {
     const onRouteChange = (url) => {
@@ -96,7 +102,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     router.events.on('routeChangeStart', onRouteChange);
 
     return () => router.events.off('routeChangeStart', onRouteChange);
-  }, [router])
+  }, [router]);
 
   return (
     <>

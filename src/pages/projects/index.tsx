@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
 import { useRouter } from 'next/router';
-import { isMobile } from 'react-device-detect';
 
 import ProjectSlider from '@components/ProjectSlider';
 import ProjectDescriptions from '@components/ProjectDescriptions';
@@ -17,10 +16,6 @@ const Projects: React.FC = () => {
   const router = useRouter();
 
   const controls = useAnimation();
-
-  useEffect(() => {
-    router.push("/");
-  }, [isMobile]);
 
   useEffect(() => {
     controls.start('enter');
