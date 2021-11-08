@@ -1,23 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import { State } from 'portfolio';
-import { animate, AnimatePresence, AnimationPlaybackControls, motion } from 'framer-motion';
+import { animate, AnimationPlaybackControls, motion } from 'framer-motion';
 import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
-import { LoadingManager, TextureLoader } from 'three';
 import { useStore } from '@redux/store';
+import { LoadingManager, TextureLoader } from 'three';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { isMobile } from 'react-device-detect';
 
 import Head from 'next/head';
-import CanvasWebGL from '@components/CanvasWebGL';
-import AboutOverlay from '@components/AboutOverlay';
 import LoadingScreen from '@components/LoadingScreen';
+import AboutOverlay from '@components/AboutOverlay';
+import MobileSplash from '@components/MobileSplash';
 
 import '@styles/main.scss';
-import MobileSplash from '@components/MobileSplash';
+
+const CanvasWebGL = dynamic(() => import('@components/CanvasWebGL'), { ssr: false });
 
 const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [loading, setLoading] = useState(true);
@@ -42,7 +44,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     onDrag: (e) => onWheel(e)
   })(), [onWheel]);
 
-  const setUpManagers = (loader: LoadingManager) => {
+  const setUpManagers = (loader) => {
     loader.onProgress = (asset, current, total) => {
       const nextProgress = Math.round(current / total * 100);
       animation.current?.stop();
@@ -58,7 +60,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     };
   };
 
-  const startLoading = async (textureLoader: TextureLoader) => {
+  const startLoading = async (textureLoader) => {
     projects.forEach(project => {
       project.assets.forEach(async (asset) => {
         const params = new URLSearchParams();
@@ -72,11 +74,16 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   };
 
   useEffect(() => {
-    const loader = new LoadingManager();
-    const textureLoader = new TextureLoader(loader);
-
-    setUpManagers(loader);
-    startLoading(textureLoader);
+    if(!isMobile) {
+      const loader = new LoadingManager();
+      const textureLoader = new TextureLoader(loader);
+  
+      setUpManagers(loader);
+      startLoading(textureLoader);
+    } else {
+      setLoading(false);
+      setRenderWebGL(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -97,17 +104,15 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={!renderWebGL} />
-      <AnimatePresence>
-        {!loading && !isMobile && <AboutOverlay color={selectedProject.titleColor} router={router} />}
-        <motion.div key={router.route} custom={router.route} id="wrapper" {...bind()}>
-          {loading ? 
-            <LoadingScreen progress={progress} /> : 
-            <MobileWrapper isMobile={isMobile}>
-              <Component {...pageProps} key={router.route} />
-            </MobileWrapper>}
-        </motion.div>
-      </AnimatePresence>
+      {renderWebGL && <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={!renderWebGL} />}
+      {(!loading && !isMobile) && <AboutOverlay color={selectedProject.titleColor} router={router} />}
+      <motion.div key={router.route} custom={router.route} id="wrapper" {...bind()}>
+        {loading ? 
+          <LoadingScreen progress={progress} /> : 
+          <MobileWrapper isMobile={isMobile}>
+            <Component {...pageProps} key={router.route} />
+          </MobileWrapper>}
+      </motion.div>
     </>
   )
 };
