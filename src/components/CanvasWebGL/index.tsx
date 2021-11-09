@@ -58,7 +58,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
     <>
       <Canvas 
         id='webgl' 
-        camera={cameraOptions} 
+        camera={cameraOptions}
         dpr={pixelRatio} 
         style={{ opacity, backgroundColor: color }}
       >
@@ -66,9 +66,9 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
           {!loading && 
           <>
             <NoiseWave 
-              position={[0.3, 1.9, -0.1]}
-              wireframePosition={[0.3, 1.9, -0.1]}
-              rotation={[- Math.PI * 0.20, 0.15, 0.3]}
+              position={[0.3, 1.8, 0.1]}
+              wireframePosition={[0.3, 1.8, 0.1]}
+              rotation={[- Math.PI * 0.19, 0.1, 0.1]}
               wireframe={wireframe}
               router={router}
             />

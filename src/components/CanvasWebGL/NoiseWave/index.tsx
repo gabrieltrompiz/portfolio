@@ -2,7 +2,7 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 import { MeshProps, useFrame, useThree, Vector3 } from '@react-three/fiber';
-import { Mesh, ShaderMaterial, Color } from 'three';
+import { Mesh, ShaderMaterial, Color, PerspectiveCamera, Clock, MathUtils } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';
 import { cloneDeep } from 'lodash';
@@ -29,19 +29,7 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
 
   const selectedProject = useSelector((state: State) => state.selectedProject);
 
-  // const { clock, camera } = useThree();
   const { clock } = useThree();
-
-  // useEffect(() => {
-  //   window.addEventListener('mousemove', (event) => {
-  //     const x = (event.clientX / window.innerWidth * 0.04);
-  //     const y = - 0.2 + (event.clientY / window.innerWidth * 0.04);
-  //     setPosition(new Vector3(x, y, 1.85));
-  //   });
-
-  //   // camera.lookAt(new Vector3(-0.55, -0.3, 0));
-  //   camera.lookAt(new Vector3(0, 0, 0));
-  // }, []);
 
   useEffect(() => {
     if(wireframe) {

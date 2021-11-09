@@ -124,7 +124,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
 };
 
 const MobileWrapper = ({ isMobile, children }) => 
-  isMobile ? <MobileSplash /> : children
+  isMobile ? <MobileSplash /> : children;
 
 const StoreWrapper: React.FC<AppProps> = (props) => {
   const store = useStore();
