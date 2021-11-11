@@ -50,14 +50,13 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
   }, [solidOpacity]);
 
   useEffect(() => {
-    if(router?.route === '/projects') {
-      animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
-      animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
-    } else {
-      animateColor(depthColor, new Color('#191919'), setDepthColor);
-      animateColor(surfaceColor, new Color('#191919'), setSurfaceColor);
-    }
-  }, [selectedProject, router?.route])
+    updateColors();
+  }, [selectedProject]);
+
+  useEffect(() => {
+    router.events.on('routeChangeComplete', updateColors);
+    return () => router.events.off('routeChangeComplete', updateColors);
+  }, [router]);
 
   useFrame(() => {
     solidRef.current.uniforms.uTime.value = clock.elapsedTime;
@@ -69,6 +68,16 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
     wireframeRef.current.uniforms.uSurfaceColor.value = surfaceColor;
     // camera.position.copy(camera.position.clone().lerp(position, 0.1));
   });
+
+  const updateColors = () => {
+    if(router?.route === '/projects') {
+      animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
+      animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
+    } else {
+      animateColor(depthColor, new Color('#FFFFFF'), setDepthColor);
+      animateColor(surfaceColor, new Color('#191919'), setSurfaceColor);
+    }
+  };
 
   const animateColor = useCallback((from: Color, to: Color, stateCb: Dispatch<SetStateAction<Color>>) => {
     animate(from.r, to.r, {

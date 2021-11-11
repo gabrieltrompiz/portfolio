@@ -17,7 +17,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const [addedListener, setAddedListener] = useState(false);
   const [show, setShow] = useState(false);
   const [scale, setScale] = useState<number>(1);
-  const [clickListening, setClickListening] = useState(false);
+  const [hoveringProject, setHoveringProject] = useState<boolean>(false);
   const [lookingAtCamera, setLookingAtCamera] = useState(true);
   const [vec] = useState(() => new Vector3())
   
@@ -27,8 +27,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
   const nextProject = useSelector((state: State) => state.nextProject);
   
   const uniforms = useCallback(() => getUniforms(textures), [textures]);
-  const mouse = new Vector2();
-  
+
   const planeRef = useRef<Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
   const raycasterRef = useRef<Raycaster>(null);
@@ -45,19 +44,33 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     setShow(url === '/projects');
   };
 
-  const onClick = useCallback(() => {
-    if(clickListening) {
+  const getMouseCoordinates = (e: MouseEvent) => {
+    const mouse = new Vector2(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      - (e.clientY / window.innerHeight) * 2 + 1
+    );
+
+    return mouse;
+  };
+
+  const onClick = useCallback((event: MouseEvent) => {
+    const mouse = getMouseCoordinates(event);
+
+    const raycaster = raycasterRef.current;
+    raycaster?.setFromCamera(mouse, camera);
+    const intersects = raycaster?.intersectObject(planeRef.current);
+
+    if(intersects?.length) {
       if(selected) {
         window.open(repo, '_blank');
       } else {
         goToNextProject(index > selectedIndex ? 'NEXT' : 'PREV')
       }
     }
-  }, [selectedIndex, selected, clickListening]);
+  }, [selectedIndex, selected]);
   
   const onMouseMove = useCallback((event: MouseEvent) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    const mouse = getMouseCoordinates(event);
     
     const x = (((event.clientX / window.innerWidth) - 0.5) * 0.04);
     const y = (((event.clientY / window.innerWidth) - 0.3) * 0.04);
@@ -66,16 +79,15 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     const raycaster = raycasterRef.current;
     raycaster?.setFromCamera(mouse, camera);
     const intersects = raycaster?.intersectObject(planeRef.current);
+
     if(intersects?.length) {
+      setHoveringProject(true);
       document.body.style.cursor = 'pointer';
-      if(!clickListening) {
-        setClickListening(true);
-      }
-    } else if(clickListening) {
-      setClickListening(false);
+    } else if(hoveringProject) {
+      setHoveringProject(false);
       document.body.style.cursor = 'initial';
     }
-  }, [clickListening]);
+  }, [hoveringProject]);
   
   useEffect(() => {
     // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
@@ -130,13 +142,6 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       router.events.off('routeChangeComplete', handleRouteChange);
     }
   }, [router]);
-
-  useEffect(() => {
-    if(clickListening) {
-      setClickListening(false);
-      document.body.removeEventListener('click', onClick);
-    }
-  }, [selected]);
 
   useEffect(() => {
     if(show) {

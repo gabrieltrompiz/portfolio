@@ -37,12 +37,12 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     if(!movingSB && !loading && !isMobile) {
       handleScroll(e, router, dispatch);
     }
-  }, [movingSB, loading, isMobile]);
+  }, [movingSB, loading]);
 
-  const bind = useCallback(() => useGesture({
-    onWheel: (e) => onWheel(e),
-    onDrag: (e) => onWheel(e)
-  })(), [onWheel]);
+  const bind = useGesture({
+    onWheel: onWheel,
+    onDrag: onWheel
+  });
 
   const setUpManagers = (loader) => {
     loader.onProgress = (asset, current, total) => {
@@ -90,7 +90,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     if(isMobile && router.pathname === '/projects') {
       router.push('/');
     }
-  }, [isMobile, router]);
+  }, [router]);
 
   useEffect(() => {
     const onRouteChange = (url) => {

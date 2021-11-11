@@ -16,6 +16,7 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const [pixelRatio, setPixelRatio] = useState(2);
   const [aspect, setAspect] = useState<number>(16 / 9);
   const [opacity, setOpacity] = useState(0);
+  const [color, setColor] = useState<string>('#191919');
   
   const store = useStore();
   /* progress is sent as a prop to the ProjectPlane and is not consumed directly
@@ -25,13 +26,21 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   const progress = useSelector((state: State) => state.scrollBarProgress);
   const projects = useSelector((state: State) => state.projects);
   const selectedProject = useSelector((state: State) => state.selectedProject);
-  const color = router?.route === '/projects' ? selectedProject?.backgroundColor : '#191919';
 
+  useEffect(() => {
+    updateBackground(router.route);
+  }, [selectedProject, router]);
+  
+  useEffect(() => {
+    router.events.on('routeChangeComplete', updateBackground);
+    return () => router.events.off('routeChangeComplete', updateBackground);
+  }, [router]);
+  
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
     setAspect(window.innerWidth / window.innerHeight);
     addEventListeners();
-
+    
     animate(0, 1, {
       duration: 2,
       onUpdate: setOpacity,
@@ -39,6 +48,10 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
     });
   }, []);
 
+  const updateBackground = (url: string) => { 
+    setColor(url === '/projects' ? selectedProject?.backgroundColor : '#191919');
+  }
+  
   const addEventListeners = () => {
     window.addEventListener('resize', () => {
       setAspect(window.innerWidth / window.innerHeight);
