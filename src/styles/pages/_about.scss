@@ -1,0 +1,42 @@
+#about {
+  @include size(100%, 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 100px;
+  box-sizing: border-box;
+  
+  & > p {
+    font-family: 'Fraunces';
+    @include font-size(32px);
+    margin: 0;
+    text-align: left;
+    width: 700px;
+    overflow-wrap: break-word;
+
+    & > a {
+      text-decoration: underline;
+      font-style: italic;
+    }
+  }
+}
+
+#social-media {
+  margin: 20px 0px;
+
+  & > a {
+    font-family: 'Fraunces';
+    margin: 0px 10px;
+    opacity: 0.5;
+    transition: opacity 0.5s;
+    cursor: pointer;
+
+    &:hover { 
+      opacity: 1;
+    }
+
+    &:first-child {
+      margin-left: 0px;
+    }
+  }
+}

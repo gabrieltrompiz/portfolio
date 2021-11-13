@@ -167,3 +167,21 @@ export const slider: { [title: string]: Variants } = {
     }
   }
 };
+
+export const about: Variants = {
+  initial: {
+    opacity: 0,
+    y: 10,
+    transition: {
+      duration: 0.5
+    }
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.5,
+      duration: 0.5
+    }
+  }
+};

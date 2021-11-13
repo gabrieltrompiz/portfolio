@@ -23,7 +23,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'December 2019',
     type: ProjectType['UNIVERSITY'],
-    role: 'FULLSTACK DEV',
+    role: 'FULL-STACK DEVELOPER',
     repo: 'https://github.com/gabrieltrompiz/electra-front'
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'July 2020',
     type: ProjectType['PERSONAL'],
-    role: 'BACKEND DEV',
+    role: 'BACK-END DEVELOPER',
     repo: 'https://github.com/martinop/fmsstats-backend'
   },
   {
@@ -60,8 +60,8 @@ export const projects: Project[] = [
       }
     ],
     completedDate: 'May 2019',
-    type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV',
+    type: ProjectType['UNIVERSITY'],
+    role: 'FULL-STACK DEVELOPER',
     repo: 'https://github.com/gabrieltrompiz/shutter'
   },
   {
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'September 2019',
     type: ProjectType['UNIVERSITY'],
-    role: 'FULLSTACK DEV',
+    role: 'FUL-LSTACK DEVELOPER',
     repo: 'https://github.com/gabrieltrompiz/raven-front'
   },
   {
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'December 2020',
     type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV',
+    role: 'FULL-STACK DEVELOPER',
     repo: 'https://gitlab.com/gabrieltrompiz/reign-test'
   },
   {
@@ -118,7 +118,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'November 2021',
     type: ProjectType['PERSONAL'],
-    role: 'FULLSTACK DEV',
+    role: 'FRONT-END DEVELOPER',
     repo: 'https://github.com/gabrieltrompiz/portfolio'
   },
 ];

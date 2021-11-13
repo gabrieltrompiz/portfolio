@@ -1,9 +1,10 @@
 #project-descriptions {
   position: absolute;
   width: 800px;
-  bottom: 5px;
+  bottom: 10%;
   height: 100px;
   display: flex;
+  flex-direction: column;
 
   & > div {
     flex: 1;
@@ -18,11 +19,12 @@
     font-feature-settings: "liga" 0;
     text-transform: uppercase;
     font-weight: 400;
-    @include font-size(11px);
+    @include font-size(12px);
     font-stretch: 100%;
     opacity: 0.7;
-    text-align: left;
     color: inherit;
+    text-align: center;
+    flex: 1;
   }
 }
 
@@ -34,15 +36,15 @@
   }
 }
 
-#description > p {
-  text-align: right;
-}
-
 #explore {
   display: flex;
   justify-content: center;
   height: fit-content;
 
+  & #learn-more {
+    text-decoration: underline;
+  }
+  
   & > div {
     display: flex;
     align-items: center;

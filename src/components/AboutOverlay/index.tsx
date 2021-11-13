@@ -12,20 +12,23 @@ const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) =
   const controls = useAnimation();
 
   useEffect(() => {
-    controls.start("hidden");
-    if(!isHome) controls.start("visible")
+    controls.start("visible");
+    // if(!isHome) controls.start("hidden")
   }, [isHome]);
 
   return (
     <motion.div id="overlay" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} exit={{ opacity: 0 }} {...bind}>
       <div id="page-top">
+        {/* <motion.p variants={variants.name} initial="hidden" animate={controls}>
+          GABRIEL
+        </motion.p> */}
         <p>
           <a onClick={() => router.push(isAbout ? '/' : '/about')}>
-            ABOUT
+            {isAbout ? 'BACK' : 'ABOUT'}
           </a>
         </p>
       </div>
-      <div id="page-bottom">
+      <motion.div variants={variants.name} id="page-bottom" animate={controls}>
         <div id='rss'>
           <p>
             <a href="mailto:hello@gabrieltrompiz.com?subject=Hello%20Gabriel">
@@ -46,7 +49,7 @@ const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) =
           FULLSTACK DEVELOPER <br />
           AUSTIN, TX
         </p>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

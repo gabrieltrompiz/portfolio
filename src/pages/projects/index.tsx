@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
 import { useRouter } from 'next/router';
+import { introduction as variants } from '@utils/variants';
 
 import ProjectSlider from '@components/ProjectSlider';
 import ProjectDescriptions from '@components/ProjectDescriptions';
+import { RiArrowUpSLine } from 'react-icons/ri';
 
 const Projects: React.FC = () => {
   const selectedProject = useSelector((state: State) => state.selectedProject);
@@ -35,6 +37,16 @@ const Projects: React.FC = () => {
 
   return (
     <div className='flex-full flex-column'>
+      <motion.div
+        initial='hidden'
+        animate='visible'
+        variants={variants.role}
+        id='scroll'
+        onClick={() => router.push('/')}
+      >
+        <RiArrowUpSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-up' />
+        <p>Go to home</p>
+      </motion.div>
       <ProjectSlider /> 
       <div id='projects'>
         <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>

@@ -4,7 +4,7 @@
   width: inherit !important;
   height: calc(100% - 150px);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: inherit;
 
   & > p {
@@ -22,7 +22,7 @@
 
   & > p:first-child {
     font-family: 'Redig', sans-serif;
-    @include font-size(60px);
+    @include font-size(50px);
   }
 
   & > p:last-child {
