@@ -34,7 +34,6 @@
     const color = selectedProject?.titleColor || '#FFF';
 
     useEffect(() => {
-      console.log(scrollBar.current)
       if(scrollBar.current) {
         setDragLimit(scrollBar.current.clientWidth - 80);
         const cp = checkpoints.find(c => c.id === selectedProject.id);
