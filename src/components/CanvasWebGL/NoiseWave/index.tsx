@@ -2,7 +2,7 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 import { MeshProps, useFrame, useThree, Vector3 } from '@react-three/fiber';
-import { Mesh, ShaderMaterial, Color, PerspectiveCamera, Clock, MathUtils } from 'three';
+import { Mesh, ShaderMaterial, Color } from 'three';
 import vertexShader from './shaders/vertex';
 import fragmentShader from './shaders/fragment';
 import { cloneDeep } from 'lodash';

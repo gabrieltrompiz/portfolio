@@ -109,6 +109,9 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       <Head>
         <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="all" />
+        <meta name="description" content="Full-stack developer based in Austin. Focused on creating clean, maintainable code" key="desc" />
+        <meta name="keywords" content="Gabriel,Trompiz,Fullstack,Developer,Software,Engineer,React,Threejs,Three,Typescript,Next,CSR,SCSS,Sass" />
       </Head>
       {renderWebGL && <CanvasWebGL wireframe={router.route !== '/'} router={router} loading={!renderWebGL} />}
       {(!loading && !isMobile) && <AboutOverlay color={selectedProject.titleColor} router={router} />}

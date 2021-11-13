@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { sideLinkContainer as variants } from '@utils/variants';
 import { NextRouter } from 'next/router';
-import { BsPlus } from 'react-icons/bs';
 
 const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ completedDate, type, role, description, titleColor, repo }) => {
   const moving = useSelector((state: State) => state.movingScrollBar);
