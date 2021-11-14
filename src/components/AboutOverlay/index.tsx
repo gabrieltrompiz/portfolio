@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { NextRouter } from 'next/router';
+import Link from 'next/link';
 import { BsArrowDownShort } from 'react-icons/bs';
 import { motion, useAnimation } from 'framer-motion';
 import { introduction as variants } from '@utils/variants';
@@ -23,9 +24,9 @@ const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) =
           GABRIEL
         </motion.p> */}
         <p>
-          <a onClick={() => router.push(isAbout ? '/' : '/about')}>
-            {isAbout ? 'BACK' : 'ABOUT'}
-          </a>
+          <Link href="/about">
+            <a>{isAbout ? 'BACK' : 'ABOUT'}</a>
+          </Link>
         </p>
       </div>
       <motion.div variants={variants.name} id="page-bottom" animate={controls}>

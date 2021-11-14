@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { State } from 'portfolio';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
@@ -50,7 +51,11 @@ const Projects: React.FC = () => {
           onClick={() => router.push('/')}
         >
           <RiArrowUpSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-up' />
-          <p>Go to home</p>
+          <p>
+            <Link href="/">
+              <a>Go to home</a>
+            </Link>
+          </p>
         </motion.div>
         <ProjectSlider /> 
         <div id='projects'>

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { introduction as variants } from '@utils/variants';
 import { RiArrowDownSLine } from 'react-icons/ri';
@@ -36,7 +37,11 @@ const Introduction: React.FC = () => {
         id='scroll'
         onClick={() => router.push('/projects')}
       >
-        <p>See projects</p>
+        <p>
+          <Link href="/projects">
+            <a>See projects</a>
+          </Link>
+        </p>
         <RiArrowDownSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-down' />
       </motion.div>
     </div>
