@@ -11,8 +11,8 @@ import { LoadingManager, TextureLoader } from 'three';
 import {  Provider, useDispatch, useSelector } from 'react-redux';
 import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { isMobile } from 'react-device-detect';
-
 import Head from 'next/head';
+
 import LoadingScreen from '@components/LoadingScreen';
 import AboutOverlay from '@components/AboutOverlay';
 import MobileSplash from '@components/MobileSplash';
@@ -107,7 +107,6 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   return (
     <>
       <Head>
-        <title>Gabriel Trompiz - Developer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="all" />
         <meta name="description" content="Full-stack developer based in Austin. Focused on creating clean, maintainable code" key="desc" />

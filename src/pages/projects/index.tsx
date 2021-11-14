@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { State } from 'portfolio';
+import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { motion, useAnimation } from 'framer-motion';
 import { projectTitle } from '@utils/variants';
@@ -36,25 +37,30 @@ const Projects: React.FC = () => {
   }, [selectedProject]);
 
   return (
-    <div className='flex-full flex-column'>
-      <motion.div
-        initial='hidden'
-        animate='visible'
-        variants={variants.role}
-        id='scroll'
-        onClick={() => router.push('/')}
-      >
-        <RiArrowUpSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-up' />
-        <p>Go to home</p>
-      </motion.div>
-      <ProjectSlider /> 
-      <div id='projects'>
-        <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>
-          {selectedProject?.title}
-        </motion.p>
+    <>
+      <Head>
+        <title>Gabriel Trompiz - Projects</title>
+      </Head>
+      <div className='flex-full flex-column'>
+        <motion.div
+          initial='hidden'
+          animate='visible'
+          variants={variants.role}
+          id='scroll'
+          onClick={() => router.push('/')}
+        >
+          <RiArrowUpSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-up' />
+          <p>Go to home</p>
+        </motion.div>
+        <ProjectSlider /> 
+        <div id='projects'>
+          <motion.p variants={projectTitle} key={selectedProject.title} exit='exit' initial='initial' animate={controls} id='project-title' style={{ color: selectedProject.titleColor }}>
+            {selectedProject?.title}
+          </motion.p>
+        </div>
+        <ProjectDescriptions {...selectedProject} router={router} />
       </div>
-      <ProjectDescriptions {...selectedProject} router={router} />
-    </div>
+    </>
   );
 };
 
