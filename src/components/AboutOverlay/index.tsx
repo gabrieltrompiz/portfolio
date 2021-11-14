@@ -24,7 +24,7 @@ const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) =
           GABRIEL
         </motion.p> */}
         <p>
-          <Link href="/about">
+          <Link href={isAbout ? "/" : "/about"}>
             <a>{isAbout ? 'BACK' : 'ABOUT'}</a>
           </Link>
         </p>
