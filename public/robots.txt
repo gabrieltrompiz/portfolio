@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://www.gabrieltrompiz.com/sitemap.xml
+Sitemap: https://www.gabrieltrompiz.com/sitemap.xml
