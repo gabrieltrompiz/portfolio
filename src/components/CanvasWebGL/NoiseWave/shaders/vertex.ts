@@ -1,4 +1,4 @@
-export default `
+const vertex = `
     uniform float uBigWavesElevation;
     uniform vec2 uBigWavesFrequency;
     uniform float uTime;
@@ -112,4 +112,6 @@ export default `
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
     }
-`
+`;
+
+export default vertex;

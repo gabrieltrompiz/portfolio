@@ -1,8 +1,8 @@
-  import React, { useEffect, useRef, useState } from 'react';
+  import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
   import { State } from 'portfolio';
   import { animate, DragHandlers, HTMLMotionProps, motion, useAnimation } from 'framer-motion';
-  import { useDispatch, useSelector } from 'react-redux';
+  import { shallowEqual, useDispatch, useSelector } from 'react-redux';
   import { slider as variants } from '@utils/variants';
   import { useGesture } from 'react-use-gesture';
   import { setMovingScollBar, setProgress as setProgressSB } from '@redux/actions/scrollBar';
@@ -17,7 +17,7 @@
     const [indexProject, setIndexProject] = useState<number>(1);
     const [offset, setOffset] = useState<number>(0);
 
-    const projects = useSelector((state: State) => state.projects);
+    const projects = useSelector((state: State) => state.projects, shallowEqual);
     const selectedProject = useSelector((state: State) => state.selectedProject);
     const nextProject = useSelector((state: State) => state.nextProject);
 
@@ -28,41 +28,22 @@
   
     const division = 100 / (totalProjects - 1);
     // Checkpoints are the anchors for the scrollbar, each one being a project
-    const checkpoints = projects.map((p, i) => ({ 
+    const checkpoints = useMemo(() => projects.map((p, i) => ({ 
       id: p.id, 
       position: division * i
-    }));
+    })), [projects, division]);
     const color = selectedProject?.titleColor || '#FFF';
-
-    useEffect(() => {
-      if(scrollBar.current) {
-        setDragLimit(scrollBar.current.clientWidth - 80);
-        const cp = checkpoints.find(c => c.id === selectedProject.id);
-        if(cp) onMouseUp(cp);
-      }
-    }, [scrollBar.current]);
-
-    useEffect(() => {
-      controls.start('initial');
-    }, [offset]);
-
-    useEffect(() => {
-      const id = getNearestProject(progress * 100 / dragLimit).id;
-      setIndexProject(projects.findIndex(p => p.id === id) + 1);
-    }, [progress]);
-
-    useEffect(() => {
-      if(nextProject) {
-        const cp = checkpoints.find(c => c.id === nextProject.id);
-        if(cp) onMouseUp(cp);
-      };
-    }, [nextProject]);
 
     const onMouseOver = () => controls.start('hover');
     const onMouseOut = () => controls.start('initial');
 
+    // Returns the nearest checkpoint to the current progress (position) of the scrollbar
+    const getNearestProject = useCallback((percentage: number) => {
+      return checkpoints.reduce((a, b) => Math.abs(b.position - percentage) < Math.abs(a.position - percentage) ? b : a) 
+    }, [checkpoints]);
+
     // Snaps the scrollbar to the nearest checkpoint
-    const onMouseUp = (cp) => {
+    const onMouseUp = useCallback((cp) => {
       controls.start('initial');
       const percentage = progress * 100 / dragLimit;
       const target = cp || getNearestProject(percentage);
@@ -78,7 +59,7 @@
       });
       dispatch(setSelectedProject(target.id));
       dispatch(setMovingScollBar(false));
-    };
+    }, [controls, dispatch, dragLimit, getNearestProject, progress]);
     
     // Shrinks the scrollbars and dispatchs an action to set the `moving` state to true
     const onMouseDown = () => {
@@ -86,9 +67,6 @@
       controls.start('hold');
       dispatch(setMovingScollBar(true));
     }; 
-
-    // Returns the nearest checkpoint to the current progress (position) of the scrollbar
-    const getNearestProject = (percentage: number) => checkpoints.reduce((a, b) => Math.abs(b.position - percentage) < Math.abs(a.position - percentage) ? b : a);
 
     // Updates the progress of the scrollbar as it is being dragged
     const onDrag: DragHandlers['onDrag'] = () => {
@@ -109,6 +87,34 @@
       onTouchStart: onMouseDown,
       onTouchEnd: () => onMouseUp(null)
     });
+
+    useEffect(() => {
+      if(scrollBar.current) {
+        setDragLimit(scrollBar.current.clientWidth - 80);
+        const cp = checkpoints.find(c => c.id === selectedProject.id);
+        if(cp) onMouseUp(cp);
+      }
+      // this shouldn't run when onMouseUp or checkpoints change
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [scrollBar.current]);
+
+    useEffect(() => {
+      controls.start('initial');
+    }, [offset, controls]);
+
+    useEffect(() => {
+      const id = getNearestProject(progress * 100 / dragLimit).id;
+      setIndexProject(projects.findIndex(p => p.id === id) + 1);
+    }, [progress, dragLimit, getNearestProject, projects]);
+
+    useEffect(() => {
+      if(nextProject) {
+        const cp = checkpoints.find(c => c.id === nextProject.id);
+        if(cp) onMouseUp(cp);
+      };
+      // this should only run when nextProject changes
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nextProject]);
 
     const dragOptions: HTMLMotionProps<'div'> = {
       drag: 'x',

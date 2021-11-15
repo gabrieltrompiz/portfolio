@@ -18,7 +18,7 @@ const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ compl
     } else {
       controls.start('enter')
     }
-  }, [moving]);
+  }, [moving, controls]);
 
   return (
     <motion.div id="project-descriptions" exit="exit" variants={variants} animate={controls} style={{ color: titleColor }}>

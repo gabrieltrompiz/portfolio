@@ -14,7 +14,7 @@ const AboutOverlay: React.FC<AboutOverlayProps> = ({ color, router, ...bind }) =
 
   useEffect(() => {
     controls.start("visible");
-  }, [isHome]);
+  }, [isHome, controls]);
 
   return (
     <motion.div id="overlay" style={{ color }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} exit={{ opacity: 0 }} {...bind}>

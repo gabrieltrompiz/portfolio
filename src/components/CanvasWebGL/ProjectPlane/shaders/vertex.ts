@@ -1,4 +1,4 @@
-export default `
+const vertex = `
   precision mediump float;
 
   varying vec2 vUv;
@@ -94,3 +94,5 @@ export default `
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
   }
 `;
+
+export default vertex;

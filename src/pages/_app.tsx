@@ -8,7 +8,7 @@ import { useGesture } from 'react-use-gesture';
 import { handleScroll } from '@utils/events';
 import { useStore } from '@redux/store';
 import { LoadingManager, TextureLoader } from 'three';
-import {  Provider, useDispatch, useSelector } from 'react-redux';
+import {  Provider, useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { addTexture, resetSelectedProject } from '@redux/actions/projects';
 import { isMobile } from 'react-device-detect';
 import Head from 'next/head';
@@ -27,7 +27,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [progress, setProgress] = useState(0);
 
   const dispatch = useDispatch();
-  const projects = useSelector((state: State) => state.projects);
+  const projects = useSelector((state: State) => state.projects, shallowEqual);
   const movingSB = useSelector((state: State) => state.movingScrollBar);
   const selectedProject = useSelector((state: State) => state.selectedProject);
   
@@ -38,15 +38,15 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     if(!movingSB && !loading && !isMobile) {
       handleScroll(e, router, dispatch);
     }
-  }, [movingSB, loading]);
+  }, [movingSB, loading, dispatch, router]);
 
   const bind = useGesture({
-    onWheel: onWheel,
+    onWheel,
     onDrag: onWheel
   });
 
   // Setup the loading manager that will load the textures for the projects
-  const setUpManagers = (loader) => {
+  const setUpManagers = useCallback((loader) => {
     loader.onProgress = (asset, current, total) => {
       const nextProgress = Math.round(current / total * 100);
       animation.current?.stop();
@@ -60,10 +60,12 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       // Wait half a second after loading to allow the webgl canvas to render
       setTimeout(() => setLoading(false), 500);
     };
-  };
+    // progress cannot be included in the dependencies array because it is updated inside this function
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load the textures for the projects and add them to the store
-  const startLoading = async (textureLoader) => {
+  const startLoading = useCallback(async (textureLoader) => {
     projects.forEach(project => {
       project.assets.forEach(async (asset) => {
         const params = new URLSearchParams();
@@ -74,7 +76,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         dispatch(addTexture(texture, project.id));
       })
     })
-  };
+  }, [dispatch, projects]);
 
   // Only load the textures when the page is first loaded and is not on a mobile device
   useEffect(() => {
@@ -88,7 +90,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       setLoading(false);
       setRenderWebGL(true);
     }
-  }, []);
+  }, [setUpManagers, startLoading]);
   
   // Redirect to the home page when it's a mobile device
   useEffect(() => {
@@ -108,7 +110,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     router.events.on('routeChangeStart', onRouteChange);
 
     return () => router.events.off('routeChangeStart', onRouteChange);
-  }, [router]);
+  }, [router, dispatch]);
 
   return (
     <>

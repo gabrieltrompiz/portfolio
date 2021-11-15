@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { State } from 'portfolio';
 import { animate } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Mesh, Vector3 } from 'three';
 import { NextRouter } from 'next/router';
-import { connect, Provider, useSelector, useStore } from 'react-redux';
+import { connect, Provider, shallowEqual, useSelector, useStore } from 'react-redux';
 import { goToNextProject, setPlaneRef } from '@redux/actions/projects';
 import { GoToProjectAction, SetPlaneRefAction } from '@redux/actions/types';
 
@@ -24,17 +24,22 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
   * Canvas degrades performance and progress changes constantly and quickly. Had to create
   * such bridge because Canvas uses a reconciler and store's Context doesn't go through */
   const progress = useSelector((state: State) => state.scrollBarProgress);
-  const projects = useSelector((state: State) => state.projects);
+  const projects = useSelector((state: State) => state.projects, shallowEqual);
   const selectedProject = useSelector((state: State) => state.selectedProject);
+
+  // Updates the background color depending on the project and url
+  const updateBackground = useCallback((url: string) => { 
+    setColor(url === '/projects' ? selectedProject?.backgroundColor : '#191919');
+  }, [selectedProject]);
 
   useEffect(() => {
     updateBackground(router.route);
-  }, [selectedProject, router]);
+  }, [selectedProject, router, updateBackground]);
   
   useEffect(() => {
     router.events.on('routeChangeComplete', updateBackground);
     return () => router.events.off('routeChangeComplete', updateBackground);
-  }, [router]);
+  }, [router, updateBackground]);
   
   useEffect(() => {
     setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -47,11 +52,6 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
       ease: 'easeInOut'
     });
   }, []);
-
-  // Updates the background color depending on the project and url
-  const updateBackground = (url: string) => { 
-    setColor(url === '/projects' ? selectedProject?.backgroundColor : '#191919');
-  }
   
   // On resize, updates the aspect and pixel ratio
   const addEventListeners = () => {

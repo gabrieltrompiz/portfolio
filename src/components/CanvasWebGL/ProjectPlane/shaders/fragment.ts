@@ -1,4 +1,4 @@
-export default `
+const fragment = `
   precision mediump float;
 
   varying vec2 vUv;
@@ -13,4 +13,6 @@ export default `
     vec3 texture = vec3(r, g, b);
     gl_FragColor = vec4(texture, 1.);
   }
-`
+`;
+
+export default fragment;

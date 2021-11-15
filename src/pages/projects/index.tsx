@@ -23,7 +23,7 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     controls.start('enter');
-  }, []);
+  }, [controls]);
 
   useEffect(() => {
     if(movingSB) {
@@ -31,11 +31,11 @@ const Projects: React.FC = () => {
     } else {
       controls.start('enter');
     }
-  }, [movingSB]);
+  }, [movingSB, controls]);
 
   useEffect(() => {
     controls.start('enter');
-  }, [selectedProject]);
+  }, [selectedProject, controls]);
 
   return (
     <>
@@ -50,10 +50,10 @@ const Projects: React.FC = () => {
           id='scroll'
           onClick={() => router.push('/')}
         >
-          <RiArrowUpSLine color='rgba(255, 255, 255, 0.5)' size={30} id='arrow-up' />
+          <RiArrowUpSLine color={selectedProject.titleColor} size={30} id='arrow-up' />
           <p>
             <Link href="/">
-              <a>Go to home</a>
+              <a style={{ color: selectedProject.titleColor }}>Go to home</a>
             </Link>
           </p>
         </motion.div>

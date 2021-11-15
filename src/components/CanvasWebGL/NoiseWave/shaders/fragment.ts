@@ -1,4 +1,4 @@
-export default `
+const fragment = `
     uniform vec3 uDepthColor;
     uniform vec3 uSurfaceColor;
     uniform float uColorOffset;
@@ -14,4 +14,6 @@ export default `
 
         gl_FragColor = vec4(color, uOpacity);
     }
-`
+`;
+
+export default fragment;

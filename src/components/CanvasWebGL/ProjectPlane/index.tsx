@@ -67,7 +67,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         goToNextProject(index > selectedIndex ? 'NEXT' : 'PREV')
       }
     }
-  }, [selectedIndex, selected]);
+  }, [selectedIndex, selected, camera, goToNextProject, index, repo]);
   
   const onMouseMove = useCallback((event: MouseEvent) => {
     const mouse = getMouseCoordinates(event);
@@ -87,12 +87,12 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       setHoveringProject(false);
       document.body.style.cursor = 'initial';
     }
-  }, [hoveringProject]);
+  }, [hoveringProject, camera]);
   
   useEffect(() => {
     // the position is equal to 0.45 times the index minus the progress of the scrollbar divided by the difference in % between each project showcase
     alphaP.current = new Vector3((index - progress / percentageDivision) * 0.45, 0, 0);
-  }, [progress]);
+  }, [progress, index, percentageDivision]);
 
   // If the project view is selected and the scrollbar isn't moving, centers the plane and adds the listeners
   // If the project view is not selected and the scrollbar isn't movint, removes the listeners
@@ -111,7 +111,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       document.body.style.cursor = 'initial';
       setPosition(new Vector3(0, -0.5, 1.5).add(alphaP.current))
     }
-  }, [show, progress, moving]);
+  }, [show, progress, moving, addedListener, onClick, onMouseMove]);
 
   // If the the scrollbar isn't being moved, the selected plane looks at the camera
   useEffect(() => {
@@ -128,6 +128,8 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
         duration: 0.5
       });
     }
+    // cannot run this every time scale changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moving]);
 
   // When the selected project changes, the next plane will look at the camera after 1.5s
@@ -145,7 +147,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     }
-  }, [router]);
+  }, [router, setPlaneRef]);
   
   useEffect(() => {
     if(show) {

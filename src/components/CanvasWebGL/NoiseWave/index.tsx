@@ -33,6 +33,34 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
 
   const { clock } = useThree();
 
+  const animateColor = useCallback((from: Color, to: Color, stateCb: Dispatch<SetStateAction<Color>>) => {
+    animate(from.r, to.r, {
+      onUpdate: (r) => {
+        stateCb((color) => color.setRGB(r, color.g, color.b))
+      },
+    })
+    animate(from.g, to.g, {
+      onUpdate: (g) => {
+        stateCb((color) => color.setRGB(color.r, g, color.b))
+      },
+    })
+    animate(from.b, to.b, {
+      onUpdate: (b) => {
+        stateCb((color) => color.setRGB(color.r, color.g, b))
+      },
+    })
+  }, []);
+
+  const updateColors = useCallback(() => {
+    if(router?.route === '/projects') {
+      animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
+      animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
+    } else {
+      animateColor(depthColor, new Color('#FFFFFF'), setDepthColor);
+      animateColor(surfaceColor, new Color('#191919'), setSurfaceColor);
+    }
+  }, [animateColor, depthColor, surfaceColor, router, selectedProject]);
+
   useEffect(() => {
     if(wireframe) {
       animate(1, 0, {
@@ -53,12 +81,12 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
 
   useEffect(() => {
     updateColors();
-  }, [selectedProject]);
+  }, [selectedProject, updateColors]);
 
   useEffect(() => {
     router.events.on('routeChangeComplete', updateColors);
     return () => router.events.off('routeChangeComplete', updateColors);
-  }, [router]);
+  }, [router, updateColors]);
 
   useFrame(() => {
     solidRef.current.uniforms.uTime.value = clock.elapsedTime;
@@ -70,34 +98,6 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
     wireframeRef.current.uniforms.uSurfaceColor.value = surfaceColor;
     // camera.position.copy(camera.position.clone().lerp(position, 0.1));
   });
-
-  const updateColors = () => {
-    if(router?.route === '/projects') {
-      animateColor(depthColor, new Color(selectedProject.titleColor), setDepthColor);
-      animateColor(surfaceColor, new Color(selectedProject.backgroundColor), setSurfaceColor);
-    } else {
-      animateColor(depthColor, new Color('#FFFFFF'), setDepthColor);
-      animateColor(surfaceColor, new Color('#191919'), setSurfaceColor);
-    }
-  };
-
-  const animateColor = useCallback((from: Color, to: Color, stateCb: Dispatch<SetStateAction<Color>>) => {
-    animate(from.r, to.r, {
-      onUpdate: (r) => {
-        stateCb((color) => color.setRGB(r, color.g, color.b))
-      },
-    })
-    animate(from.g, to.g, {
-      onUpdate: (g) => {
-        stateCb((color) => color.setRGB(color.r, g, color.b))
-      },
-    })
-    animate(from.b, to.b, {
-      onUpdate: (b) => {
-        stateCb((color) => color.setRGB(color.r, color.g, b))
-      },
-    })
-  }, []);
 
   return (
     <>
