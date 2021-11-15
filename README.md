@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<br />
+<p align="center">
+  Personal portfolio
+</p>
 
-## Getting Started
+## Table of Contents
+* [About this project](#about-this-project)
+* [Tech Stack](#tech-stack)
+* [Screenshots](#screenshots)
+* [Known Issues](#known-issues)
 
-First, run the development server:
+## About this project
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+I started this project at the beginning of 2021 to have a place to showcase my side projects and to explore new technologies while I developed it. I decided to give a try to Three.js and WebGL in this project and got a good grasp of the basics. At the same time it's my first project with Next.js. It's now live and can be visited at [gabrieltrompiz.com](https://gabrieltrompiz.com).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
+* React with TypeScript
+* Next.js
+* Redux
+* Sass
+* Three.js (using @react-three/fiber)
+* Framer Motion
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Screenshots
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+<img width="1786" alt="Screen Shot 2021-11-14 at 10 13 18 PM" src="https://user-images.githubusercontent.com/39140902/141721347-f2064999-ebba-44db-889f-88c5126c0cf7.png">
+<img width="1792" alt="Screen Shot 2021-11-14 at 10 13 29 PM" src="https://user-images.githubusercontent.com/39140902/141721350-da753304-36f6-4caa-a96f-18d3cbd933d4.png">
+<img width="1792" alt="Screen Shot 2021-11-14 at 10 13 45 PM" src="https://user-images.githubusercontent.com/39140902/141721356-daa9944e-7a3e-4862-a237-e7f3b38ca5fa.png">
+<img width="1792" alt="Screen Shot 2021-11-14 at 10 13 53 PM" src="https://user-images.githubusercontent.com/39140902/141721395-a36e4ddc-5aac-445f-8ee4-55fba76215b7.png">
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Known Issues
+Apparently there is a problem with Safari 15 and WebGL 2 that causes the app to randomly crash if you are using iOS 15+ or MacOS Monterey. There are some workarounds but is actually a Safari regression and not a Three.js/WebGL one. I tried to reproduce it but only managed to do it on iOS and since the mobile version of the site is still in development, it's not a priority right now. 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Reference: [Safari v15 (on desktop) -> threejs bug #22582](https://github.com/mrdoob/three.js/issues/22582).
