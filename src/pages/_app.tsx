@@ -33,6 +33,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   
   const animation = useRef<AnimationPlaybackControls>(null);
 
+  // "Global" event handler for scroll events, agnostic to the page that is being rendered
   const onWheel = useCallback((e) => {
     if(!movingSB && !loading && !isMobile) {
       handleScroll(e, router, dispatch);
@@ -44,6 +45,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     onDrag: onWheel
   });
 
+  // Setup the loading manager that will load the textures for the projects
   const setUpManagers = (loader) => {
     loader.onProgress = (asset, current, total) => {
       const nextProgress = Math.round(current / total * 100);
@@ -60,6 +62,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     };
   };
 
+  // Load the textures for the projects and add them to the store
   const startLoading = async (textureLoader) => {
     projects.forEach(project => {
       project.assets.forEach(async (asset) => {
@@ -73,6 +76,7 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     })
   };
 
+  // Only load the textures when the page is first loaded and is not on a mobile device
   useEffect(() => {
     if(!isMobile) {
       const loader = new LoadingManager();
@@ -86,12 +90,14 @@ const AppComponent: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     }
   }, []);
   
+  // Redirect to the home page when it's a mobile device
   useEffect(() => {
     if(isMobile && router.pathname === '/projects') {
       router.push('/');
     }
   }, [router]);
 
+  // Resets the selected project to the first one in the store when the user navigates to the projects page
   useEffect(() => {
     const onRouteChange = (url) => {
       if(url !== '/projects') {

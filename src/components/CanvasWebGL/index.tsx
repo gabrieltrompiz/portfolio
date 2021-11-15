@@ -48,10 +48,12 @@ const CanvasWebGL: React.FC<CanvasWebGLProps> = ({ wireframe = true, router, set
     });
   }, []);
 
+  // Updates the background color depending on the project and url
   const updateBackground = (url: string) => { 
     setColor(url === '/projects' ? selectedProject?.backgroundColor : '#191919');
   }
   
+  // On resize, updates the aspect and pixel ratio
   const addEventListeners = () => {
     window.addEventListener('resize', () => {
       setAspect(window.innerWidth / window.innerHeight);

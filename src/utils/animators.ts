@@ -6,6 +6,7 @@ const defaultOptions: AnimationOptions<any> = {
   duration: 2
 };
 
+// Animates multiple properties at once
 export const animateMultiple = <T>(from: T, to: T, handler: StateHandler<T>, options: AnimationOptions<any> = {}): void => {
   for(const k of Object.keys(from)) {
     animate(from[k], to[k], {

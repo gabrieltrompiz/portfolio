@@ -94,6 +94,8 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     alphaP.current = new Vector3((index - progress / percentageDivision) * 0.45, 0, 0);
   }, [progress]);
 
+  // If the project view is selected and the scrollbar isn't moving, centers the plane and adds the listeners
+  // If the project view is not selected and the scrollbar isn't movint, removes the listeners
   useEffect(() => {
     if(show && !moving) {
       if(!addedListener) {
@@ -111,6 +113,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     }
   }, [show, progress, moving]);
 
+  // If the the scrollbar isn't being moved, the selected plane looks at the camera
   useEffect(() => {
     if(moving) {
       setLookingAtCamera(false);
@@ -127,6 +130,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
     }
   }, [moving]);
 
+  // When the selected project changes, the next plane will look at the camera after 1.5s
   useEffect(() => {
     setLookingAtCamera(false);
     const id = setTimeout(() => setLookingAtCamera(true), 1500);
@@ -142,7 +146,7 @@ const ProjectPlane: React.FC<ProjectPlaneProps> = ({ router, textures, setPlaneR
       router.events.off('routeChangeComplete', handleRouteChange);
     }
   }, [router]);
-
+  
   useEffect(() => {
     if(show) {
       // re-attaches the onMouseMove event listener, usually happens when the mouse hovers between projects

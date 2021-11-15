@@ -25,8 +25,9 @@
     const dispatch = useDispatch();
 
     const scrollBar = useRef<HTMLDivElement>(null);
-
+  
     const division = 100 / (totalProjects - 1);
+    // Checkpoints are the anchors for the scrollbar, each one being a project
     const checkpoints = projects.map((p, i) => ({ 
       id: p.id, 
       position: division * i
@@ -60,6 +61,7 @@
     const onMouseOver = () => controls.start('hover');
     const onMouseOut = () => controls.start('initial');
 
+    // Snaps the scrollbar to the nearest checkpoint
     const onMouseUp = (cp) => {
       controls.start('initial');
       const percentage = progress * 100 / dragLimit;
@@ -78,15 +80,20 @@
       dispatch(setMovingScollBar(false));
     };
     
+    // Shrinks the scrollbars and dispatchs an action to set the `moving` state to true
     const onMouseDown = () => {
       controls.start('hover');
       controls.start('hold');
       dispatch(setMovingScollBar(true));
     }; 
 
+    // Returns the nearest checkpoint to the current progress (position) of the scrollbar
     const getNearestProject = (percentage: number) => checkpoints.reduce((a, b) => Math.abs(b.position - percentage) < Math.abs(a.position - percentage) ? b : a);
 
+    // Updates the progress of the scrollbar as it is being dragged
     const onDrag: DragHandlers['onDrag'] = () => {
+      // This was the only way to extract the position of the slider, probably there is a better way to do this
+      // Note: this is because the draggable feature is from framer-motion
       const slider = (scrollBar.current.children[2] as HTMLDivElement);
       const prog = slider?.style?.transform?.split(',')[0]?.trim().replace('translate3d(', '')?.replace('px', '') || 0;
       const perc = +prog * 100 / dragLimit;

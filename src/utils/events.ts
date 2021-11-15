@@ -5,11 +5,14 @@ import { Handler } from 'react-use-gesture/dist/types';
 let isTransitioning = false;
 const TRANSITION_TIME = 2000;
 
+// Returns the direction of the swipe/scroll
 const getDirection = (y: number): Directions => {
   const { DOWN, UP, STATIC } = Directions;
   return y >= 0.75 ? UP : y <= - 0.75 ? DOWN : STATIC;
 };
 
+// Returns the URL that the user is trying to navigate to
+// In case it's in the /projects page it will return the next project
 const getNextLocation = (direction: Directions, current: string): NextLocation => {
   switch(getDirection(direction)) {
     case Directions.DOWN: {
@@ -29,6 +32,7 @@ const getNextLocation = (direction: Directions, current: string): NextLocation =
   }
 };
 
+// Handles the swipe/scroll events, it has a threshold so it's not too sensitive
 export const handleScroll: ScrollHandler = (e, router, dispatch) => {
   const isScrolling = e.event.type === 'wheel';
   const threshold = isScrolling ? 2 : 0.5;

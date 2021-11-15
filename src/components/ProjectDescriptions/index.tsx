@@ -11,6 +11,7 @@ const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ compl
 
   const controls = useAnimation();
 
+  // Hides the project details when the user moves the scrollbar
   useEffect(() => {
     if(moving) {
       controls.start('exit');
@@ -26,16 +27,6 @@ const ProjectDescriptions: React.FC<Project & { router: NextRouter }> = ({ compl
       </div>
       <div id="description">
         <p>{description}</p>
-        {/* <div>
-          <p>Completed</p>
-          <p>Type</p>
-          <p>Role</p>
-        </div>
-        <div>
-          <p>{completedDate}</p>
-          <p>{type}</p>
-          <p>{role.toString()}</p>
-        </div> */}
       </div>
       <div id="explore">
         <div onClick={() => window.open(repo, '_blank')}>

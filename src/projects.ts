@@ -6,6 +6,9 @@ enum ProjectType {
   'UNIVERSITY' = 'University'
 }
 
+// All the projects that are being showcased in the portfolio
+// The idea is to have a single source of truth for all the projects
+// And be able to add new projects without having to change the code in the future
 export const projects: Project[] = [
   {
     title: 'Electra',

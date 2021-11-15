@@ -12,6 +12,9 @@ import { useSelector } from 'react-redux';
 import { State } from 'portfolio';
 import { NextRouter } from 'next/router';
 
+// These are created outside the component so they are not reacreated every render
+// Also, they must be different instances of the same object, if they are the same
+// they will not animate properly
 const solidUniforms = cloneDeep(uniforms);
 const wireframeUniforms = cloneDeep(uniforms);
 
@@ -20,7 +23,6 @@ const NoiseWave: React.FC<MeshProps & NoiseWaveProps> = ({ wireframe, wireframeP
   const [wireframeOpacity, setWireframeOpacity] = useState(0);
   const [depthColor, setDepthColor] = useState(new Color('#000'));
   const [surfaceColor, setSurfaceColor] = useState(new Color('#FFF'));
-  // const [position, setPosition] = useState(new Vector3(0, -0.2, 1.85));
 
   const solidMesh = useRef<Mesh>(null);
   const wireframeMesh = useRef<Mesh>(null);
