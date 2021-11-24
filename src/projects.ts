@@ -83,7 +83,7 @@ export const projects: Project[] = [
     ],
     completedDate: 'September 2019',
     type: ProjectType['UNIVERSITY'],
-    role: 'FUL-LSTACK DEVELOPER',
+    role: 'FULL-STACK DEVELOPER',
     repo: 'https://github.com/gabrieltrompiz/raven-front'
   },
   {
